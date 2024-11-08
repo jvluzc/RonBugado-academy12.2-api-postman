@@ -11,17 +11,16 @@ on:
   # Permite executar o workflow manualmente a partir da aba Actions
   workflow_dispatch:
 
-# Um workflow é composto por um ou mais jobs que podem ser executados sequencialmente ou em paralelo
 jobs:
-  # Este workflow contém um único job chamado "build"
-  build:
-    # O tipo de runner que o job vai executar
+  # Job para rodar os testes do Postman com Newman
+  postman_tests:
+    name: Testes de API com Postman
     runs-on: ubuntu-latest
 
-    # Etapas representam uma sequência de tarefas que serão executadas como parte do job
     steps:
       # Faz o checkout do repositório
-      - uses: actions/checkout@v2
+      - name: Checkout do Repositório
+        uses: actions/checkout@v4
 
       # Verifica as versões do Newman e Node
       - name: Passo 1: Verificar versão do Newman e Node
@@ -35,11 +34,12 @@ jobs:
         
       # Executa a coleção Postman utilizando o Newman e gera o relatório
       - name: Passo 3: Executar a coleção
-        run: newman run ./ronbugado-ci.json -e ./ronbugado-envi.json --reporters cli,-r htmlextra --reporter-htmlextra-export ./results/Report.html
+        run: |
+          newman run ./ronbugado-ci.json -e ./ronbugado-envi.json --reporters cli,-r htmlextra --reporter-htmlextra-export ./results/Report.html
      
       # Arquiva os artefatos de produção (relatório gerado)
       - name: Passo 4: Arquivar artefatos de produção
         uses: actions/upload-artifact@v3  # Atualizado para v3
         with:
-            name: report
+            name: postman-report
             path: ./results/Report.html
