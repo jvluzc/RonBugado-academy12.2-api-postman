@@ -16,7 +16,7 @@ on:
 jobs:
   # Job para rodar os testes do Postman com Newman
   postman_tests:
-    name: Executar Testes Postman - Nova Execução
+    name: Postman Tests - Pipiline
     runs-on: ubuntu-latest
 
     steps:
