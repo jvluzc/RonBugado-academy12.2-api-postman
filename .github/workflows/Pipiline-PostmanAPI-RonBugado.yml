@@ -12,7 +12,7 @@ on:
 
   # Permite executar o workflow manualmente a partir da aba Actions
   workflow_dispatch:
-
+  
 jobs:
   # Job para rodar os testes do Postman com Newman
   postman_tests:
