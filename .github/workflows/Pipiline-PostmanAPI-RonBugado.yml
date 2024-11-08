@@ -40,7 +40,7 @@ jobs:
      
       # Arquiva os artefatos de produção (relatório gerado)
       - name: Passo 4: Arquivar artefatos de produção
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3  # Atualizado para v3
         with:
             name: postman-report
             path: ./results/Report.html
