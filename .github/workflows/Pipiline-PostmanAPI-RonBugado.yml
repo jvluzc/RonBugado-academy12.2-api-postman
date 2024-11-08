@@ -16,7 +16,7 @@ on:
 jobs:
   # Job para rodar os testes do Postman com Newman
   postman_tests:
-    name: Testes de API com Postman
+    name: Executar Testes Postman - Nova Execução
     runs-on: ubuntu-latest
 
     steps:
