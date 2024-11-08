@@ -1,0 +1,2412 @@
+{
+	"info": {
+		"_postman_id": "1e118794-9ade-4ab9-9ee5-6756f35784dc",
+		"name": "Ron Bugado (Collection)",
+		"description": "# 🚀 Get started here\n\nThis template guides you through CRUD operations (GET, POST, PUT, DELETE), variables, and tests.\n\n## 🔖 **How to use this template**\n\n#### **Step 1: Send requests**\n\nRESTful APIs allow you to perform CRUD operations using the POST, GET, PUT, and DELETE HTTP methods.\n\nThis collection contains each of these [request](https://learning.postman.com/docs/sending-requests/requests/) types. Open each request and click \"Send\" to see what happens.\n\n#### **Step 2: View responses**\n\nObserve the response tab for status code (200 OK), response time, and size.\n\n#### **Step 3: Send new Body data**\n\nUpdate or add new data in \"Body\" in the POST request. Typically, Body data is also used in PUT request.\n\n```\n{\n    \"name\": \"Add your name in the body\"\n}\n\n ```\n\n#### **Step 4: Update the variable**\n\nVariables enable you to store and reuse values in Postman. We have created a [variable](https://learning.postman.com/docs/sending-requests/variables/) called `base_url` with the sample request [https://postman-api-learner.glitch.me](https://postman-api-learner.glitch.me). Replace it with your API endpoint to customize this collection.\n\n#### **Step 5: Add tests in the \"Scripts\" tab**\n\nAdding tests to your requests can help you confirm that your API is working as expected. You can write test scripts in JavaScript and view the output in the \"Test Results\" tab.\n\n<img src=\"https://content.pstmn.io/fa30ea0a-373d-4545-a668-e7b283cca343/aW1hZ2UucG5n\" alt=\"\" height=\"1530\" width=\"2162\">\n\n## 💪 Pro tips\n\n- Use folders to group related requests and organize the collection.\n    \n- Add more [scripts](https://learning.postman.com/docs/writing-scripts/intro-to-scripts/) to verify if the API works as expected and execute workflows.\n    \n\n## 💡Related templates\n\n[API testing basics](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9a37a28-055b-49cd-8c7e-97494a21eb54&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[API documentation](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=e9c28f47-1253-44af-a2f3-20dce4da1f18&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)  \n[Authorization methods](https://go.postman.co/redirect/workspace?type=personal&collectionTemplateId=31a9a6ed-4cdf-4ced-984c-d12c9aec1c27&sourceTemplateId=ddb19591-3097-41cf-82af-c84273e56719)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31557298"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Fazer Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.globals.set (\"tokenAdmin\", pm.response.json().token)\r",
+									"\r",
+									"pm .test (\"Validar Status Code = 200\",() => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test (\"Verificar se o token é válido\", () => {\r",
+									"    pm.expect(pm.response.json().token).to.exist;\r",
+									"})\r",
+									"\r",
+									"pm.test (\"Validar Menssagem de Login com Sucesso\", () => {\r",
+									"    pm.environment.set (\"msgAdmin\", pm.response.json().msg);\r",
+									"})\r",
+									"\r",
+									"pm.test (\"Verificar ID Admin\", () => {\r",
+									"    pm.environment.set (\"IDAdmin\", pm.response.json().user._id);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"mail\": \"{{email_Admin}}\",\r\n    \"password\": \"{{senha_Admin}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL_RonBugado}}/api/login/",
+							"host": [
+								"{{baseURL_RonBugado}}"
+							],
+							"path": [
+								"api",
+								"login",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Validar Token",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL_RonBugado}}/api/validateToken",
+							"host": [
+								"{{baseURL_RonBugado}}"
+							],
+							"path": [
+								"api",
+								"validateToken"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints relacionados ao login."
+		},
+		{
+			"name": "Company",
+			"item": [
+				{
+					"name": "Razão Social - MENOS de 100 caracteres",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Função para gerar um nome aleatório com letras e números\r",
+									"function gerarNomeAleatorio(tamanho) {\r",
+									"    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';\r",
+									"    let nomeAleatorio = '';\r",
+									"    // Gera uma sequência aleatória de 'tamanho' caracteres\r",
+									"    for (let i = 0; i < tamanho; i++) {\r",
+									"        nomeAleatorio += caracteres.charAt(Math.floor(Math.random() * caracteres.length));\r",
+									"    }\r",
+									"    return nomeAleatorio;\r",
+									"}\r",
+									"const prefixo = \"Company \";\r",
+									"const sufixo = \" Ltda\";\r",
+									"const tamanhoNomeRandomico = 10; \r",
+									"  // Gerar o nome final com 10 caracteres aleatórios entre 'Company' e 'Ltda'\r",
+									"const nomeEmpresa = prefixo + gerarNomeAleatorio(tamanhoNomeRandomico) + sufixo;\r",
+									"  // Armazenar o nome gerado na variável de ambiente 'companyName'\r",
+									"pm.environment.set(\"companyName\", nomeEmpresa);\r",
+									"\r",
+									"\r",
+									"// Função para gerar um CNPJ aleatório de 14 dígitos \r",
+									"function gerarCNPJ() {\r",
+									"    let cnpjAleatorio = '';\r",
+									"    // Gera uma sequência de 14 dígitos\r",
+									"    for (let i = 0; i < 14; i++) {\r",
+									"        cnpjAleatorio += Math.floor(Math.random() * 10); // Gera um dígito aleatório de 0 a 9\r",
+									"    }\r",
+									"    return cnpjAleatorio;\r",
+									"}\r",
+									"// Armazenar o CNPJ gerado na variável de ambiente 'companyCNPJ'\r",
+									"pm.environment.set(\"companyCNPJ\", gerarCNPJ());\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test (\"Validar Status Code = 201\",() => {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validar Mensagem de Cadastro de Empresao com Sucesso\", () => {\r",
+									"    const expectedMessage = `Olá a companhia ${pm.environment.get(\"companyName\")} foi cadastrada com sucesso.`;\r",
+									"    pm.expect(pm.response.json().msg).to.eql(expectedMessage);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenAdmin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"corporateName\": \"{{companyName}}\",\r\n  \"registerCompany\": \"{{companyCNPJ}}\",\r\n  \"mail\": \"test@test.com\",\r\n  \"matriz\": \"123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789\",\r\n  \"responsibleContact\": \"Marcio\",\r\n  \"telephone\": \"99999999999999\",\r\n  \"serviceDescription\": \"Testes\",\r\n  \"address\": [\r\n    {\r\n      \"zipCode\": \"04777001\",\r\n      \"city\": \"São Paulo\",\r\n      \"state\": \"SP\",\r\n      \"district\": \"Rua das Flores\",\r\n      \"street\": \"Avenida Interlagos\",\r\n      \"number\": \"50\",\r\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\r\n      \"country\": \"Brasil\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL_RonBugado}}/api/company/",
+							"host": [
+								"{{baseURL_RonBugado}}"
+							],
+							"path": [
+								"api",
+								"company",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Razão Social - MAIS de 100 caracteres",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Função para gerar um nome aleatório com letras e números\r",
+									"function gerarNomeAleatorio(tamanho) {\r",
+									"    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';\r",
+									"    let nomeAleatorio = '';\r",
+									"    // Gera uma sequência aleatória de 'tamanho' caracteres\r",
+									"    for (let i = 0; i < tamanho; i++) {\r",
+									"        nomeAleatorio += caracteres.charAt(Math.floor(Math.random() * caracteres.length));\r",
+									"    }\r",
+									"    return nomeAleatorio;\r",
+									"}\r",
+									"const prefixo = \"Company \";\r",
+									"const sufixo = \" Ltda\";\r",
+									"const tamanhoNomeRandomico = 10; \r",
+									"  // Gerar o nome final com 10 caracteres aleatórios entre 'Company' e 'Ltda'\r",
+									"const nomeEmpresa = prefixo + gerarNomeAleatorio(tamanhoNomeRandomico) + sufixo;\r",
+									"  // Armazenar o nome gerado na variável de ambiente 'companyName'\r",
+									"pm.environment.set(\"companyName\", nomeEmpresa);\r",
+									"\r",
+									"\r",
+									"// Função para gerar um CNPJ aleatório de 14 dígitos \r",
+									"function gerarCNPJ() {\r",
+									"    let cnpjAleatorio = '';\r",
+									"    // Gera uma sequência de 14 dígitos\r",
+									"    for (let i = 0; i < 14; i++) {\r",
+									"        cnpjAleatorio += Math.floor(Math.random() * 10); // Gera um dígito aleatório de 0 a 9\r",
+									"    }\r",
+									"    return cnpjAleatorio;\r",
+									"}\r",
+									"// Armazenar o CNPJ gerado na variável de ambiente 'companyCNPJ'\r",
+									"pm.environment.set(\"companyCNPJ\", gerarCNPJ());\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test (\"Validar Status Code = 400\",() => {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validar Mensagem campo 'Razão Social' deve ter no máximo 100 caracteres\", () => {\r",
+									"    const response = pm.response.json();\r",
+									"    const expectedMessage = `O campo 'Razão Social' da empresa deve ter no máximo 100 caracteres.`;\r",
+									"    pm.expect(response.error[0]).to.eql(expectedMessage);  // Acessa o primeiro item do array\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenAdmin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"corporateName\": \"{{companyName}}\",\r\n  \"registerCompany\": \"{{companyCNPJ}}\",\r\n  \"mail\": \"test@test.com\",\r\n  \"matriz\": \"12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678912\",\r\n  \"responsibleContact\": \"Marcio\",\r\n  \"telephone\": \"99999999999999\",\r\n  \"serviceDescription\": \"Testes\",\r\n  \"address\": [\r\n    {\r\n      \"zipCode\": \"04777001\",\r\n      \"city\": \"São Paulo\",\r\n      \"state\": \"SP\",\r\n      \"district\": \"Rua das Flores\",\r\n      \"street\": \"Avenida Interlagos\",\r\n      \"number\": \"50\",\r\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\r\n      \"country\": \"Brasil\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL_RonBugado}}/api/company/",
+							"host": [
+								"{{baseURL_RonBugado}}"
+							],
+							"path": [
+								"api",
+								"company",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Razão Social - VAZIO",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Função para gerar um nome aleatório com letras e números\r",
+									"function gerarNomeAleatorio(tamanho) {\r",
+									"    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';\r",
+									"    let nomeAleatorio = '';\r",
+									"    // Gera uma sequência aleatória de 'tamanho' caracteres\r",
+									"    for (let i = 0; i < tamanho; i++) {\r",
+									"        nomeAleatorio += caracteres.charAt(Math.floor(Math.random() * caracteres.length));\r",
+									"    }\r",
+									"    return nomeAleatorio;\r",
+									"}\r",
+									"const prefixo = \"Company \";\r",
+									"const sufixo = \" Ltda\";\r",
+									"const tamanhoNomeRandomico = 10; \r",
+									"  // Gerar o nome final com 10 caracteres aleatórios entre 'Company' e 'Ltda'\r",
+									"const nomeEmpresa = prefixo + gerarNomeAleatorio(tamanhoNomeRandomico) + sufixo;\r",
+									"  // Armazenar o nome gerado na variável de ambiente 'companyName'\r",
+									"pm.environment.set(\"companyName\", nomeEmpresa);\r",
+									"\r",
+									"\r",
+									"// Função para gerar um CNPJ aleatório de 14 dígitos \r",
+									"function gerarCNPJ() {\r",
+									"    let cnpjAleatorio = '';\r",
+									"    // Gera uma sequência de 14 dígitos\r",
+									"    for (let i = 0; i < 14; i++) {\r",
+									"        cnpjAleatorio += Math.floor(Math.random() * 10); // Gera um dígito aleatório de 0 a 9\r",
+									"    }\r",
+									"    return cnpjAleatorio;\r",
+									"}\r",
+									"// Armazenar o CNPJ gerado na variável de ambiente 'companyCNPJ'\r",
+									"pm.environment.set(\"companyCNPJ\", gerarCNPJ());\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test (\"Validar Status Code = 400\",() => {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validar Mensagem campo 'Razão Social' é obrigatório\", () => {\r",
+									"    const response = pm.response.json();\r",
+									"    const expectedMessage = `O campo 'Razão Social' da empresa é obrigatório.`;\r",
+									"    pm.expect(response.error[0]).to.eql(expectedMessage);  // Acessa o primeiro item do array\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenAdmin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"corporateName\": \"{{companyName}}\",\r\n  \"registerCompany\": \"{{companyCNPJ}}\",\r\n  \"mail\": \"test@test.com\",\r\n  \"matriz\": \"\",\r\n  \"responsibleContact\": \"Marcio\",\r\n  \"telephone\": \"99999999999999\",\r\n  \"serviceDescription\": \"Testes\",\r\n  \"address\": [\r\n    {\r\n      \"zipCode\": \"04777001\",\r\n      \"city\": \"São Paulo\",\r\n      \"state\": \"SP\",\r\n      \"district\": \"Rua das Flores\",\r\n      \"street\": \"Avenida Interlagos\",\r\n      \"number\": \"50\",\r\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\r\n      \"country\": \"Brasil\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL_RonBugado}}/api/company/",
+							"host": [
+								"{{baseURL_RonBugado}}"
+							],
+							"path": [
+								"api",
+								"company",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Razão Social - NULO",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Função para gerar um nome aleatório com letras e números\r",
+									"function gerarNomeAleatorio(tamanho) {\r",
+									"    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';\r",
+									"    let nomeAleatorio = '';\r",
+									"    // Gera uma sequência aleatória de 'tamanho' caracteres\r",
+									"    for (let i = 0; i < tamanho; i++) {\r",
+									"        nomeAleatorio += caracteres.charAt(Math.floor(Math.random() * caracteres.length));\r",
+									"    }\r",
+									"    return nomeAleatorio;\r",
+									"}\r",
+									"const prefixo = \"Company \";\r",
+									"const sufixo = \" Ltda\";\r",
+									"const tamanhoNomeRandomico = 10; \r",
+									"  // Gerar o nome final com 10 caracteres aleatórios entre 'Company' e 'Ltda'\r",
+									"const nomeEmpresa = prefixo + gerarNomeAleatorio(tamanhoNomeRandomico) + sufixo;\r",
+									"  // Armazenar o nome gerado na variável de ambiente 'companyName'\r",
+									"pm.environment.set(\"companyName\", nomeEmpresa);\r",
+									"\r",
+									"\r",
+									"// Função para gerar um CNPJ aleatório de 14 dígitos \r",
+									"function gerarCNPJ() {\r",
+									"    let cnpjAleatorio = '';\r",
+									"    // Gera uma sequência de 14 dígitos\r",
+									"    for (let i = 0; i < 14; i++) {\r",
+									"        cnpjAleatorio += Math.floor(Math.random() * 10); // Gera um dígito aleatório de 0 a 9\r",
+									"    }\r",
+									"    return cnpjAleatorio;\r",
+									"}\r",
+									"// Armazenar o CNPJ gerado na variável de ambiente 'companyCNPJ'\r",
+									"pm.environment.set(\"companyCNPJ\", gerarCNPJ());\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test (\"Validar Status Code = 400\",() => {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validar Mensagem campo 'Razão Social' é obrigatório\", () => {\r",
+									"    const response = pm.response.json();\r",
+									"    const expectedMessage = `O campo 'Razão Social' da empresa é obrigatório.`;\r",
+									"    pm.expect(response.error[0]).to.eql(expectedMessage);  // Acessa o primeiro item do array\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenAdmin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"corporateName\": \"{{companyName}}\",\r\n  \"registerCompany\": \"{{companyCNPJ}}\",\r\n  \"mail\": \"test@test.com\",\r\n  \"matriz\": null,\r\n  \"responsibleContact\": \"Marcio\",\r\n  \"telephone\": \"99999999999999\",\r\n  \"serviceDescription\": \"Testes\",\r\n  \"address\": [\r\n    {\r\n      \"zipCode\": \"04777001\",\r\n      \"city\": \"São Paulo\",\r\n      \"state\": \"SP\",\r\n      \"district\": \"Rua das Flores\",\r\n      \"street\": \"Avenida Interlagos\",\r\n      \"number\": \"50\",\r\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\r\n      \"country\": \"Brasil\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL_RonBugado}}/api/company/",
+							"host": [
+								"{{baseURL_RonBugado}}"
+							],
+							"path": [
+								"api",
+								"company",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Razão Social - Validos (Alfanuméricos)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Função para gerar um nome aleatório com letras e números\r",
+									"function gerarNomeAleatorio(tamanho) {\r",
+									"    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';\r",
+									"    let nomeAleatorio = '';\r",
+									"    // Gera uma sequência aleatória de 'tamanho' caracteres\r",
+									"    for (let i = 0; i < tamanho; i++) {\r",
+									"        nomeAleatorio += caracteres.charAt(Math.floor(Math.random() * caracteres.length));\r",
+									"    }\r",
+									"    return nomeAleatorio;\r",
+									"}\r",
+									"const prefixo = \"Company \";\r",
+									"const sufixo = \" Ltda\";\r",
+									"const tamanhoNomeRandomico = 10; \r",
+									"  // Gerar o nome final com 10 caracteres aleatórios entre 'Company' e 'Ltda'\r",
+									"const nomeEmpresa = prefixo + gerarNomeAleatorio(tamanhoNomeRandomico) + sufixo;\r",
+									"  // Armazenar o nome gerado na variável de ambiente 'companyName'\r",
+									"pm.environment.set(\"companyName\", nomeEmpresa);\r",
+									"\r",
+									"\r",
+									"\r",
+									"// Função para gerar um CNPJ aleatório de 14 dígitos \r",
+									"function gerarCNPJ() {\r",
+									"    let cnpjAleatorio = '';\r",
+									"    // Gera uma sequência de 14 dígitos\r",
+									"    for (let i = 0; i < 14; i++) {\r",
+									"        cnpjAleatorio += Math.floor(Math.random() * 10); // Gera um dígito aleatório de 0 a 9\r",
+									"    }\r",
+									"    return cnpjAleatorio;\r",
+									"}\r",
+									"// Armazenar o CNPJ gerado na variável de ambiente 'companyCNPJ'\r",
+									"pm.environment.set(\"companyCNPJ\", gerarCNPJ());\r",
+									"\r",
+									"\r",
+									"\r",
+									"// Função para gerar um nome de Razão Social aleatório com 10 caracteres, contendo pelo menos uma letra e um número\r",
+									"function generateRazaoSocial(length) {\r",
+									"    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';\r",
+									"    const numbers = '0123456789';\r",
+									"    const chars = letters + numbers;\r",
+									"    // Garante que tenha pelo menos uma letra e um número\r",
+									"    let razaoSocial = '';\r",
+									"    razaoSocial += letters.charAt(Math.floor(Math.random() * letters.length));\r",
+									"    razaoSocial += numbers.charAt(Math.floor(Math.random() * numbers.length));\r",
+									"    // Preenche o restante dos caracteres de forma aleatória\r",
+									"    for (let i = 2; i < length; i++) {\r",
+									"        razaoSocial += chars.charAt(Math.floor(Math.random() * chars.length));\r",
+									"    }\r",
+									"    return razaoSocial;\r",
+									"}\r",
+									"// Defina o comprimento desejado para o campo Razão Social (10 caracteres)\r",
+									"const razaoSocialLength = 10;\r",
+									"// Armazene o valor gerado em uma variável no ambiente do Postman\r",
+									"pm.environment.set(\"razaoSocial\", generateRazaoSocial(razaoSocialLength));\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test (\"Validar Status Code = 201\",() => {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validar Mensagem de Cadastro de Empresao com Sucesso\", () => {\r",
+									"    const expectedMessage = `Olá a companhia ${pm.environment.get(\"companyName\")} foi cadastrada com sucesso.`;\r",
+									"    pm.expect(pm.response.json().msg).to.eql(expectedMessage);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenAdmin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"corporateName\": \"{{companyName}}\",\r\n  \"registerCompany\": \"{{companyCNPJ}}\",\r\n  \"mail\": \"test@test.com\",\r\n  \"matriz\": \"{{razaoSocial}}\",\r\n  \"responsibleContact\": \"Marcio\",\r\n  \"telephone\": \"99999999999999\",\r\n  \"serviceDescription\": \"Testes\",\r\n  \"address\": [\r\n    {\r\n      \"zipCode\": \"04777001\",\r\n      \"city\": \"São Paulo\",\r\n      \"state\": \"SP\",\r\n      \"district\": \"Rua das Flores\",\r\n      \"street\": \"Avenida Interlagos\",\r\n      \"number\": \"50\",\r\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\r\n      \"country\": \"Brasil\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL_RonBugado}}/api/company/",
+							"host": [
+								"{{baseURL_RonBugado}}"
+							],
+							"path": [
+								"api",
+								"company",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Descrição - VAZIO",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Função para gerar um nome aleatório com letras e números\r",
+									"function gerarNomeAleatorio(tamanho) {\r",
+									"    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';\r",
+									"    let nomeAleatorio = '';\r",
+									"    // Gera uma sequência aleatória de 'tamanho' caracteres\r",
+									"    for (let i = 0; i < tamanho; i++) {\r",
+									"        nomeAleatorio += caracteres.charAt(Math.floor(Math.random() * caracteres.length));\r",
+									"    }\r",
+									"    return nomeAleatorio;\r",
+									"}\r",
+									"const prefixo = \"Company \";\r",
+									"const sufixo = \" Ltda\";\r",
+									"const tamanhoNomeRandomico = 10; \r",
+									"  // Gerar o nome final com 10 caracteres aleatórios entre 'Company' e 'Ltda'\r",
+									"const nomeEmpresa = prefixo + gerarNomeAleatorio(tamanhoNomeRandomico) + sufixo;\r",
+									"  // Armazenar o nome gerado na variável de ambiente 'companyName'\r",
+									"pm.environment.set(\"companyName\", nomeEmpresa);\r",
+									"\r",
+									"\r",
+									"// Função para gerar um CNPJ aleatório de 14 dígitos \r",
+									"function gerarCNPJ() {\r",
+									"    let cnpjAleatorio = '';\r",
+									"    // Gera uma sequência de 14 dígitos\r",
+									"    for (let i = 0; i < 14; i++) {\r",
+									"        cnpjAleatorio += Math.floor(Math.random() * 10); // Gera um dígito aleatório de 0 a 9\r",
+									"    }\r",
+									"    return cnpjAleatorio;\r",
+									"}\r",
+									"// Armazenar o CNPJ gerado na variável de ambiente 'companyCNPJ'\r",
+									"pm.environment.set(\"companyCNPJ\", gerarCNPJ());\r",
+									"\r",
+									"\r",
+									"// Função para gerar um nome de Razão Social aleatório com 10 caracteres, contendo pelo menos uma letra e um número\r",
+									"function generateRazaoSocial(length) {\r",
+									"    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';\r",
+									"    const numbers = '0123456789';\r",
+									"    const chars = letters + numbers;\r",
+									"    // Garante que tenha pelo menos uma letra e um número\r",
+									"    let razaoSocial = '';\r",
+									"    razaoSocial += letters.charAt(Math.floor(Math.random() * letters.length));\r",
+									"    razaoSocial += numbers.charAt(Math.floor(Math.random() * numbers.length));\r",
+									"    // Preenche o restante dos caracteres de forma aleatória\r",
+									"    for (let i = 2; i < length; i++) {\r",
+									"        razaoSocial += chars.charAt(Math.floor(Math.random() * chars.length));\r",
+									"    }\r",
+									"    return razaoSocial;\r",
+									"}\r",
+									"// Defina o comprimento desejado para o campo Razão Social (10 caracteres)\r",
+									"const razaoSocialLength = 10;\r",
+									"// Armazene o valor gerado em uma variável no ambiente do Postman\r",
+									"pm.environment.set(\"razaoSocial\", generateRazaoSocial(razaoSocialLength));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test (\"Validar Status Code = 400\",() => {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validar Mensagem o campo 'Descrição' é obrigatório.\", () => {\r",
+									"    const response = pm.response.json();\r",
+									"    const expectedMessage = `O campo 'Descrição' é obrigatório.`;\r",
+									"    pm.expect(response.error[0]).to.eql(expectedMessage);  // Acessa o primeiro item do array\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenAdmin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"corporateName\": \"{{companyName}}\",\r\n  \"registerCompany\": \"{{companyCNPJ}}\",\r\n  \"mail\": \"test@test.com\",\r\n  \"matriz\": \"{{razaoSocial}}\",\r\n  \"responsibleContact\": \"Marcio\",\r\n  \"telephone\": \"99999999999999\",\r\n  \"serviceDescription\": \"\",\r\n  \"address\": [\r\n    {\r\n      \"zipCode\": \"04777001\",\r\n      \"city\": \"São Paulo\",\r\n      \"state\": \"SP\",\r\n      \"district\": \"Rua das Flores\",\r\n      \"street\": \"Avenida Interlagos\",\r\n      \"number\": \"50\",\r\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\r\n      \"country\": \"Brasil\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL_RonBugado}}/api/company/",
+							"host": [
+								"{{baseURL_RonBugado}}"
+							],
+							"path": [
+								"api",
+								"company",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Descrição - NULO",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Função para gerar um nome aleatório com letras e números\r",
+									"function gerarNomeAleatorio(tamanho) {\r",
+									"    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';\r",
+									"    let nomeAleatorio = '';\r",
+									"    // Gera uma sequência aleatória de 'tamanho' caracteres\r",
+									"    for (let i = 0; i < tamanho; i++) {\r",
+									"        nomeAleatorio += caracteres.charAt(Math.floor(Math.random() * caracteres.length));\r",
+									"    }\r",
+									"    return nomeAleatorio;\r",
+									"}\r",
+									"const prefixo = \"Company \";\r",
+									"const sufixo = \" Ltda\";\r",
+									"const tamanhoNomeRandomico = 10; \r",
+									"  // Gerar o nome final com 10 caracteres aleatórios entre 'Company' e 'Ltda'\r",
+									"const nomeEmpresa = prefixo + gerarNomeAleatorio(tamanhoNomeRandomico) + sufixo;\r",
+									"  // Armazenar o nome gerado na variável de ambiente 'companyName'\r",
+									"pm.environment.set(\"companyName\", nomeEmpresa);\r",
+									"\r",
+									"\r",
+									"// Função para gerar um CNPJ aleatório de 14 dígitos \r",
+									"function gerarCNPJ() {\r",
+									"    let cnpjAleatorio = '';\r",
+									"    // Gera uma sequência de 14 dígitos\r",
+									"    for (let i = 0; i < 14; i++) {\r",
+									"        cnpjAleatorio += Math.floor(Math.random() * 10); // Gera um dígito aleatório de 0 a 9\r",
+									"    }\r",
+									"    return cnpjAleatorio;\r",
+									"}\r",
+									"// Armazenar o CNPJ gerado na variável de ambiente 'companyCNPJ'\r",
+									"pm.environment.set(\"companyCNPJ\", gerarCNPJ());\r",
+									"\r",
+									"\r",
+									"// Função para gerar um nome de Razão Social aleatório com 10 caracteres, contendo pelo menos uma letra e um número\r",
+									"function generateRazaoSocial(length) {\r",
+									"    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';\r",
+									"    const numbers = '0123456789';\r",
+									"    const chars = letters + numbers;\r",
+									"    // Garante que tenha pelo menos uma letra e um número\r",
+									"    let razaoSocial = '';\r",
+									"    razaoSocial += letters.charAt(Math.floor(Math.random() * letters.length));\r",
+									"    razaoSocial += numbers.charAt(Math.floor(Math.random() * numbers.length));\r",
+									"    // Preenche o restante dos caracteres de forma aleatória\r",
+									"    for (let i = 2; i < length; i++) {\r",
+									"        razaoSocial += chars.charAt(Math.floor(Math.random() * chars.length));\r",
+									"    }\r",
+									"    return razaoSocial;\r",
+									"}\r",
+									"// Defina o comprimento desejado para o campo Razão Social (10 caracteres)\r",
+									"const razaoSocialLength = 10;\r",
+									"// Armazene o valor gerado em uma variável no ambiente do Postman\r",
+									"pm.environment.set(\"razaoSocial\", generateRazaoSocial(razaoSocialLength));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test (\"Validar Status Code = 400\",() => {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validar Mensagem o campo 'Descrição' é obrigatório.\", () => {\r",
+									"    const response = pm.response.json();\r",
+									"    const expectedMessage = `O campo 'Descrição' é obrigatório.`;\r",
+									"    pm.expect(response.error[0]).to.eql(expectedMessage);  // Acessa o primeiro item do array\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenAdmin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"corporateName\": \"{{companyName}}\",\r\n  \"registerCompany\": \"{{companyCNPJ}}\",\r\n  \"mail\": \"test@test.com\",\r\n  \"matriz\": \"{{razaoSocial}}\",\r\n  \"responsibleContact\": \"Marcio\",\r\n  \"telephone\": \"99999999999999\",\r\n  \"serviceDescription\": null,\r\n  \"address\": [\r\n    {\r\n      \"zipCode\": \"04777001\",\r\n      \"city\": \"São Paulo\",\r\n      \"state\": \"SP\",\r\n      \"district\": \"Rua das Flores\",\r\n      \"street\": \"Avenida Interlagos\",\r\n      \"number\": \"50\",\r\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\r\n      \"country\": \"Brasil\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL_RonBugado}}/api/company/",
+							"host": [
+								"{{baseURL_RonBugado}}"
+							],
+							"path": [
+								"api",
+								"company",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Descrição - Validos (Alfanuméricos)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Função para gerar um nome aleatório com letras e números\r",
+									"function gerarNomeAleatorio(tamanho) {\r",
+									"    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';\r",
+									"    let nomeAleatorio = '';\r",
+									"    // Gera uma sequência aleatória de 'tamanho' caracteres\r",
+									"    for (let i = 0; i < tamanho; i++) {\r",
+									"        nomeAleatorio += caracteres.charAt(Math.floor(Math.random() * caracteres.length));\r",
+									"    }\r",
+									"    return nomeAleatorio;\r",
+									"}\r",
+									"const prefixo = \"Company \";\r",
+									"const sufixo = \" Ltda\";\r",
+									"const tamanhoNomeRandomico = 10; \r",
+									"  // Gerar o nome final com 10 caracteres aleatórios entre 'Company' e 'Ltda'\r",
+									"const nomeEmpresa = prefixo + gerarNomeAleatorio(tamanhoNomeRandomico) + sufixo;\r",
+									"  // Armazenar o nome gerado na variável de ambiente 'companyName'\r",
+									"pm.environment.set(\"companyName\", nomeEmpresa);\r",
+									"\r",
+									"\r",
+									"\r",
+									"// Função para gerar um CNPJ aleatório de 14 dígitos \r",
+									"function gerarCNPJ() {\r",
+									"    let cnpjAleatorio = '';\r",
+									"    // Gera uma sequência de 14 dígitos\r",
+									"    for (let i = 0; i < 14; i++) {\r",
+									"        cnpjAleatorio += Math.floor(Math.random() * 10); // Gera um dígito aleatório de 0 a 9\r",
+									"    }\r",
+									"    return cnpjAleatorio;\r",
+									"}\r",
+									"// Armazenar o CNPJ gerado na variável de ambiente 'companyCNPJ'\r",
+									"pm.environment.set(\"companyCNPJ\", gerarCNPJ());\r",
+									"\r",
+									"\r",
+									"\r",
+									"// Função para gerar um nome de Razão Social aleatório com 10 caracteres, contendo pelo menos uma letra e um número\r",
+									"function generateRazaoSocial(length) {\r",
+									"    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';\r",
+									"    const numbers = '0123456789';\r",
+									"    const chars = letters + numbers;\r",
+									"    // Garante que tenha pelo menos uma letra e um número\r",
+									"    let razaoSocial = '';\r",
+									"    razaoSocial += letters.charAt(Math.floor(Math.random() * letters.length));\r",
+									"    razaoSocial += numbers.charAt(Math.floor(Math.random() * numbers.length));\r",
+									"    // Preenche o restante dos caracteres de forma aleatória\r",
+									"    for (let i = 2; i < length; i++) {\r",
+									"        razaoSocial += chars.charAt(Math.floor(Math.random() * chars.length));\r",
+									"    }\r",
+									"    return razaoSocial;\r",
+									"}\r",
+									"// Defina o comprimento desejado para o campo Razão Social (10 caracteres)\r",
+									"const razaoSocialLength = 10;\r",
+									"// Armazene o valor gerado em uma variável no ambiente do Postman\r",
+									"pm.environment.set(\"razaoSocial\", generateRazaoSocial(razaoSocialLength));\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test (\"Validar Status Code = 201\",() => {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validar Mensagem de Cadastro de Empresao com Sucesso\", () => {\r",
+									"    const expectedMessage = `Olá a companhia ${pm.environment.get(\"companyName\")} foi cadastrada com sucesso.`;\r",
+									"    pm.expect(pm.response.json().msg).to.eql(expectedMessage);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenAdmin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"corporateName\": \"{{companyName}}\",\r\n  \"registerCompany\": \"{{companyCNPJ}}\",\r\n  \"mail\": \"test@test.com\",\r\n  \"matriz\": \"{{razaoSocial}}\",\r\n  \"responsibleContact\": \"Marcio\",\r\n  \"telephone\": \"99999999999999\",\r\n  \"serviceDescription\": \"Testes123\",\r\n  \"address\": [\r\n    {\r\n      \"zipCode\": \"04777001\",\r\n      \"city\": \"São Paulo\",\r\n      \"state\": \"SP\",\r\n      \"district\": \"Rua das Flores\",\r\n      \"street\": \"Avenida Interlagos\",\r\n      \"number\": \"50\",\r\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\r\n      \"country\": \"Brasil\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL_RonBugado}}/api/company/",
+							"host": [
+								"{{baseURL_RonBugado}}"
+							],
+							"path": [
+								"api",
+								"company",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bairro - VAZIO",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Função para gerar um nome aleatório com letras e números\r",
+									"function gerarNomeAleatorio(tamanho) {\r",
+									"    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';\r",
+									"    let nomeAleatorio = '';\r",
+									"    // Gera uma sequência aleatória de 'tamanho' caracteres\r",
+									"    for (let i = 0; i < tamanho; i++) {\r",
+									"        nomeAleatorio += caracteres.charAt(Math.floor(Math.random() * caracteres.length));\r",
+									"    }\r",
+									"    return nomeAleatorio;\r",
+									"}\r",
+									"const prefixo = \"Company \";\r",
+									"const sufixo = \" Ltda\";\r",
+									"const tamanhoNomeRandomico = 10; \r",
+									"  // Gerar o nome final com 10 caracteres aleatórios entre 'Company' e 'Ltda'\r",
+									"const nomeEmpresa = prefixo + gerarNomeAleatorio(tamanhoNomeRandomico) + sufixo;\r",
+									"  // Armazenar o nome gerado na variável de ambiente 'companyName'\r",
+									"pm.environment.set(\"companyName\", nomeEmpresa);\r",
+									"\r",
+									"\r",
+									"\r",
+									"// Função para gerar um CNPJ aleatório de 14 dígitos \r",
+									"function gerarCNPJ() {\r",
+									"    let cnpjAleatorio = '';\r",
+									"    // Gera uma sequência de 14 dígitos\r",
+									"    for (let i = 0; i < 14; i++) {\r",
+									"        cnpjAleatorio += Math.floor(Math.random() * 10); // Gera um dígito aleatório de 0 a 9\r",
+									"    }\r",
+									"    return cnpjAleatorio;\r",
+									"}\r",
+									"// Armazenar o CNPJ gerado na variável de ambiente 'companyCNPJ'\r",
+									"pm.environment.set(\"companyCNPJ\", gerarCNPJ());\r",
+									"\r",
+									"\r",
+									"\r",
+									"// Função para gerar um nome de Razão Social aleatório com 10 caracteres, contendo pelo menos uma letra e um número\r",
+									"function generateRazaoSocial(length) {\r",
+									"    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';\r",
+									"    const numbers = '0123456789';\r",
+									"    const chars = letters + numbers;\r",
+									"    // Garante que tenha pelo menos uma letra e um número\r",
+									"    let razaoSocial = '';\r",
+									"    razaoSocial += letters.charAt(Math.floor(Math.random() * letters.length));\r",
+									"    razaoSocial += numbers.charAt(Math.floor(Math.random() * numbers.length));\r",
+									"    // Preenche o restante dos caracteres de forma aleatória\r",
+									"    for (let i = 2; i < length; i++) {\r",
+									"        razaoSocial += chars.charAt(Math.floor(Math.random() * chars.length));\r",
+									"    }\r",
+									"    return razaoSocial;\r",
+									"}\r",
+									"// Defina o comprimento desejado para o campo Razão Social (10 caracteres)\r",
+									"const razaoSocialLength = 10;\r",
+									"// Armazene o valor gerado em uma variável no ambiente do Postman\r",
+									"pm.environment.set(\"razaoSocial\", generateRazaoSocial(razaoSocialLength));\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test (\"Validar Status Code = 400\",() => {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validar Mensagem O campo 'bairro' é obrigatório.\", () => {\r",
+									"    const response = pm.response.json();\r",
+									"    const expectedMessage = `O campo 'bairro' é obrigatório.`;\r",
+									"    pm.expect(response.error[0]).to.eql(expectedMessage);  // Acessa o primeiro item do array\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenAdmin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"corporateName\": \"{{companyName}}\",\r\n  \"registerCompany\": \"{{companyCNPJ}}\",\r\n  \"mail\": \"test@test.com\",\r\n  \"matriz\": \"{{razaoSocial}}\",\r\n  \"responsibleContact\": \"Marcio\",\r\n  \"telephone\": \"99999999999999\",\r\n  \"serviceDescription\": \"Testes123\",\r\n  \"address\": [\r\n    {\r\n      \"zipCode\": \"04777001\",\r\n      \"city\": \"São Paulo\",\r\n      \"state\": \"SP\",\r\n      \"district\": \"\",\r\n      \"street\": \"Avenida Interlagos\",\r\n      \"number\": \"50\",\r\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\r\n      \"country\": \"Brasil\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL_RonBugado}}/api/company/",
+							"host": [
+								"{{baseURL_RonBugado}}"
+							],
+							"path": [
+								"api",
+								"company",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bairro - NULO",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Função para gerar um nome aleatório com letras e números\r",
+									"function gerarNomeAleatorio(tamanho) {\r",
+									"    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';\r",
+									"    let nomeAleatorio = '';\r",
+									"    // Gera uma sequência aleatória de 'tamanho' caracteres\r",
+									"    for (let i = 0; i < tamanho; i++) {\r",
+									"        nomeAleatorio += caracteres.charAt(Math.floor(Math.random() * caracteres.length));\r",
+									"    }\r",
+									"    return nomeAleatorio;\r",
+									"}\r",
+									"const prefixo = \"Company \";\r",
+									"const sufixo = \" Ltda\";\r",
+									"const tamanhoNomeRandomico = 10; \r",
+									"  // Gerar o nome final com 10 caracteres aleatórios entre 'Company' e 'Ltda'\r",
+									"const nomeEmpresa = prefixo + gerarNomeAleatorio(tamanhoNomeRandomico) + sufixo;\r",
+									"  // Armazenar o nome gerado na variável de ambiente 'companyName'\r",
+									"pm.environment.set(\"companyName\", nomeEmpresa);\r",
+									"\r",
+									"\r",
+									"\r",
+									"// Função para gerar um CNPJ aleatório de 14 dígitos \r",
+									"function gerarCNPJ() {\r",
+									"    let cnpjAleatorio = '';\r",
+									"    // Gera uma sequência de 14 dígitos\r",
+									"    for (let i = 0; i < 14; i++) {\r",
+									"        cnpjAleatorio += Math.floor(Math.random() * 10); // Gera um dígito aleatório de 0 a 9\r",
+									"    }\r",
+									"    return cnpjAleatorio;\r",
+									"}\r",
+									"// Armazenar o CNPJ gerado na variável de ambiente 'companyCNPJ'\r",
+									"pm.environment.set(\"companyCNPJ\", gerarCNPJ());\r",
+									"\r",
+									"\r",
+									"\r",
+									"// Função para gerar um nome de Razão Social aleatório com 10 caracteres, contendo pelo menos uma letra e um número\r",
+									"function generateRazaoSocial(length) {\r",
+									"    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';\r",
+									"    const numbers = '0123456789';\r",
+									"    const chars = letters + numbers;\r",
+									"    // Garante que tenha pelo menos uma letra e um número\r",
+									"    let razaoSocial = '';\r",
+									"    razaoSocial += letters.charAt(Math.floor(Math.random() * letters.length));\r",
+									"    razaoSocial += numbers.charAt(Math.floor(Math.random() * numbers.length));\r",
+									"    // Preenche o restante dos caracteres de forma aleatória\r",
+									"    for (let i = 2; i < length; i++) {\r",
+									"        razaoSocial += chars.charAt(Math.floor(Math.random() * chars.length));\r",
+									"    }\r",
+									"    return razaoSocial;\r",
+									"}\r",
+									"// Defina o comprimento desejado para o campo Razão Social (10 caracteres)\r",
+									"const razaoSocialLength = 10;\r",
+									"// Armazene o valor gerado em uma variável no ambiente do Postman\r",
+									"pm.environment.set(\"razaoSocial\", generateRazaoSocial(razaoSocialLength));\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test (\"Validar Status Code = 400\",() => {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validar Mensagem O campo 'bairro' é obrigatório.\", () => {\r",
+									"    const response = pm.response.json();\r",
+									"    const expectedMessage = `O campo 'bairro' é obrigatório.`;\r",
+									"    pm.expect(response.error[0]).to.eql(expectedMessage);  // Acessa o primeiro item do array\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenAdmin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"corporateName\": \"{{companyName}}\",\r\n  \"registerCompany\": \"{{companyCNPJ}}\",\r\n  \"mail\": \"test@test.com\",\r\n  \"matriz\": \"{{razaoSocial}}\",\r\n  \"responsibleContact\": \"Marcio\",\r\n  \"telephone\": \"99999999999999\",\r\n  \"serviceDescription\": \"Testes123\",\r\n  \"address\": [\r\n    {\r\n      \"zipCode\": \"04777001\",\r\n      \"city\": \"São Paulo\",\r\n      \"state\": \"SP\",\r\n      \"district\": null,\r\n      \"street\": \"Avenida Interlagos\",\r\n      \"number\": \"50\",\r\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\r\n      \"country\": \"Brasil\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL_RonBugado}}/api/company/",
+							"host": [
+								"{{baseURL_RonBugado}}"
+							],
+							"path": [
+								"api",
+								"company",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bairro - Validos (ª', 'º', '‘' e '-')",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Função para gerar um nome aleatório com letras e números\r",
+									"function gerarNomeAleatorio(tamanho) {\r",
+									"    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';\r",
+									"    let nomeAleatorio = '';\r",
+									"    // Gera uma sequência aleatória de 'tamanho' caracteres\r",
+									"    for (let i = 0; i < tamanho; i++) {\r",
+									"        nomeAleatorio += caracteres.charAt(Math.floor(Math.random() * caracteres.length));\r",
+									"    }\r",
+									"    return nomeAleatorio;\r",
+									"}\r",
+									"const prefixo = \"Company \";\r",
+									"const sufixo = \" Ltda\";\r",
+									"const tamanhoNomeRandomico = 10; \r",
+									"  // Gerar o nome final com 10 caracteres aleatórios entre 'Company' e 'Ltda'\r",
+									"const nomeEmpresa = prefixo + gerarNomeAleatorio(tamanhoNomeRandomico) + sufixo;\r",
+									"  // Armazenar o nome gerado na variável de ambiente 'companyName'\r",
+									"pm.environment.set(\"companyName\", nomeEmpresa);\r",
+									"\r",
+									"\r",
+									"\r",
+									"// Função para gerar um CNPJ aleatório de 14 dígitos \r",
+									"function gerarCNPJ() {\r",
+									"    let cnpjAleatorio = '';\r",
+									"    // Gera uma sequência de 14 dígitos\r",
+									"    for (let i = 0; i < 14; i++) {\r",
+									"        cnpjAleatorio += Math.floor(Math.random() * 10); // Gera um dígito aleatório de 0 a 9\r",
+									"    }\r",
+									"    return cnpjAleatorio;\r",
+									"}\r",
+									"// Armazenar o CNPJ gerado na variável de ambiente 'companyCNPJ'\r",
+									"pm.environment.set(\"companyCNPJ\", gerarCNPJ());\r",
+									"\r",
+									"\r",
+									"\r",
+									"// Função para gerar um nome de Razão Social aleatório com 10 caracteres, contendo pelo menos uma letra e um número\r",
+									"function generateRazaoSocial(length) {\r",
+									"    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';\r",
+									"    const numbers = '0123456789';\r",
+									"    const chars = letters + numbers;\r",
+									"    // Garante que tenha pelo menos uma letra e um número\r",
+									"    let razaoSocial = '';\r",
+									"    razaoSocial += letters.charAt(Math.floor(Math.random() * letters.length));\r",
+									"    razaoSocial += numbers.charAt(Math.floor(Math.random() * numbers.length));\r",
+									"    // Preenche o restante dos caracteres de forma aleatória\r",
+									"    for (let i = 2; i < length; i++) {\r",
+									"        razaoSocial += chars.charAt(Math.floor(Math.random() * chars.length));\r",
+									"    }\r",
+									"    return razaoSocial;\r",
+									"}\r",
+									"// Defina o comprimento desejado para o campo Razão Social (10 caracteres)\r",
+									"const razaoSocialLength = 10;\r",
+									"// Armazene o valor gerado em uma variável no ambiente do Postman\r",
+									"pm.environment.set(\"razaoSocial\", generateRazaoSocial(razaoSocialLength));\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test (\"Validar Status Code = 400\",() => {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validar Mensagem O campo 'bairro' só pode conter letras, números e os caracteres especiais 'ª', 'º', '‘' e '-'\", () => {\r",
+									"    const response = pm.response.json();\r",
+									"    const expectedMessage = `O campo 'bairro' só pode conter letras, números e os caracteres especiais 'ª', 'º', '‘' e '-'`;\r",
+									"    pm.expect(response.error[0]).to.eql(expectedMessage);  // Acessa o primeiro item do array\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenAdmin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"corporateName\": \"{{companyName}}\",\r\n  \"registerCompany\": \"{{companyCNPJ}}\",\r\n  \"mail\": \"test@test.com\",\r\n  \"matriz\": \"{{razaoSocial}}\",\r\n  \"responsibleContact\": \"Marcio\",\r\n  \"telephone\": \"99999999999999\",\r\n  \"serviceDescription\": \"Testes123\",\r\n  \"address\": [\r\n    {\r\n      \"zipCode\": \"04777001\",\r\n      \"city\": \"São Paulo\",\r\n      \"state\": \"SP\",\r\n      \"district\": \"ªº‘-\",\r\n      \"street\": \"Avenida Interlagos\",\r\n      \"number\": \"50\",\r\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\r\n      \"country\": \"Brasil\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL_RonBugado}}/api/company/",
+							"host": [
+								"{{baseURL_RonBugado}}"
+							],
+							"path": [
+								"api",
+								"company",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bairro - Validos (Alfanuméricos)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Função para gerar um nome aleatório com letras e números\r",
+									"function gerarNomeAleatorio(tamanho) {\r",
+									"    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';\r",
+									"    let nomeAleatorio = '';\r",
+									"    // Gera uma sequência aleatória de 'tamanho' caracteres\r",
+									"    for (let i = 0; i < tamanho; i++) {\r",
+									"        nomeAleatorio += caracteres.charAt(Math.floor(Math.random() * caracteres.length));\r",
+									"    }\r",
+									"    return nomeAleatorio;\r",
+									"}\r",
+									"const prefixo = \"Company \";\r",
+									"const sufixo = \" Ltda\";\r",
+									"const tamanhoNomeRandomico = 10; \r",
+									"  // Gerar o nome final com 10 caracteres aleatórios entre 'Company' e 'Ltda'\r",
+									"const nomeEmpresa = prefixo + gerarNomeAleatorio(tamanhoNomeRandomico) + sufixo;\r",
+									"  // Armazenar o nome gerado na variável de ambiente 'companyName'\r",
+									"pm.environment.set(\"companyName\", nomeEmpresa);\r",
+									"\r",
+									"\r",
+									"\r",
+									"// Função para gerar um CNPJ aleatório de 14 dígitos \r",
+									"function gerarCNPJ() {\r",
+									"    let cnpjAleatorio = '';\r",
+									"    // Gera uma sequência de 14 dígitos\r",
+									"    for (let i = 0; i < 14; i++) {\r",
+									"        cnpjAleatorio += Math.floor(Math.random() * 10); // Gera um dígito aleatório de 0 a 9\r",
+									"    }\r",
+									"    return cnpjAleatorio;\r",
+									"}\r",
+									"// Armazenar o CNPJ gerado na variável de ambiente 'companyCNPJ'\r",
+									"pm.environment.set(\"companyCNPJ\", gerarCNPJ());\r",
+									"\r",
+									"\r",
+									"\r",
+									"// Função para gerar um nome de Razão Social aleatório com 10 caracteres, contendo pelo menos uma letra e um número\r",
+									"function generateRazaoSocial(length) {\r",
+									"    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';\r",
+									"    const numbers = '0123456789';\r",
+									"    const chars = letters + numbers;\r",
+									"    // Garante que tenha pelo menos uma letra e um número\r",
+									"    let razaoSocial = '';\r",
+									"    razaoSocial += letters.charAt(Math.floor(Math.random() * letters.length));\r",
+									"    razaoSocial += numbers.charAt(Math.floor(Math.random() * numbers.length));\r",
+									"    // Preenche o restante dos caracteres de forma aleatória\r",
+									"    for (let i = 2; i < length; i++) {\r",
+									"        razaoSocial += chars.charAt(Math.floor(Math.random() * chars.length));\r",
+									"    }\r",
+									"    return razaoSocial;\r",
+									"}\r",
+									"// Defina o comprimento desejado para o campo Razão Social (10 caracteres)\r",
+									"const razaoSocialLength = 10;\r",
+									"// Armazene o valor gerado em uma variável no ambiente do Postman\r",
+									"pm.environment.set(\"razaoSocial\", generateRazaoSocial(razaoSocialLength));\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test (\"Validar Status Code = 201\",() => {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validar Mensagem de Cadastro de Empresao com Sucesso\", () => {\r",
+									"    const expectedMessage = `Olá a companhia ${pm.environment.get(\"companyName\")} foi cadastrada com sucesso.`;\r",
+									"    pm.expect(pm.response.json().msg).to.eql(expectedMessage);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenAdmin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"corporateName\": \"{{companyName}}\",\r\n  \"registerCompany\": \"{{companyCNPJ}}\",\r\n  \"mail\": \"test@test.com\",\r\n  \"matriz\": \"{{razaoSocial}}\",\r\n  \"responsibleContact\": \"Marcio\",\r\n  \"telephone\": \"99999999999999\",\r\n  \"serviceDescription\": \"Testes123\",\r\n  \"address\": [\r\n    {\r\n      \"zipCode\": \"04777001\",\r\n      \"city\": \"São Paulo\",\r\n      \"state\": \"SP\",\r\n      \"district\": \"AbCdEfG123456\",\r\n      \"street\": \"Avenida Interlagos\",\r\n      \"number\": \"50\",\r\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\r\n      \"country\": \"Brasil\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL_RonBugado}}/api/company/",
+							"host": [
+								"{{baseURL_RonBugado}}"
+							],
+							"path": [
+								"api",
+								"company",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bairro - Inválidos (Especiais)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Função para gerar um nome aleatório com letras e números\r",
+									"function gerarNomeAleatorio(tamanho) {\r",
+									"    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';\r",
+									"    let nomeAleatorio = '';\r",
+									"    // Gera uma sequência aleatória de 'tamanho' caracteres\r",
+									"    for (let i = 0; i < tamanho; i++) {\r",
+									"        nomeAleatorio += caracteres.charAt(Math.floor(Math.random() * caracteres.length));\r",
+									"    }\r",
+									"    return nomeAleatorio;\r",
+									"}\r",
+									"const prefixo = \"Company \";\r",
+									"const sufixo = \" Ltda\";\r",
+									"const tamanhoNomeRandomico = 10; \r",
+									"  // Gerar o nome final com 10 caracteres aleatórios entre 'Company' e 'Ltda'\r",
+									"const nomeEmpresa = prefixo + gerarNomeAleatorio(tamanhoNomeRandomico) + sufixo;\r",
+									"  // Armazenar o nome gerado na variável de ambiente 'companyName'\r",
+									"pm.environment.set(\"companyName\", nomeEmpresa);\r",
+									"\r",
+									"\r",
+									"\r",
+									"// Função para gerar um CNPJ aleatório de 14 dígitos \r",
+									"function gerarCNPJ() {\r",
+									"    let cnpjAleatorio = '';\r",
+									"    // Gera uma sequência de 14 dígitos\r",
+									"    for (let i = 0; i < 14; i++) {\r",
+									"        cnpjAleatorio += Math.floor(Math.random() * 10); // Gera um dígito aleatório de 0 a 9\r",
+									"    }\r",
+									"    return cnpjAleatorio;\r",
+									"}\r",
+									"// Armazenar o CNPJ gerado na variável de ambiente 'companyCNPJ'\r",
+									"pm.environment.set(\"companyCNPJ\", gerarCNPJ());\r",
+									"\r",
+									"\r",
+									"\r",
+									"// Função para gerar um nome de Razão Social aleatório com 10 caracteres, contendo pelo menos uma letra e um número\r",
+									"function generateRazaoSocial(length) {\r",
+									"    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';\r",
+									"    const numbers = '0123456789';\r",
+									"    const chars = letters + numbers;\r",
+									"    // Garante que tenha pelo menos uma letra e um número\r",
+									"    let razaoSocial = '';\r",
+									"    razaoSocial += letters.charAt(Math.floor(Math.random() * letters.length));\r",
+									"    razaoSocial += numbers.charAt(Math.floor(Math.random() * numbers.length));\r",
+									"    // Preenche o restante dos caracteres de forma aleatória\r",
+									"    for (let i = 2; i < length; i++) {\r",
+									"        razaoSocial += chars.charAt(Math.floor(Math.random() * chars.length));\r",
+									"    }\r",
+									"    return razaoSocial;\r",
+									"}\r",
+									"// Defina o comprimento desejado para o campo Razão Social (10 caracteres)\r",
+									"const razaoSocialLength = 10;\r",
+									"// Armazene o valor gerado em uma variável no ambiente do Postman\r",
+									"pm.environment.set(\"razaoSocial\", generateRazaoSocial(razaoSocialLength));\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test (\"Validar Status Code = 400\",() => {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validar Mensagem O campo 'bairro' só pode conter letras, números e os caracteres especiais 'ª', 'º', '‘' e '-'\", () => {\r",
+									"    const response = pm.response.json();\r",
+									"    const expectedMessage = `O campo 'bairro' só pode conter letras, números e os caracteres especiais 'ª', 'º', '‘' e '-'`;\r",
+									"    pm.expect(response.error[0]).to.eql(expectedMessage);  // Acessa o primeiro item do array\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenAdmin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"corporateName\": \"{{companyName}}\",\r\n  \"registerCompany\": \"{{companyCNPJ}}\",\r\n  \"mail\": \"test@test.com\",\r\n  \"matriz\": \"{{razaoSocial}}\",\r\n  \"responsibleContact\": \"Marcio\",\r\n  \"telephone\": \"99999999999999\",\r\n  \"serviceDescription\": \"Testes123\",\r\n  \"address\": [\r\n    {\r\n      \"zipCode\": \"04777001\",\r\n      \"city\": \"São Paulo\",\r\n      \"state\": \"SP\",\r\n      \"district\": \"%$#*&(\",\r\n      \"street\": \"Avenida Interlagos\",\r\n      \"number\": \"50\",\r\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\r\n      \"country\": \"Brasil\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL_RonBugado}}/api/company/",
+							"host": [
+								"{{baseURL_RonBugado}}"
+							],
+							"path": [
+								"api",
+								"company",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bairro - MENOS 50 caracteres",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Função para gerar um nome aleatório com letras e números\r",
+									"function gerarNomeAleatorio(tamanho) {\r",
+									"    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';\r",
+									"    let nomeAleatorio = '';\r",
+									"    // Gera uma sequência aleatória de 'tamanho' caracteres\r",
+									"    for (let i = 0; i < tamanho; i++) {\r",
+									"        nomeAleatorio += caracteres.charAt(Math.floor(Math.random() * caracteres.length));\r",
+									"    }\r",
+									"    return nomeAleatorio;\r",
+									"}\r",
+									"const prefixo = \"Company \";\r",
+									"const sufixo = \" Ltda\";\r",
+									"const tamanhoNomeRandomico = 10; \r",
+									"  // Gerar o nome final com 10 caracteres aleatórios entre 'Company' e 'Ltda'\r",
+									"const nomeEmpresa = prefixo + gerarNomeAleatorio(tamanhoNomeRandomico) + sufixo;\r",
+									"  // Armazenar o nome gerado na variável de ambiente 'companyName'\r",
+									"pm.environment.set(\"companyName\", nomeEmpresa);\r",
+									"\r",
+									"\r",
+									"\r",
+									"// Função para gerar um CNPJ aleatório de 14 dígitos \r",
+									"function gerarCNPJ() {\r",
+									"    let cnpjAleatorio = '';\r",
+									"    // Gera uma sequência de 14 dígitos\r",
+									"    for (let i = 0; i < 14; i++) {\r",
+									"        cnpjAleatorio += Math.floor(Math.random() * 10); // Gera um dígito aleatório de 0 a 9\r",
+									"    }\r",
+									"    return cnpjAleatorio;\r",
+									"}\r",
+									"// Armazenar o CNPJ gerado na variável de ambiente 'companyCNPJ'\r",
+									"pm.environment.set(\"companyCNPJ\", gerarCNPJ());\r",
+									"\r",
+									"\r",
+									"\r",
+									"// Função para gerar um nome de Razão Social aleatório com 10 caracteres, contendo pelo menos uma letra e um número\r",
+									"function generateRazaoSocial(length) {\r",
+									"    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';\r",
+									"    const numbers = '0123456789';\r",
+									"    const chars = letters + numbers;\r",
+									"    // Garante que tenha pelo menos uma letra e um número\r",
+									"    let razaoSocial = '';\r",
+									"    razaoSocial += letters.charAt(Math.floor(Math.random() * letters.length));\r",
+									"    razaoSocial += numbers.charAt(Math.floor(Math.random() * numbers.length));\r",
+									"    // Preenche o restante dos caracteres de forma aleatória\r",
+									"    for (let i = 2; i < length; i++) {\r",
+									"        razaoSocial += chars.charAt(Math.floor(Math.random() * chars.length));\r",
+									"    }\r",
+									"    return razaoSocial;\r",
+									"}\r",
+									"// Defina o comprimento desejado para o campo Razão Social (10 caracteres)\r",
+									"const razaoSocialLength = 10;\r",
+									"// Armazene o valor gerado em uma variável no ambiente do Postman\r",
+									"pm.environment.set(\"razaoSocial\", generateRazaoSocial(razaoSocialLength));\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test (\"Validar Status Code = 201\",() => {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validar Mensagem de Cadastro de Empresao com Sucesso\", () => {\r",
+									"    const expectedMessage = `Olá a companhia ${pm.environment.get(\"companyName\")} foi cadastrada com sucesso.`;\r",
+									"    pm.expect(pm.response.json().msg).to.eql(expectedMessage);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenAdmin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"corporateName\": \"{{companyName}}\",\r\n  \"registerCompany\": \"{{companyCNPJ}}\",\r\n  \"mail\": \"test@test.com\",\r\n  \"matriz\": \"{{razaoSocial}}\",\r\n  \"responsibleContact\": \"Marcio\",\r\n  \"telephone\": \"99999999999999\",\r\n  \"serviceDescription\": \"Testes123\",\r\n  \"address\": [\r\n    {\r\n      \"zipCode\": \"04777001\",\r\n      \"city\": \"São Paulo\",\r\n      \"state\": \"SP\",\r\n      \"district\": \"A1b2C3d4E5f6G7h8I9j0KlmNopQrStUvWxYzJqO1234567890\",\r\n      \"street\": \"Avenida Interlagos\",\r\n      \"number\": \"50\",\r\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\r\n      \"country\": \"Brasil\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL_RonBugado}}/api/company/",
+							"host": [
+								"{{baseURL_RonBugado}}"
+							],
+							"path": [
+								"api",
+								"company",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bairro - MAIS 50 caracteres",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Função para gerar um nome aleatório com letras e números\r",
+									"function gerarNomeAleatorio(tamanho) {\r",
+									"    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';\r",
+									"    let nomeAleatorio = '';\r",
+									"    // Gera uma sequência aleatória de 'tamanho' caracteres\r",
+									"    for (let i = 0; i < tamanho; i++) {\r",
+									"        nomeAleatorio += caracteres.charAt(Math.floor(Math.random() * caracteres.length));\r",
+									"    }\r",
+									"    return nomeAleatorio;\r",
+									"}\r",
+									"const prefixo = \"Company \";\r",
+									"const sufixo = \" Ltda\";\r",
+									"const tamanhoNomeRandomico = 10; \r",
+									"  // Gerar o nome final com 10 caracteres aleatórios entre 'Company' e 'Ltda'\r",
+									"const nomeEmpresa = prefixo + gerarNomeAleatorio(tamanhoNomeRandomico) + sufixo;\r",
+									"  // Armazenar o nome gerado na variável de ambiente 'companyName'\r",
+									"pm.environment.set(\"companyName\", nomeEmpresa);\r",
+									"\r",
+									"\r",
+									"\r",
+									"// Função para gerar um CNPJ aleatório de 14 dígitos \r",
+									"function gerarCNPJ() {\r",
+									"    let cnpjAleatorio = '';\r",
+									"    // Gera uma sequência de 14 dígitos\r",
+									"    for (let i = 0; i < 14; i++) {\r",
+									"        cnpjAleatorio += Math.floor(Math.random() * 10); // Gera um dígito aleatório de 0 a 9\r",
+									"    }\r",
+									"    return cnpjAleatorio;\r",
+									"}\r",
+									"// Armazenar o CNPJ gerado na variável de ambiente 'companyCNPJ'\r",
+									"pm.environment.set(\"companyCNPJ\", gerarCNPJ());\r",
+									"\r",
+									"\r",
+									"\r",
+									"// Função para gerar um nome de Razão Social aleatório com 10 caracteres, contendo pelo menos uma letra e um número\r",
+									"function generateRazaoSocial(length) {\r",
+									"    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';\r",
+									"    const numbers = '0123456789';\r",
+									"    const chars = letters + numbers;\r",
+									"    // Garante que tenha pelo menos uma letra e um número\r",
+									"    let razaoSocial = '';\r",
+									"    razaoSocial += letters.charAt(Math.floor(Math.random() * letters.length));\r",
+									"    razaoSocial += numbers.charAt(Math.floor(Math.random() * numbers.length));\r",
+									"    // Preenche o restante dos caracteres de forma aleatória\r",
+									"    for (let i = 2; i < length; i++) {\r",
+									"        razaoSocial += chars.charAt(Math.floor(Math.random() * chars.length));\r",
+									"    }\r",
+									"    return razaoSocial;\r",
+									"}\r",
+									"// Defina o comprimento desejado para o campo Razão Social (10 caracteres)\r",
+									"const razaoSocialLength = 10;\r",
+									"// Armazene o valor gerado em uma variável no ambiente do Postman\r",
+									"pm.environment.set(\"razaoSocial\", generateRazaoSocial(razaoSocialLength));\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test (\"Validar Status Code = 400\",() => {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"O campo 'bairro' deve possuir no máximo 50 caracteres.\", () => {\r",
+									"    const response = pm.response.json();\r",
+									"    const expectedMessage = `O campo 'bairro' deve possuir no máximo 50 caracteres.`;\r",
+									"    pm.expect(response.error[0]).to.eql(expectedMessage);  // Acessa o primeiro item do array\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenAdmin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"corporateName\": \"{{companyName}}\",\r\n  \"registerCompany\": \"{{companyCNPJ}}\",\r\n  \"mail\": \"test@test.com\",\r\n  \"matriz\": \"{{razaoSocial}}\",\r\n  \"responsibleContact\": \"Marcio\",\r\n  \"telephone\": \"99999999999999\",\r\n  \"serviceDescription\": \"Testes123\",\r\n  \"address\": [\r\n    {\r\n      \"zipCode\": \"04777001\",\r\n      \"city\": \"São Paulo\",\r\n      \"state\": \"SP\",\r\n      \"district\": \"A1b2C3d4E5f6G7h8I9j0KlmNopQrStUvWxYzJqO123456789012\",\r\n      \"street\": \"Avenida Interlagos\",\r\n      \"number\": \"50\",\r\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\r\n      \"country\": \"Brasil\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL_RonBugado}}/api/company/",
+							"host": [
+								"{{baseURL_RonBugado}}"
+							],
+							"path": [
+								"api",
+								"company",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CEP - VAZIO",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Função para gerar um nome aleatório com letras e números\r",
+									"function gerarNomeAleatorio(tamanho) {\r",
+									"    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';\r",
+									"    let nomeAleatorio = '';\r",
+									"    // Gera uma sequência aleatória de 'tamanho' caracteres\r",
+									"    for (let i = 0; i < tamanho; i++) {\r",
+									"        nomeAleatorio += caracteres.charAt(Math.floor(Math.random() * caracteres.length));\r",
+									"    }\r",
+									"    return nomeAleatorio;\r",
+									"}\r",
+									"const prefixo = \"Company \";\r",
+									"const sufixo = \" Ltda\";\r",
+									"const tamanhoNomeRandomico = 10; \r",
+									"  // Gerar o nome final com 10 caracteres aleatórios entre 'Company' e 'Ltda'\r",
+									"const nomeEmpresa = prefixo + gerarNomeAleatorio(tamanhoNomeRandomico) + sufixo;\r",
+									"  // Armazenar o nome gerado na variável de ambiente 'companyName'\r",
+									"pm.environment.set(\"companyName\", nomeEmpresa);\r",
+									"\r",
+									"\r",
+									"\r",
+									"// Função para gerar um CNPJ aleatório de 14 dígitos \r",
+									"function gerarCNPJ() {\r",
+									"    let cnpjAleatorio = '';\r",
+									"    // Gera uma sequência de 14 dígitos\r",
+									"    for (let i = 0; i < 14; i++) {\r",
+									"        cnpjAleatorio += Math.floor(Math.random() * 10); // Gera um dígito aleatório de 0 a 9\r",
+									"    }\r",
+									"    return cnpjAleatorio;\r",
+									"}\r",
+									"// Armazenar o CNPJ gerado na variável de ambiente 'companyCNPJ'\r",
+									"pm.environment.set(\"companyCNPJ\", gerarCNPJ());\r",
+									"\r",
+									"\r",
+									"\r",
+									"// Função para gerar um nome de Razão Social aleatório com 10 caracteres, contendo pelo menos uma letra e um número\r",
+									"function generateRazaoSocial(length) {\r",
+									"    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';\r",
+									"    const numbers = '0123456789';\r",
+									"    const chars = letters + numbers;\r",
+									"    // Garante que tenha pelo menos uma letra e um número\r",
+									"    let razaoSocial = '';\r",
+									"    razaoSocial += letters.charAt(Math.floor(Math.random() * letters.length));\r",
+									"    razaoSocial += numbers.charAt(Math.floor(Math.random() * numbers.length));\r",
+									"    // Preenche o restante dos caracteres de forma aleatória\r",
+									"    for (let i = 2; i < length; i++) {\r",
+									"        razaoSocial += chars.charAt(Math.floor(Math.random() * chars.length));\r",
+									"    }\r",
+									"    return razaoSocial;\r",
+									"}\r",
+									"// Defina o comprimento desejado para o campo Razão Social (10 caracteres)\r",
+									"const razaoSocialLength = 10;\r",
+									"// Armazene o valor gerado em uma variável no ambiente do Postman\r",
+									"pm.environment.set(\"razaoSocial\", generateRazaoSocial(razaoSocialLength));\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test (\"Validar Status Code = 400\",() => {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"O campo 'CEP' é obrigatório.\", () => {\r",
+									"    const response = pm.response.json();\r",
+									"    const expectedMessage = `O campo 'CEP' é obrigatório.`;\r",
+									"    pm.expect(response.error[0]).to.eql(expectedMessage);  // Acessa o primeiro item do array\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenAdmin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"corporateName\": \"{{companyName}}\",\r\n  \"registerCompany\": \"{{companyCNPJ}}\",\r\n  \"mail\": \"test@test.com\",\r\n  \"matriz\": \"{{razaoSocial}}\",\r\n  \"responsibleContact\": \"Marcio\",\r\n  \"telephone\": \"99999999999999\",\r\n  \"serviceDescription\": \"Testes123\",\r\n  \"address\": [\r\n    {\r\n      \"zipCode\": \"\",\r\n      \"city\": \"São Paulo\",\r\n      \"state\": \"SP\",\r\n      \"district\": \"AbCdEfG123456\",\r\n      \"street\": \"Avenida Interlagos\",\r\n      \"number\": \"50\",\r\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\r\n      \"country\": \"Brasil\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL_RonBugado}}/api/company/",
+							"host": [
+								"{{baseURL_RonBugado}}"
+							],
+							"path": [
+								"api",
+								"company",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CEP - NULO",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Função para gerar um nome aleatório com letras e números\r",
+									"function gerarNomeAleatorio(tamanho) {\r",
+									"    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';\r",
+									"    let nomeAleatorio = '';\r",
+									"    // Gera uma sequência aleatória de 'tamanho' caracteres\r",
+									"    for (let i = 0; i < tamanho; i++) {\r",
+									"        nomeAleatorio += caracteres.charAt(Math.floor(Math.random() * caracteres.length));\r",
+									"    }\r",
+									"    return nomeAleatorio;\r",
+									"}\r",
+									"const prefixo = \"Company \";\r",
+									"const sufixo = \" Ltda\";\r",
+									"const tamanhoNomeRandomico = 10; \r",
+									"  // Gerar o nome final com 10 caracteres aleatórios entre 'Company' e 'Ltda'\r",
+									"const nomeEmpresa = prefixo + gerarNomeAleatorio(tamanhoNomeRandomico) + sufixo;\r",
+									"  // Armazenar o nome gerado na variável de ambiente 'companyName'\r",
+									"pm.environment.set(\"companyName\", nomeEmpresa);\r",
+									"\r",
+									"\r",
+									"\r",
+									"// Função para gerar um CNPJ aleatório de 14 dígitos \r",
+									"function gerarCNPJ() {\r",
+									"    let cnpjAleatorio = '';\r",
+									"    // Gera uma sequência de 14 dígitos\r",
+									"    for (let i = 0; i < 14; i++) {\r",
+									"        cnpjAleatorio += Math.floor(Math.random() * 10); // Gera um dígito aleatório de 0 a 9\r",
+									"    }\r",
+									"    return cnpjAleatorio;\r",
+									"}\r",
+									"// Armazenar o CNPJ gerado na variável de ambiente 'companyCNPJ'\r",
+									"pm.environment.set(\"companyCNPJ\", gerarCNPJ());\r",
+									"\r",
+									"\r",
+									"\r",
+									"// Função para gerar um nome de Razão Social aleatório com 10 caracteres, contendo pelo menos uma letra e um número\r",
+									"function generateRazaoSocial(length) {\r",
+									"    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';\r",
+									"    const numbers = '0123456789';\r",
+									"    const chars = letters + numbers;\r",
+									"    // Garante que tenha pelo menos uma letra e um número\r",
+									"    let razaoSocial = '';\r",
+									"    razaoSocial += letters.charAt(Math.floor(Math.random() * letters.length));\r",
+									"    razaoSocial += numbers.charAt(Math.floor(Math.random() * numbers.length));\r",
+									"    // Preenche o restante dos caracteres de forma aleatória\r",
+									"    for (let i = 2; i < length; i++) {\r",
+									"        razaoSocial += chars.charAt(Math.floor(Math.random() * chars.length));\r",
+									"    }\r",
+									"    return razaoSocial;\r",
+									"}\r",
+									"// Defina o comprimento desejado para o campo Razão Social (10 caracteres)\r",
+									"const razaoSocialLength = 10;\r",
+									"// Armazene o valor gerado em uma variável no ambiente do Postman\r",
+									"pm.environment.set(\"razaoSocial\", generateRazaoSocial(razaoSocialLength));\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test (\"Validar Status Code = 400\",() => {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"O campo 'CEP' é obrigatório.\", () => {\r",
+									"    const response = pm.response.json();\r",
+									"    const expectedMessage = `O campo 'CEP' é obrigatório.`;\r",
+									"    pm.expect(response.error[0]).to.eql(expectedMessage);  // Acessa o primeiro item do array\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenAdmin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"corporateName\": \"{{companyName}}\",\r\n  \"registerCompany\": \"{{companyCNPJ}}\",\r\n  \"mail\": \"test@test.com\",\r\n  \"matriz\": \"{{razaoSocial}}\",\r\n  \"responsibleContact\": \"Marcio\",\r\n  \"telephone\": \"99999999999999\",\r\n  \"serviceDescription\": \"Testes123\",\r\n  \"address\": [\r\n    {\r\n      \"zipCode\": null,\r\n      \"city\": \"São Paulo\",\r\n      \"state\": \"SP\",\r\n      \"district\": \"AbCdEfG123456\",\r\n      \"street\": \"Avenida Interlagos\",\r\n      \"number\": \"50\",\r\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\r\n      \"country\": \"Brasil\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL_RonBugado}}/api/company/",
+							"host": [
+								"{{baseURL_RonBugado}}"
+							],
+							"path": [
+								"api",
+								"company",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CEP - Validos (Números)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Função para gerar um nome aleatório com letras e números\r",
+									"function gerarNomeAleatorio(tamanho) {\r",
+									"    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';\r",
+									"    let nomeAleatorio = '';\r",
+									"    // Gera uma sequência aleatória de 'tamanho' caracteres\r",
+									"    for (let i = 0; i < tamanho; i++) {\r",
+									"        nomeAleatorio += caracteres.charAt(Math.floor(Math.random() * caracteres.length));\r",
+									"    }\r",
+									"    return nomeAleatorio;\r",
+									"}\r",
+									"const prefixo = \"Company \";\r",
+									"const sufixo = \" Ltda\";\r",
+									"const tamanhoNomeRandomico = 10; \r",
+									"  // Gerar o nome final com 10 caracteres aleatórios entre 'Company' e 'Ltda'\r",
+									"const nomeEmpresa = prefixo + gerarNomeAleatorio(tamanhoNomeRandomico) + sufixo;\r",
+									"  // Armazenar o nome gerado na variável de ambiente 'companyName'\r",
+									"pm.environment.set(\"companyName\", nomeEmpresa);\r",
+									"\r",
+									"\r",
+									"\r",
+									"// Função para gerar um CNPJ aleatório de 14 dígitos \r",
+									"function gerarCNPJ() {\r",
+									"    let cnpjAleatorio = '';\r",
+									"    // Gera uma sequência de 14 dígitos\r",
+									"    for (let i = 0; i < 14; i++) {\r",
+									"        cnpjAleatorio += Math.floor(Math.random() * 10); // Gera um dígito aleatório de 0 a 9\r",
+									"    }\r",
+									"    return cnpjAleatorio;\r",
+									"}\r",
+									"// Armazenar o CNPJ gerado na variável de ambiente 'companyCNPJ'\r",
+									"pm.environment.set(\"companyCNPJ\", gerarCNPJ());\r",
+									"\r",
+									"\r",
+									"\r",
+									"// Função para gerar um nome de Razão Social aleatório com 10 caracteres, contendo pelo menos uma letra e um número\r",
+									"function generateRazaoSocial(length) {\r",
+									"    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';\r",
+									"    const numbers = '0123456789';\r",
+									"    const chars = letters + numbers;\r",
+									"    // Garante que tenha pelo menos uma letra e um número\r",
+									"    let razaoSocial = '';\r",
+									"    razaoSocial += letters.charAt(Math.floor(Math.random() * letters.length));\r",
+									"    razaoSocial += numbers.charAt(Math.floor(Math.random() * numbers.length));\r",
+									"    // Preenche o restante dos caracteres de forma aleatória\r",
+									"    for (let i = 2; i < length; i++) {\r",
+									"        razaoSocial += chars.charAt(Math.floor(Math.random() * chars.length));\r",
+									"    }\r",
+									"    return razaoSocial;\r",
+									"}\r",
+									"// Defina o comprimento desejado para o campo Razão Social (10 caracteres)\r",
+									"const razaoSocialLength = 10;\r",
+									"// Armazene o valor gerado em uma variável no ambiente do Postman\r",
+									"pm.environment.set(\"razaoSocial\", generateRazaoSocial(razaoSocialLength));\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test (\"Validar Status Code = 201\",() => {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validar Mensagem de Cadastro de Empresao com Sucesso\", () => {\r",
+									"    const expectedMessage = `Olá a companhia ${pm.environment.get(\"companyName\")} foi cadastrada com sucesso.`;\r",
+									"    pm.expect(pm.response.json().msg).to.eql(expectedMessage);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenAdmin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"corporateName\": \"{{companyName}}\",\r\n  \"registerCompany\": \"{{companyCNPJ}}\",\r\n  \"mail\": \"test@test.com\",\r\n  \"matriz\": \"{{razaoSocial}}\",\r\n  \"responsibleContact\": \"Marcio\",\r\n  \"telephone\": \"99999999999999\",\r\n  \"serviceDescription\": \"Testes123\",\r\n  \"address\": [\r\n    {\r\n      \"zipCode\": \"04777001\",\r\n      \"city\": \"São Paulo\",\r\n      \"state\": \"SP\",\r\n      \"district\": \"AbCdEfG123456\",\r\n      \"street\": \"Avenida Interlagos\",\r\n      \"number\": \"50\",\r\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\r\n      \"country\": \"Brasil\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL_RonBugado}}/api/company/",
+							"host": [
+								"{{baseURL_RonBugado}}"
+							],
+							"path": [
+								"api",
+								"company",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CEP - Invalidos (Letras)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Função para gerar um nome aleatório com letras e números\r",
+									"function gerarNomeAleatorio(tamanho) {\r",
+									"    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';\r",
+									"    let nomeAleatorio = '';\r",
+									"    // Gera uma sequência aleatória de 'tamanho' caracteres\r",
+									"    for (let i = 0; i < tamanho; i++) {\r",
+									"        nomeAleatorio += caracteres.charAt(Math.floor(Math.random() * caracteres.length));\r",
+									"    }\r",
+									"    return nomeAleatorio;\r",
+									"}\r",
+									"const prefixo = \"Company \";\r",
+									"const sufixo = \" Ltda\";\r",
+									"const tamanhoNomeRandomico = 10; \r",
+									"  // Gerar o nome final com 10 caracteres aleatórios entre 'Company' e 'Ltda'\r",
+									"const nomeEmpresa = prefixo + gerarNomeAleatorio(tamanhoNomeRandomico) + sufixo;\r",
+									"  // Armazenar o nome gerado na variável de ambiente 'companyName'\r",
+									"pm.environment.set(\"companyName\", nomeEmpresa);\r",
+									"\r",
+									"\r",
+									"\r",
+									"// Função para gerar um CNPJ aleatório de 14 dígitos \r",
+									"function gerarCNPJ() {\r",
+									"    let cnpjAleatorio = '';\r",
+									"    // Gera uma sequência de 14 dígitos\r",
+									"    for (let i = 0; i < 14; i++) {\r",
+									"        cnpjAleatorio += Math.floor(Math.random() * 10); // Gera um dígito aleatório de 0 a 9\r",
+									"    }\r",
+									"    return cnpjAleatorio;\r",
+									"}\r",
+									"// Armazenar o CNPJ gerado na variável de ambiente 'companyCNPJ'\r",
+									"pm.environment.set(\"companyCNPJ\", gerarCNPJ());\r",
+									"\r",
+									"\r",
+									"\r",
+									"// Função para gerar um nome de Razão Social aleatório com 10 caracteres, contendo pelo menos uma letra e um número\r",
+									"function generateRazaoSocial(length) {\r",
+									"    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';\r",
+									"    const numbers = '0123456789';\r",
+									"    const chars = letters + numbers;\r",
+									"    // Garante que tenha pelo menos uma letra e um número\r",
+									"    let razaoSocial = '';\r",
+									"    razaoSocial += letters.charAt(Math.floor(Math.random() * letters.length));\r",
+									"    razaoSocial += numbers.charAt(Math.floor(Math.random() * numbers.length));\r",
+									"    // Preenche o restante dos caracteres de forma aleatória\r",
+									"    for (let i = 2; i < length; i++) {\r",
+									"        razaoSocial += chars.charAt(Math.floor(Math.random() * chars.length));\r",
+									"    }\r",
+									"    return razaoSocial;\r",
+									"}\r",
+									"// Defina o comprimento desejado para o campo Razão Social (10 caracteres)\r",
+									"const razaoSocialLength = 10;\r",
+									"// Armazene o valor gerado em uma variável no ambiente do Postman\r",
+									"pm.environment.set(\"razaoSocial\", generateRazaoSocial(razaoSocialLength));\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test (\"Validar Status Code = 400\",() => {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"O campo 'CEP' só pode conter números\", () => {\r",
+									"    const response = pm.response.json();\r",
+									"    const expectedMessage = `O campo 'CEP' só pode conter números`;\r",
+									"    pm.expect(response.error[0]).to.eql(expectedMessage);  // Acessa o primeiro item do array\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenAdmin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"corporateName\": \"{{companyName}}\",\r\n  \"registerCompany\": \"{{companyCNPJ}}\",\r\n  \"mail\": \"test@test.com\",\r\n  \"matriz\": \"{{razaoSocial}}\",\r\n  \"responsibleContact\": \"Marcio\",\r\n  \"telephone\": \"99999999999999\",\r\n  \"serviceDescription\": \"Testes123\",\r\n  \"address\": [\r\n    {\r\n      \"zipCode\": \"hdgFjDtG\",\r\n      \"city\": \"São Paulo\",\r\n      \"state\": \"SP\",\r\n      \"district\": \"AbCdEfG123456\",\r\n      \"street\": \"Avenida Interlagos\",\r\n      \"number\": \"50\",\r\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\r\n      \"country\": \"Brasil\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL_RonBugado}}/api/company/",
+							"host": [
+								"{{baseURL_RonBugado}}"
+							],
+							"path": [
+								"api",
+								"company",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CEP - Invalidos (Especiais)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// Função para gerar um nome aleatório com letras e números\r",
+									"function gerarNomeAleatorio(tamanho) {\r",
+									"    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';\r",
+									"    let nomeAleatorio = '';\r",
+									"    // Gera uma sequência aleatória de 'tamanho' caracteres\r",
+									"    for (let i = 0; i < tamanho; i++) {\r",
+									"        nomeAleatorio += caracteres.charAt(Math.floor(Math.random() * caracteres.length));\r",
+									"    }\r",
+									"    return nomeAleatorio;\r",
+									"}\r",
+									"const prefixo = \"Company \";\r",
+									"const sufixo = \" Ltda\";\r",
+									"const tamanhoNomeRandomico = 10; \r",
+									"  // Gerar o nome final com 10 caracteres aleatórios entre 'Company' e 'Ltda'\r",
+									"const nomeEmpresa = prefixo + gerarNomeAleatorio(tamanhoNomeRandomico) + sufixo;\r",
+									"  // Armazenar o nome gerado na variável de ambiente 'companyName'\r",
+									"pm.environment.set(\"companyName\", nomeEmpresa);\r",
+									"\r",
+									"\r",
+									"\r",
+									"// Função para gerar um CNPJ aleatório de 14 dígitos \r",
+									"function gerarCNPJ() {\r",
+									"    let cnpjAleatorio = '';\r",
+									"    // Gera uma sequência de 14 dígitos\r",
+									"    for (let i = 0; i < 14; i++) {\r",
+									"        cnpjAleatorio += Math.floor(Math.random() * 10); // Gera um dígito aleatório de 0 a 9\r",
+									"    }\r",
+									"    return cnpjAleatorio;\r",
+									"}\r",
+									"// Armazenar o CNPJ gerado na variável de ambiente 'companyCNPJ'\r",
+									"pm.environment.set(\"companyCNPJ\", gerarCNPJ());\r",
+									"\r",
+									"\r",
+									"\r",
+									"// Função para gerar um nome de Razão Social aleatório com 10 caracteres, contendo pelo menos uma letra e um número\r",
+									"function generateRazaoSocial(length) {\r",
+									"    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';\r",
+									"    const numbers = '0123456789';\r",
+									"    const chars = letters + numbers;\r",
+									"    // Garante que tenha pelo menos uma letra e um número\r",
+									"    let razaoSocial = '';\r",
+									"    razaoSocial += letters.charAt(Math.floor(Math.random() * letters.length));\r",
+									"    razaoSocial += numbers.charAt(Math.floor(Math.random() * numbers.length));\r",
+									"    // Preenche o restante dos caracteres de forma aleatória\r",
+									"    for (let i = 2; i < length; i++) {\r",
+									"        razaoSocial += chars.charAt(Math.floor(Math.random() * chars.length));\r",
+									"    }\r",
+									"    return razaoSocial;\r",
+									"}\r",
+									"// Defina o comprimento desejado para o campo Razão Social (10 caracteres)\r",
+									"const razaoSocialLength = 10;\r",
+									"// Armazene o valor gerado em uma variável no ambiente do Postman\r",
+									"pm.environment.set(\"razaoSocial\", generateRazaoSocial(razaoSocialLength));\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test (\"Validar Status Code = 400\",() => {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"O campo 'CEP' só pode conter números\", () => {\r",
+									"    const response = pm.response.json();\r",
+									"    const expectedMessage = `O campo 'CEP' só pode conter números`;\r",
+									"    pm.expect(response.error[0]).to.eql(expectedMessage);  // Acessa o primeiro item do array\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{tokenAdmin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"corporateName\": \"{{companyName}}\",\r\n  \"registerCompany\": \"{{companyCNPJ}}\",\r\n  \"mail\": \"test@test.com\",\r\n  \"matriz\": \"{{razaoSocial}}\",\r\n  \"responsibleContact\": \"Marcio\",\r\n  \"telephone\": \"99999999999999\",\r\n  \"serviceDescription\": \"Testes123\",\r\n  \"address\": [\r\n    {\r\n      \"zipCode\": \"$#&%@*#&\",\r\n      \"city\": \"São Paulo\",\r\n      \"state\": \"SP\",\r\n      \"district\": \"AbCdEfG123456\",\r\n      \"street\": \"Avenida Interlagos\",\r\n      \"number\": \"50\",\r\n      \"complement\": \"de 4503 ao fim - lado ímpar\",\r\n      \"country\": \"Brasil\"\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL_RonBugado}}/api/company/",
+							"host": [
+								"{{baseURL_RonBugado}}"
+							],
+							"path": [
+								"api",
+								"company",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Relaciona os endpoints referentes as empresa."
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "key",
+				"value": "Auth",
+				"type": "string"
+			},
+			{
+				"key": "value",
+				"value": "{{tokenAdmin}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
