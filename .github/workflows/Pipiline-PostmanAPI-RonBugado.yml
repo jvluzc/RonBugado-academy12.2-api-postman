@@ -35,7 +35,7 @@ jobs:
       # Executa a coleção Postman utilizando o Newman e gera o relatório
       - name: Passo 3: Executar a coleção
         run: |
-          newman run ./ronbugado-ci.json -e ./ronbugado-envi.json --reporters cli,-r htmlextra --reporter-htmlextra-export ./results/Report.html
+          newman run ./ronbugado-ci.json -e ./ronbugado-envi.json --reporters cli,htmlextra --reporter-htmlextra-export ./results/Report.html
      
       # Arquiva os artefatos de produção (relatório gerado)
       - name: Passo 4: Arquivar artefatos de produção
