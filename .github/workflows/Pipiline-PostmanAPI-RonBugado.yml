@@ -1,47 +1,46 @@
-# This is a basic workflow to help you get started with Actions
+name: Pipeline-PostmanAPI-RonBugado
 
-name: Pipiline-PostmanAPI-RonBugado
-
-# Controls when the action will run. 
+# Define quando a ação será executada
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
+  # Dispara a execução do workflow nos eventos de push ou pull request apenas para o branch principal
   push:
     branches: [ main ]
   pull_request:
     branches: [ main ]
 
-  # Allows you to run this workflow manually from the Actions tab
+  # Permite executar o workflow manualmente a partir da aba Actions
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+# Um workflow é composto por um ou mais jobs que podem ser executados sequencialmente ou em paralelo
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  # Job para rodar os testes do Postman com Newman
+  postman_tests:
+    name: Testes de API com Postman
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      # Faz o checkout do repositório
+      - name: Checkout do Repositório
+        uses: actions/checkout@v4
 
-      # Runs a set of commands using the runners shell
-      - name: Step 1 Check version Newman and Node
+      # Verifica as versões do Newman e Node
+      - name: Passo 1: Verificar versão do Newman e Node
         run: |
           newman --version
           node --version
           
-      # Runs a single command using the runners shell      
-      - name: Step 2 Install Newman-Reporter-Htmlextra
+      # Instala o Newman Reporter HTMLEXTRA
+      - name: Passo 2: Instalar o Newman-Reporter-HTMLEXTRA
         run: sudo npm install -g newman-reporter-htmlextra
         
-      # Runs a set of commands using the runners shell
-      - name: Step 3 Execute collection
-        run: newman run ./RonBugado (Collection).postman_collection -e ./RonBugado (Environment).postman_environment --reporters cli, -r htmlextra --reporter-htmlextra-export ./results/Report.html
-   
-      # Runs a set of commands using the runners shell
-      - name: Step 4 Archive production artifacts
-        uses: actions/upload-artifact@v2
+      # Executa a coleção Postman utilizando o Newman e gera o relatório
+      - name: Passo 3: Executar a coleção
+        run: |
+          newman run ./RonBugado\ \(Collection\).postman_collection -e ./RonBugado\ \(Environment\).postman_environment --reporters cli,-r htmlextra --reporter-htmlextra-export ./results/Report.html
+     
+      # Arquiva os artefatos de produção (relatório gerado)
+      - name: Passo 4: Arquivar artefatos de produção
+        uses: actions/upload-artifact@v3
         with:
-            name: report
+            name: postman-report
             path: ./results/Report.html
