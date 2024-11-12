@@ -1,0 +1,47 @@
+name: Pipeline-PostmanAPI-RonBugado
+
+# Define quando a ação será executada
+on:
+  # Dispara a execução do workflow nos eventos de push ou pull request apenas para o branch principal
+  push:
+    branches:
+      - main  # Corrigido o erro de indentação na lista 'branches'
+  pull_request:
+    branches:
+      - main  # Corrigido o erro de indentação na lista 'branches'
+
+  # Permite executar o workflow manualmente a partir da aba Actions
+  workflow_dispatch:
+  
+jobs:
+  # Job para rodar os testes do Postman com Newman
+  postman_tests:
+    name: Postman Tests - Pipiline
+    runs-on: ubuntu-latest
+
+    steps:
+      # Faz o checkout do repositório
+      - name: Checkout do Repositório
+        uses: actions/checkout@v4
+
+      # Verifica as versões do Newman e Node
+      - name: Verificar versão do Newman e Node
+        run: |
+          newman --version
+          node --version
+          
+      # Instala o Newman Reporter HTMLEXTRA
+      - name: Instalar o Newman-Reporter-HTMLEXTRA
+        run: sudo npm install -g newman-reporter-htmlextra
+        
+      # Executa a coleção Postman utilizando o Newman e gera o relatório
+      - name: Executando os Testes
+        run: |
+          newman run ./ronbugado-collecition-ci.json -e ./ronbugado-environments-ci.json --reporters cli,htmlextra --reporter-htmlextra-export ./results/Report.html
+     
+      # Arquiva os artefatos de produção (relatório gerado)
+      - name: Report dos Testes Executados
+        uses: actions/upload-artifact@v3  # Atualizado para v3
+        with:
+          name: postman-report
+          path: ./results/Report.html

@@ -1,0 +1,105 @@
+{
+	"id": "c1c483d8-a13f-4156-ae6f-b633a7cc0173",
+	"name": "RonBugado (Environment)",
+	"values": [
+		{
+			"key": "baseURL_RonBugado",
+			"value": "https://ron-bugado.qacoders-academy.com.br",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "email_Admin",
+			"value": "sysadmin@qacoders.com",
+			"type": "secret",
+			"enabled": true
+		},
+		{
+			"key": "senha_Admin",
+			"value": "1234@Test",
+			"type": "secret",
+			"enabled": true
+		},
+		{
+			"key": "msgAdmin",
+			"value": "Olá Qa-Coders-SYSADMIN, autenticação autorizada com sucesso!",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "IDAdmin",
+			"value": "65330b54da9861995d4eb302",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "FirstName",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "LastName",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "FullName",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "CPF",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "Password",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "Email",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "IDUser",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "IDCompany",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "companyName",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "companyCNPJ",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "razaoSocial",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2024-11-12T15:16:07.169Z",
+	"_postman_exported_using": "Postman/11.19.0"
+}
