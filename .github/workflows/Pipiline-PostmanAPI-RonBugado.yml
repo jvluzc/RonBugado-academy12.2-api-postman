@@ -39,7 +39,7 @@ jobs:
         run: |
           newman run ./ronbugado-collecition-ci.json -e ./ronbugado-environments-ci.json --reporters cli,htmlextra --reporter-htmlextra-export ./results/Report.html
      
-      # Arquiva os artefatos de produção (relatório gerado)
+      # Arquiva os relatórios dos testes executados
       - name: Report dos Testes Executados
         uses: actions/upload-artifact@v3  # Atualizado para v3
         with:
