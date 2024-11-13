@@ -1,6 +1,6 @@
 # Este é um fluxo de trabalho básico para ajudá-lo a começar com Actions
 
-name: Pipiline Ron Bugado Postman
+nome: Consulta CEP
 
 # Controla quando a ação será executada.
 on:
@@ -26,22 +26,29 @@ jobs:
       - uses: actions/checkout@v2
 
       # Executa um conjunto de comandos usando o shell do runner
-      - name: Verificar versão do Newman e do Node
+      - name: Etapa 1 Verificar versão do Newman e do Node
         run: |
           newman --version
           node --version
           
       # Executa um único comando usando o shell do runner
-      - name: Instalar Newman-Reporter-Htmlextra
+      - name: Etapa 2 Instalar Newman-Reporter-Htmlextra
         run: sudo npm install -g newman-reporter-htmlextra
         
       # Executa um conjunto de comandos usando o shell do runner
-      - name: Executar coleção
-        run: newman run ./ronbugado-collecition-ci.json -e ./ronbugado-environments-ci.json --reporters cli, -r htmlextra --reporter-htmlextra-export ./results/Report.html
+      - name: Etapa 3 Executar coleção
+        run: newman run ./viacep-ci.json -e ./viacep-env.json --reporters cli, -r htmlextra --reporter-htmlextra-export ./results/Report.html
    
       # Executa um conjunto de comandos usando o shell do runner
-      - name: Arquivar artefatos de produção
-        uses: actions/upload-artifact@v2
+      - name: Etapa 4 Arquivar artefatos de produção
+        uses: actions/upload-artifact@v3  # Atualizado para a versão v3
         with:
             name: report
             path: ./results/Report.html
+
+      # Publicar o relatório no GitHub Pages
+      - name: Publicar relatório no GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./results
