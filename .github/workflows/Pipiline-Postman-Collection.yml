@@ -1,6 +1,6 @@
 # Este é um fluxo de trabalho básico para ajudá-lo a começar com Actions
 
-nome: Pipiline Ron Bugado Postman
+name: Pipiline Ron Bugado Postman
 
 # Controla quando a ação será executada.
 on:
