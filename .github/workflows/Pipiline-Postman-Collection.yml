@@ -1,84 +1,70 @@
-# This is a basic workflow to help you get started with Actions
+# Este é um fluxo de trabalho básico para ajudá-lo a começar com Actions
 
-name: Postman Tests
+name: teste
 
-# Controls when the workflow will run
+# Controla quando a ação será executada.
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
+  # Aciona o fluxo de trabalho em eventos de push ou pull request, mas somente para o branch principal
   push:
-    branches: [ "main" ]
+    branches: [ main ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ main ]
 
-  # Allows you to run this workflow manually from the Actions tab
+  # Permite que você execute esse fluxo de trabalho manualmente na guia Actions
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+# Uma execução de fluxo de trabalho é composta por um ou mais jobs que podem ser executados sequencialmente ou em paralelo
 jobs:
-
-  # This workflow contains a single job called "build"
-  test:
-    name: Postman Tests - Pipiline
-    # The type of runner that the job will run on
+  # Este fluxo de trabalho contém um único job chamado "build"
+  build:
+    # O tipo de runner em que o job será executado
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Copiando os arquivos para maquina virtual
-        uses: actions/checkout@v4
-
-      # Runs a set of commands using the runners shell
-      - name: Etapa 01 - Verificação versão do Node e Newman
-        run: |
-          newman --version && node --version && ls
-              
-      # Runs a single command using the runners shell
-      - name: Etapa 02 - Html Extra Reporter
-        run: |
-          npm fund
-          npm install -g newman
-          sudo npm install -g newman-reporter-htmlextra        
-
-      # Runs a set of command using the runners shell
-      - name: Etapa 03 - Rodando as Collections de Testes
-        run: |
-          newman run ./ronbugado-collecition-ci.json -e ./ronbugado-environments-ci.json --reporters cli,htmlextra --reporter-htmlextra-export ./results/Report.html
-      # Runs a set of command using the runners shell
-      - name: Etapa 04 - Salvando o Resultado dos Testes
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: report
-          path: ./result/
-             
-  deploy:
-    name: Deploy GitHub Pages 🌐
-    runs-on: ubuntu-latest
-    if: always()
-    needs: 
-      - test
+    
+    # permite públicar o report de testes no GitHub Pages
     permissions:
       contents: read
       pages: write
       id-token: write
+
     environment:
       name: github-pages
-      url: https://jvluzc.github.io/RonBugado-academy12.2-api-postman/Report.html
+      url: https://jvluzc.github.io/ronbugado-academy12.2-api-postman/report.html
+
+    # As etapas representam uma sequência de tarefas que serão executadas como parte do job
     steps:
+      # Faz o checkout do repositório no Git Hub, para que o job possa acessá-lo
+      - uses: actions/checkout@v2
+
+      
+      - name: Etapa 1 - Verificar versão do Newman e do Node
+        run: |
+          newman --version
+          node --version
+          
+      
+      - name: Etapa 2 - Instalar Newman-Reporter-Htmlextra
+        run: sudo npm install -g newman-reporter-htmlextra
+        
+      
+      - name: Etapa 3 - Executar Coleção do Postman
+        run: newman run ./ronbugado-collecition-ci.json -e ./ronbugado-environments-ci.json --reporters cli, -r htmlextra --reporter-htmlextra-export ./results/report.html
+   
+      # Executa um conjunto de comandos usando o shell do runner
+      - name: Etapa 4 - Arquivar Resultado da Execução dos Testes
+        uses: actions/upload-artifact@v3  # Atualizado para a versão v3
+        with:
+          name: report
+          path: ./results/report.html
+
+      # Publica o report de testes no GitHub Pages
       - name: Setup Pages
         uses: actions/configure-pages@v5
-
-      - name: Download Artifacts
-        uses: actions/download-artifact@v4
-        with: 
-          name: report
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./
-
+          path: results/
+          
       - name: Deploy to Github Pages
         id: deployment
         uses: actions/deploy-pages@v4
