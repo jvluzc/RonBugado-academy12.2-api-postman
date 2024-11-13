@@ -46,14 +46,14 @@ jobs:
         
       # Executa um conjunto de comandos usando o shell do runner
       - name: Etapa 3 Executar coleção
-        run: newman run ./ronbugado-collecition-ci.json -e ./ronbugado-environments-ci.json --reporters cli, -r htmlextra --reporter-htmlextra-export ./results/Report.html
+        run: newman run ./ronbugado-collecition-ci.json -e ./ronbugado-environments-ci.json --reporters cli, -r htmlextra --reporter-htmlextra-export ./results/report.html
    
       # Executa um conjunto de comandos usando o shell do runner
       - name: Etapa 4 Arquivar artefatos de produção
         uses: actions/upload-artifact@v3  # Atualizado para a versão v3
         with:
           name: report
-          path: ./results/Report.html
+          path: ./results/report.html
 
       # Publicar o relatório no GitHub Pages
       - name: Setup Pages
