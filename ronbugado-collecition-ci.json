@@ -114,6 +114,2086 @@
 			"description": "Endpoints relacionados ao login."
 		},
 		{
+			"name": "Users - Feature",
+			"item": [
+				{
+					"name": "CRUD",
+					"item": [
+						{
+							"name": "Criar Usuário",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Função que gera um Nome aleatório\r",
+											"function gerarNome() {\r",
+											"    const nomes = [\r",
+											"    \"James\", \"John\", \"Robert\", \"Michael\", \"William\", \"David\", \"Richard\", \"Joseph\", \"Charles\", \"Thomas\",\r",
+											"    \"Christopher\", \"Daniel\", \"Matthew\", \"Anthony\", \"Mark\", \"Donald\", \"George\", \"Kenneth\", \"Steven\", \"Edward\",\r",
+											"    \"Brian\", \"Paul\", \"Andrew\", \"Joshua\", \"Kevin\", \"Gary\", \"Timothy\", \"Jose\", \"Ryan\", \"Nicholas\", \"Eric\",\r",
+											"    \"Stephen\", \"Jacob\", \"Larry\", \"Justin\", \"Scott\", \"Brandon\", \"Benjamin\", \"Samuel\", \"Gregory\", \"Frank\", \r",
+											"    \"Alexander\", \"Jack\", \"Dennis\", \"Jerry\", \"Tyler\", \"Aaron\", \"Henry\", \"Douglas\", \"Peter\", \"Adam\"\r",
+											"];\r",
+											"    const nomeAleatorio = nomes[Math.floor(Math.random() * nomes.length)];\r",
+											"    return nomeAleatorio;\r",
+											"}\r",
+											"// Armazena Nome\r",
+											"pm.environment.set(\"FirstName\", gerarNome());\r",
+											"\r",
+											"// Função que gera um Sobrenome aleatório\r",
+											"function gerarSobrenome() {\r",
+											"    const sobrenomes = [\r",
+											"    \"Muller\", \"Bernardi\", \"Romano\", \"Ferro\", \"Rossi\", \"Bianchi\", \"Conti\", \"Giordano\", \"Costa\", \"Lombardi\",\r",
+											"    \"Moretti\", \"Ricci\", \"Ferrari\", \"Esposito\", \"Giovanni\", \"Marino\", \"Vitali\", \"Galli\", \"Corsi\", \"DeLuca\",\r",
+											"    \"Sartori\", \"Benedetti\", \"Palermo\", \"Mancini\", \"Ruggiero\", \"Cappelli\", \"DeAngelis\", \"Vallini\", \"DellaCruz\",\r",
+											"    \"DiLuca\", \"Vittori\", \"Amato\", \"Giuliani\", \"Monti\", \"Barbieri\", \"Longo\", \"Santoro\", \"Fusco\", \"Valente\",\r",
+											"    \"Sorrentino\", \"Caputo\", \"Toscano\", \"Iacono\", \"Martino\", \"Saba\", \"Rinaldi\", \"DiPietro\", \"Castelli\", \"Zito\"\r",
+											"];\r",
+											"    const sobrenomeAleatorio = sobrenomes[Math.floor(Math.random() * sobrenomes.length)];\r",
+											"    return sobrenomeAleatorio;\r",
+											"}\r",
+											"// Armzena o Sobrenome\r",
+											"pm.environment.set(\"LastName\", gerarSobrenome());\r",
+											"\r",
+											"// Concatena e Armazena o Nome e Sobrenome gerado\r",
+											"pm.environment.set(\"FullName\", `${pm.environment.get(\"FirstName\")} ${pm.environment.get(\"LastName\")}`);\r",
+											"\r",
+											"\r",
+											"\r",
+											"// Função que gera um Email aleatório\r",
+											"function gerarEmail() {\r",
+											"    const valorAleatorio = Math.floor(Math.random() * 1000000); // Gera um número aleatório de até 6 dígitos\r",
+											"    return `testeRonBugado${valorAleatorio}@testeqa.com`;\r",
+											"}\r",
+											"// Armazenar o Email gerado\r",
+											"pm.environment.set(\"Email\", gerarEmail());\r",
+											"\r",
+											"\r",
+											"// função que gera um CPF aleatório\r",
+											"function gerarCPF() {\r",
+											"    let cpfAleatorio = '';\r",
+											"    // Gera uma sequência de 11 dígitos\r",
+											"    for (let i = 0; i < 11; i++) {\r",
+											"        cpfAleatorio += Math.floor(Math.random() * 10); \r",
+											"    }\r",
+											"    return cpfAleatorio;\r",
+											"}\r",
+											"// Armazenar o CPF gerado na variável de ambiente 'CPF'\r",
+											"pm.environment.set(\"CPF\", gerarCPF());\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test (\"Validar Status Code = 201\",() => {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Validar Mensagem de Cadastro de Usuário com Sucesso\", () => {\r",
+											"    const expectedMessage = `Olá ${pm.environment.get(\"FullName\")}, cadastro realizado com sucesso.`;\r",
+											"    pm.expect(pm.response.json().msg).to.eql(expectedMessage);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Armazenar ID do usuário\", function () {\r",
+											"    // Parse o corpo da resposta como JSON\r",
+											"    let response = pm.response.json();\r",
+											"    \r",
+											"    // Extraia o valor de \"_id\" do usuário\r",
+											"    let userId = response.user._id;\r",
+											"    \r",
+											"    // Armazene o ID extraído na variável \"IDUser\"\r",
+											"    pm.environment.set(\"IDUser\", userId);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{tokenAdmin}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"fullName\": \"{{FullName}}\",\r\n  \"mail\": \"{{Email}}\",\r\n  \"password\": \"1234@Test\",\r\n  \"accessProfile\": \"ADMIN\",\r\n  \"cpf\": \"{{CPF}}\",\r\n  \"confirmPassword\": \"1234@Test\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL_RonBugado}}/api/user/",
+									"host": [
+										"{{baseURL_RonBugado}}"
+									],
+									"path": [
+										"api",
+										"user",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Todas os Usuários",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test (\"Validar Status Code = 200\",() => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{tokenAdmin}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL_RonBugado}}/api/user/",
+									"host": [
+										"{{baseURL_RonBugado}}"
+									],
+									"path": [
+										"api",
+										"user",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Usuário por ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test (\"Validar Status Code = 200\",() => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{tokenAdmin}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL_RonBugado}}/api/user/{{IDUser}}",
+									"host": [
+										"{{baseURL_RonBugado}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"{{IDUser}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Contagem de Usuários",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test (\"Validar Status Code = 200\",() => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{tokenAdmin}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL_RonBugado}}/api/user/count",
+									"host": [
+										"{{baseURL_RonBugado}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"count"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Atualizar Dados",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Função que gera um Nome aleatório\r",
+											"function gerarNome() {\r",
+											"    const nomes = [\r",
+											"    \"James\", \"John\", \"Robert\", \"Michael\", \"William\", \"David\", \"Richard\", \"Joseph\", \"Charles\", \"Thomas\",\r",
+											"    \"Christopher\", \"Daniel\", \"Matthew\", \"Anthony\", \"Mark\", \"Donald\", \"George\", \"Kenneth\", \"Steven\", \"Edward\",\r",
+											"    \"Brian\", \"Paul\", \"Andrew\", \"Joshua\", \"Kevin\", \"Gary\", \"Timothy\", \"Jose\", \"Ryan\", \"Nicholas\", \"Eric\",\r",
+											"    \"Stephen\", \"Jacob\", \"Larry\", \"Justin\", \"Scott\", \"Brandon\", \"Benjamin\", \"Samuel\", \"Gregory\", \"Frank\", \r",
+											"    \"Alexander\", \"Jack\", \"Dennis\", \"Jerry\", \"Tyler\", \"Aaron\", \"Henry\", \"Douglas\", \"Peter\", \"Adam\"\r",
+											"];\r",
+											"    const nomeAleatorio = nomes[Math.floor(Math.random() * nomes.length)];\r",
+											"    return nomeAleatorio;\r",
+											"}\r",
+											"// Armazena Nome\r",
+											"pm.environment.set(\"FirstName\", gerarNome());\r",
+											"\r",
+											"// Função que gera um Sobrenome aleatório\r",
+											"function gerarSobrenome() {\r",
+											"    const sobrenomes = [\r",
+											"    \"Muller\", \"Bernardi\", \"Romano\", \"Ferro\", \"Rossi\", \"Bianchi\", \"Conti\", \"Giordano\", \"Costa\", \"Lombardi\",\r",
+											"    \"Moretti\", \"Ricci\", \"Ferrari\", \"Esposito\", \"Giovanni\", \"Marino\", \"Vitali\", \"Galli\", \"Corsi\", \"DeLuca\",\r",
+											"    \"Sartori\", \"Benedetti\", \"Palermo\", \"Mancini\", \"Ruggiero\", \"Cappelli\", \"DeAngelis\", \"Vallini\", \"DellaCruz\",\r",
+											"    \"DiLuca\", \"Vittori\", \"Amato\", \"Giuliani\", \"Monti\", \"Barbieri\", \"Longo\", \"Santoro\", \"Fusco\", \"Valente\",\r",
+											"    \"Sorrentino\", \"Caputo\", \"Toscano\", \"Iacono\", \"Martino\", \"Saba\", \"Rinaldi\", \"DiPietro\", \"Castelli\", \"Zito\"\r",
+											"];\r",
+											"    const sobrenomeAleatorio = sobrenomes[Math.floor(Math.random() * sobrenomes.length)];\r",
+											"    return sobrenomeAleatorio;\r",
+											"}\r",
+											"// Armzena o Sobrenome\r",
+											"pm.environment.set(\"LastName\", gerarSobrenome());\r",
+											"\r",
+											"// Concatena e Armazena o Nome e Sobrenome gerado\r",
+											"pm.environment.set(\"FullName\", `${pm.environment.get(\"FirstName\")} ${pm.environment.get(\"LastName\")}`);\r",
+											"\r",
+											"\r",
+											"\r",
+											"// Função que gera um Email aleatório\r",
+											"function gerarEmail() {\r",
+											"    const valorAleatorio = Math.floor(Math.random() * 1000000000); // Gera um número aleatório de até 6 dígitos\r",
+											"    return `testeRonBugado${valorAleatorio}@testeqa.com`;\r",
+											"}\r",
+											"// Armazenar o Email gerado\r",
+											"pm.environment.set(\"Email\", gerarEmail());"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{tokenAdmin}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"fullName\": \"{{FullName}}\",\n  \"mail\": \"{{Email}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL_RonBugado}}/api/user/{{IDUser}}",
+									"host": [
+										"{{baseURL_RonBugado}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"{{IDUser}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Atualizar Senha",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{tokenAdmin}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"password\": \"1234@Tjjest\",\n  \"confirmPassword\": \"1234@Tjjest\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL_RonBugado}}/api/user/password/{{IDUser}}",
+									"host": [
+										"{{baseURL_RonBugado}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"password",
+										"{{IDUser}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Atualizar Status Usuário",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test (\"Validar Status Code = 200\",() => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Validar Mensagem de Usuário Atualizado com Sucesso\", () => {\r",
+											"    const expectedMessage = `Status do usuario atualizado com sucesso para status true.`;\r",
+											"    pm.expect(pm.response.json().msg).to.eql(expectedMessage);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{tokenAdmin}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"status\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL_RonBugado}}/api/user/status/{{IDUser}}",
+									"host": [
+										"{{baseURL_RonBugado}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"status",
+										"{{IDUser}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deletar Usuário",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test (\"Validar Status Code = 200\",() => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Validar Mensagem de Usuário Deletado com Sucesso\", () => {\r",
+											"    const expectedMessage = `Usuário deletado com sucesso!.`;\r",
+											"    pm.expect(pm.response.json().msg).to.eql(expectedMessage);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{tokenAdmin}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL_RonBugado}}/api/user/{{IDUser}}",
+									"host": [
+										"{{baseURL_RonBugado}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"{{IDUser}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Tests - PBI - Novo Cadastro de Usuário",
+					"item": [
+						{
+							"name": "Criar Novo Usuário (caminho feliz)",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Função que gera um Nome aleatório\r",
+											"function gerarNome() {\r",
+											"    const nomes = [\r",
+											"    \"James\", \"John\", \"Robert\", \"Michael\", \"William\", \"David\", \"Richard\", \"Joseph\", \"Charles\", \"Thomas\",\r",
+											"    \"Christopher\", \"Daniel\", \"Matthew\", \"Anthony\", \"Mark\", \"Donald\", \"George\", \"Kenneth\", \"Steven\", \"Edward\",\r",
+											"    \"Brian\", \"Paul\", \"Andrew\", \"Joshua\", \"Kevin\", \"Gary\", \"Timothy\", \"Jose\", \"Ryan\", \"Nicholas\", \"Eric\",\r",
+											"    \"Stephen\", \"Jacob\", \"Larry\", \"Justin\", \"Scott\", \"Brandon\", \"Benjamin\", \"Samuel\", \"Gregory\", \"Frank\", \r",
+											"    \"Alexander\", \"Jack\", \"Dennis\", \"Jerry\", \"Tyler\", \"Aaron\", \"Henry\", \"Douglas\", \"Peter\", \"Adam\"\r",
+											"];\r",
+											"    const nomeAleatorio = nomes[Math.floor(Math.random() * nomes.length)];\r",
+											"    return nomeAleatorio;\r",
+											"}\r",
+											"// Armazena Nome\r",
+											"pm.environment.set(\"FirstName\", gerarNome());\r",
+											"\r",
+											"// Função que gera um Sobrenome aleatório\r",
+											"function gerarSobrenome() {\r",
+											"    const sobrenomes = [\r",
+											"    \"Muller\", \"Bernardi\", \"Romano\", \"Ferro\", \"Rossi\", \"Bianchi\", \"Conti\", \"Giordano\", \"Costa\", \"Lombardi\",\r",
+											"    \"Moretti\", \"Ricci\", \"Ferrari\", \"Esposito\", \"Giovanni\", \"Marino\", \"Vitali\", \"Galli\", \"Corsi\", \"DeLuca\",\r",
+											"    \"Sartori\", \"Benedetti\", \"Palermo\", \"Mancini\", \"Ruggiero\", \"Cappelli\", \"DeAngelis\", \"Vallini\", \"DellaCruz\",\r",
+											"    \"DiLuca\", \"Vittori\", \"Amato\", \"Giuliani\", \"Monti\", \"Barbieri\", \"Longo\", \"Santoro\", \"Fusco\", \"Valente\",\r",
+											"    \"Sorrentino\", \"Caputo\", \"Toscano\", \"Iacono\", \"Martino\", \"Saba\", \"Rinaldi\", \"DiPietro\", \"Castelli\", \"Zito\"\r",
+											"];\r",
+											"    const sobrenomeAleatorio = sobrenomes[Math.floor(Math.random() * sobrenomes.length)];\r",
+											"    return sobrenomeAleatorio;\r",
+											"}\r",
+											"// Armzena o Sobrenome\r",
+											"pm.environment.set(\"LastName\", gerarSobrenome());\r",
+											"\r",
+											"// Concatena e Armazena o Nome e Sobrenome gerado\r",
+											"pm.environment.set(\"FullName\", `${pm.environment.get(\"FirstName\")} ${pm.environment.get(\"LastName\")}`);\r",
+											"\r",
+											"\r",
+											"\r",
+											"// Função que gera um Email aleatório\r",
+											"function gerarEmail() {\r",
+											"    const valorAleatorio = Math.floor(Math.random() * 1000000); // Gera um número aleatório de até 6 dígitos\r",
+											"    return `testeRonBugado${valorAleatorio}@testeqa.com`;\r",
+											"}\r",
+											"// Armazenar o Email gerado\r",
+											"pm.environment.set(\"Email\", gerarEmail());\r",
+											"\r",
+											"\r",
+											"// função que gera um CPF aleatório\r",
+											"function gerarCPF() {\r",
+											"    let cpfAleatorio = '';\r",
+											"    // Gera uma sequência de 11 dígitos\r",
+											"    for (let i = 0; i < 11; i++) {\r",
+											"        cpfAleatorio += Math.floor(Math.random() * 10); \r",
+											"    }\r",
+											"    return cpfAleatorio;\r",
+											"}\r",
+											"// Armazenar o CPF gerado na variável de ambiente 'CPF'\r",
+											"pm.environment.set(\"CPF\", gerarCPF());\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test (\"Validar Status Code = 201\",() => {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Validar Mensagem de Cadastro de Usuário com Sucesso\", () => {\r",
+											"    const expectedMessage = `Olá ${pm.environment.get(\"FullName\")}, cadastro realizado com sucesso.`;\r",
+											"    pm.expect(pm.response.json().msg).to.eql(expectedMessage);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Armazenar ID do usuário\", function () {\r",
+											"    // Parse o corpo da resposta como JSON\r",
+											"    let response = pm.response.json();\r",
+											"    \r",
+											"    // Extraia o valor de \"_id\" do usuário\r",
+											"    let userId = response.user._id;\r",
+											"    \r",
+											"    // Armazene o ID extraído na variável \"IDUser\"\r",
+											"    pm.environment.set(\"IDUser\", userId);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{tokenAdmin}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"fullName\": \"{{FullName}}\",\r\n  \"mail\": \"{{Email}}\",\r\n  \"password\": \"1234@Test\",\r\n  \"accessProfile\": \"ADMIN\",\r\n  \"cpf\": \"{{CPF}}\",\r\n  \"confirmPassword\": \"1234@Test\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL_RonBugado}}/api/user/",
+									"host": [
+										"{{baseURL_RonBugado}}"
+									],
+									"path": [
+										"api",
+										"user",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Enviar NOME com 101 caracteres",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Função que gera um Nome aleatório\r",
+											"function gerarNome() {\r",
+											"    const nomes = [\r",
+											"    \"James\", \"John\", \"Robert\", \"Michael\", \"William\", \"David\", \"Richard\", \"Joseph\", \"Charles\", \"Thomas\",\r",
+											"    \"Christopher\", \"Daniel\", \"Matthew\", \"Anthony\", \"Mark\", \"Donald\", \"George\", \"Kenneth\", \"Steven\", \"Edward\",\r",
+											"    \"Brian\", \"Paul\", \"Andrew\", \"Joshua\", \"Kevin\", \"Gary\", \"Timothy\", \"Jose\", \"Ryan\", \"Nicholas\", \"Eric\",\r",
+											"    \"Stephen\", \"Jacob\", \"Larry\", \"Justin\", \"Scott\", \"Brandon\", \"Benjamin\", \"Samuel\", \"Gregory\", \"Frank\", \r",
+											"    \"Alexander\", \"Jack\", \"Dennis\", \"Jerry\", \"Tyler\", \"Aaron\", \"Henry\", \"Douglas\", \"Peter\", \"Adam\"\r",
+											"];\r",
+											"    const nomeAleatorio = nomes[Math.floor(Math.random() * nomes.length)];\r",
+											"    return nomeAleatorio;\r",
+											"}\r",
+											"// Armazena Nome\r",
+											"pm.environment.set(\"FirstName\", gerarNome());\r",
+											"\r",
+											"// Função que gera um Sobrenome aleatório\r",
+											"function gerarSobrenome() {\r",
+											"    const sobrenomes = [\r",
+											"    \"Muller\", \"Bernardi\", \"Romano\", \"Ferro\", \"Rossi\", \"Bianchi\", \"Conti\", \"Giordano\", \"Costa\", \"Lombardi\",\r",
+											"    \"Moretti\", \"Ricci\", \"Ferrari\", \"Esposito\", \"Giovanni\", \"Marino\", \"Vitali\", \"Galli\", \"Corsi\", \"DeLuca\",\r",
+											"    \"Sartori\", \"Benedetti\", \"Palermo\", \"Mancini\", \"Ruggiero\", \"Cappelli\", \"DeAngelis\", \"Vallini\", \"DellaCruz\",\r",
+											"    \"DiLuca\", \"Vittori\", \"Amato\", \"Giuliani\", \"Monti\", \"Barbieri\", \"Longo\", \"Santoro\", \"Fusco\", \"Valente\",\r",
+											"    \"Sorrentino\", \"Caputo\", \"Toscano\", \"Iacono\", \"Martino\", \"Saba\", \"Rinaldi\", \"DiPietro\", \"Castelli\", \"Zito\"\r",
+											"];\r",
+											"    const sobrenomeAleatorio = sobrenomes[Math.floor(Math.random() * sobrenomes.length)];\r",
+											"    return sobrenomeAleatorio;\r",
+											"}\r",
+											"// Armzena o Sobrenome\r",
+											"pm.environment.set(\"LastName\", gerarSobrenome());\r",
+											"\r",
+											"// Concatena e Armazena o Nome e Sobrenome gerado\r",
+											"pm.environment.set(\"FullName\", `${pm.environment.get(\"FirstName\")} ${pm.environment.get(\"LastName\")}`);\r",
+											"\r",
+											"\r",
+											"\r",
+											"// Função que gera um Email aleatório\r",
+											"function gerarEmail() {\r",
+											"    const valorAleatorio = Math.floor(Math.random() * 1000000); // Gera um número aleatório de até 6 dígitos\r",
+											"    return `testeRonBugado${valorAleatorio}@testeqa.com`;\r",
+											"}\r",
+											"// Armazenar o Email gerado\r",
+											"pm.environment.set(\"Email\", gerarEmail());\r",
+											"\r",
+											"\r",
+											"// função que gera um CPF aleatório\r",
+											"function gerarCPF() {\r",
+											"    let cpfAleatorio = '';\r",
+											"    // Gera uma sequência de 11 dígitos\r",
+											"    for (let i = 0; i < 11; i++) {\r",
+											"        cpfAleatorio += Math.floor(Math.random() * 10); \r",
+											"    }\r",
+											"    return cpfAleatorio;\r",
+											"}\r",
+											"// Armazenar o CPF gerado na variável de ambiente 'CPF'\r",
+											"pm.environment.set(\"CPF\", gerarCPF());\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test (\"Validar Status Code = 400\",() => {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Validar Mensagem de ERRO ao inserir mais de 100 caarcteres campo NOME\", () => {\r",
+											"    const expectedMessage = `O nome completo deve ter no máximo 100 caracteres.`;\r",
+											"    pm.expect(pm.response.json().error[0]).to.eql(expectedMessage);\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{tokenAdmin}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"fullName\": \"Abcdefghij AbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijA\",\r\n  \"mail\": \"{{Email}}\",\r\n  \"password\": \"1234@Test\",\r\n  \"accessProfile\": \"ADMIN\",\r\n  \"cpf\": \"{{CPF}}\",\r\n  \"confirmPassword\": \"1234@Test\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL_RonBugado}}/api/user/",
+									"host": [
+										"{{baseURL_RonBugado}}"
+									],
+									"path": [
+										"api",
+										"user",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Enviar NOME contendo NÚMEROS",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Função que gera um Nome aleatório\r",
+											"function gerarNome() {\r",
+											"    const nomes = [\r",
+											"    \"James\", \"John\", \"Robert\", \"Michael\", \"William\", \"David\", \"Richard\", \"Joseph\", \"Charles\", \"Thomas\",\r",
+											"    \"Christopher\", \"Daniel\", \"Matthew\", \"Anthony\", \"Mark\", \"Donald\", \"George\", \"Kenneth\", \"Steven\", \"Edward\",\r",
+											"    \"Brian\", \"Paul\", \"Andrew\", \"Joshua\", \"Kevin\", \"Gary\", \"Timothy\", \"Jose\", \"Ryan\", \"Nicholas\", \"Eric\",\r",
+											"    \"Stephen\", \"Jacob\", \"Larry\", \"Justin\", \"Scott\", \"Brandon\", \"Benjamin\", \"Samuel\", \"Gregory\", \"Frank\", \r",
+											"    \"Alexander\", \"Jack\", \"Dennis\", \"Jerry\", \"Tyler\", \"Aaron\", \"Henry\", \"Douglas\", \"Peter\", \"Adam\"\r",
+											"];\r",
+											"    const nomeAleatorio = nomes[Math.floor(Math.random() * nomes.length)];\r",
+											"    return nomeAleatorio;\r",
+											"}\r",
+											"// Armazena Nome\r",
+											"pm.environment.set(\"FirstName\", gerarNome());\r",
+											"\r",
+											"// Função que gera um Sobrenome aleatório\r",
+											"function gerarSobrenome() {\r",
+											"    const sobrenomes = [\r",
+											"    \"Muller\", \"Bernardi\", \"Romano\", \"Ferro\", \"Rossi\", \"Bianchi\", \"Conti\", \"Giordano\", \"Costa\", \"Lombardi\",\r",
+											"    \"Moretti\", \"Ricci\", \"Ferrari\", \"Esposito\", \"Giovanni\", \"Marino\", \"Vitali\", \"Galli\", \"Corsi\", \"DeLuca\",\r",
+											"    \"Sartori\", \"Benedetti\", \"Palermo\", \"Mancini\", \"Ruggiero\", \"Cappelli\", \"DeAngelis\", \"Vallini\", \"DellaCruz\",\r",
+											"    \"DiLuca\", \"Vittori\", \"Amato\", \"Giuliani\", \"Monti\", \"Barbieri\", \"Longo\", \"Santoro\", \"Fusco\", \"Valente\",\r",
+											"    \"Sorrentino\", \"Caputo\", \"Toscano\", \"Iacono\", \"Martino\", \"Saba\", \"Rinaldi\", \"DiPietro\", \"Castelli\", \"Zito\"\r",
+											"];\r",
+											"    const sobrenomeAleatorio = sobrenomes[Math.floor(Math.random() * sobrenomes.length)];\r",
+											"    return sobrenomeAleatorio;\r",
+											"}\r",
+											"// Armzena o Sobrenome\r",
+											"pm.environment.set(\"LastName\", gerarSobrenome());\r",
+											"\r",
+											"// Concatena e Armazena o Nome e Sobrenome gerado\r",
+											"pm.environment.set(\"FullName\", `${pm.environment.get(\"FirstName\")} ${pm.environment.get(\"LastName\")}`);\r",
+											"\r",
+											"\r",
+											"\r",
+											"// Função que gera um Email aleatório\r",
+											"function gerarEmail() {\r",
+											"    const valorAleatorio = Math.floor(Math.random() * 1000000); // Gera um número aleatório de até 6 dígitos\r",
+											"    return `testeRonBugado${valorAleatorio}@testeqa.com`;\r",
+											"}\r",
+											"// Armazenar o Email gerado\r",
+											"pm.environment.set(\"Email\", gerarEmail());\r",
+											"\r",
+											"\r",
+											"// função que gera um CPF aleatório\r",
+											"function gerarCPF() {\r",
+											"    let cpfAleatorio = '';\r",
+											"    // Gera uma sequência de 11 dígitos\r",
+											"    for (let i = 0; i < 11; i++) {\r",
+											"        cpfAleatorio += Math.floor(Math.random() * 10); \r",
+											"    }\r",
+											"    return cpfAleatorio;\r",
+											"}\r",
+											"// Armazenar o CPF gerado na variável de ambiente 'CPF'\r",
+											"pm.environment.set(\"CPF\", gerarCPF());\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test (\"Validar Status Code = 400\",() => {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Validar Mensagem de ERRO ao inserir numeros no campo NOME\", () => {\r",
+											"    const expectedMessage = `O campo nome completo não deve conter números`;\r",
+											"    pm.expect(pm.response.json().error[0]).to.eql(expectedMessage);\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{tokenAdmin}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"fullName\": \"151542 52424\",\r\n  \"mail\": \"{{Email}}\",\r\n  \"password\": \"1234@Test\",\r\n  \"accessProfile\": \"ADMIN\",\r\n  \"cpf\": \"{{CPF}}\",\r\n  \"confirmPassword\": \"1234@Test\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL_RonBugado}}/api/user/",
+									"host": [
+										"{{baseURL_RonBugado}}"
+									],
+									"path": [
+										"api",
+										"user",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Enviar EMAIL vazio",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Função que gera um Nome aleatório\r",
+											"function gerarNome() {\r",
+											"    const nomes = [\r",
+											"    \"James\", \"John\", \"Robert\", \"Michael\", \"William\", \"David\", \"Richard\", \"Joseph\", \"Charles\", \"Thomas\",\r",
+											"    \"Christopher\", \"Daniel\", \"Matthew\", \"Anthony\", \"Mark\", \"Donald\", \"George\", \"Kenneth\", \"Steven\", \"Edward\",\r",
+											"    \"Brian\", \"Paul\", \"Andrew\", \"Joshua\", \"Kevin\", \"Gary\", \"Timothy\", \"Jose\", \"Ryan\", \"Nicholas\", \"Eric\",\r",
+											"    \"Stephen\", \"Jacob\", \"Larry\", \"Justin\", \"Scott\", \"Brandon\", \"Benjamin\", \"Samuel\", \"Gregory\", \"Frank\", \r",
+											"    \"Alexander\", \"Jack\", \"Dennis\", \"Jerry\", \"Tyler\", \"Aaron\", \"Henry\", \"Douglas\", \"Peter\", \"Adam\"\r",
+											"];\r",
+											"    const nomeAleatorio = nomes[Math.floor(Math.random() * nomes.length)];\r",
+											"    return nomeAleatorio;\r",
+											"}\r",
+											"// Armazena Nome\r",
+											"pm.environment.set(\"FirstName\", gerarNome());\r",
+											"\r",
+											"// Função que gera um Sobrenome aleatório\r",
+											"function gerarSobrenome() {\r",
+											"    const sobrenomes = [\r",
+											"    \"Muller\", \"Bernardi\", \"Romano\", \"Ferro\", \"Rossi\", \"Bianchi\", \"Conti\", \"Giordano\", \"Costa\", \"Lombardi\",\r",
+											"    \"Moretti\", \"Ricci\", \"Ferrari\", \"Esposito\", \"Giovanni\", \"Marino\", \"Vitali\", \"Galli\", \"Corsi\", \"DeLuca\",\r",
+											"    \"Sartori\", \"Benedetti\", \"Palermo\", \"Mancini\", \"Ruggiero\", \"Cappelli\", \"DeAngelis\", \"Vallini\", \"DellaCruz\",\r",
+											"    \"DiLuca\", \"Vittori\", \"Amato\", \"Giuliani\", \"Monti\", \"Barbieri\", \"Longo\", \"Santoro\", \"Fusco\", \"Valente\",\r",
+											"    \"Sorrentino\", \"Caputo\", \"Toscano\", \"Iacono\", \"Martino\", \"Saba\", \"Rinaldi\", \"DiPietro\", \"Castelli\", \"Zito\"\r",
+											"];\r",
+											"    const sobrenomeAleatorio = sobrenomes[Math.floor(Math.random() * sobrenomes.length)];\r",
+											"    return sobrenomeAleatorio;\r",
+											"}\r",
+											"// Armzena o Sobrenome\r",
+											"pm.environment.set(\"LastName\", gerarSobrenome());\r",
+											"\r",
+											"// Concatena e Armazena o Nome e Sobrenome gerado\r",
+											"pm.environment.set(\"FullName\", `${pm.environment.get(\"FirstName\")} ${pm.environment.get(\"LastName\")}`);\r",
+											"\r",
+											"\r",
+											"\r",
+											"// Função que gera um Email aleatório\r",
+											"function gerarEmail() {\r",
+											"    const valorAleatorio = Math.floor(Math.random() * 1000000); // Gera um número aleatório de até 6 dígitos\r",
+											"    return `testeRonBugado${valorAleatorio}@testeqa.com`;\r",
+											"}\r",
+											"// Armazenar o Email gerado\r",
+											"pm.environment.set(\"Email\", gerarEmail());\r",
+											"\r",
+											"\r",
+											"// função que gera um CPF aleatório\r",
+											"function gerarCPF() {\r",
+											"    let cpfAleatorio = '';\r",
+											"    // Gera uma sequência de 11 dígitos\r",
+											"    for (let i = 0; i < 11; i++) {\r",
+											"        cpfAleatorio += Math.floor(Math.random() * 10); \r",
+											"    }\r",
+											"    return cpfAleatorio;\r",
+											"}\r",
+											"// Armazenar o CPF gerado na variável de ambiente 'CPF'\r",
+											"pm.environment.set(\"CPF\", gerarCPF());\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test (\"Validar Status Code = 400\",() => {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Validar Mensagem de ERRO de EMAIL obrigatório\", () => {\r",
+											"    const expectedMessage = `O campo e-mail é obrigatório.`;\r",
+											"    pm.expect(pm.response.json().error[0]).to.eql(expectedMessage);\r",
+											"});\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{tokenAdmin}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"fullName\": \"{{FullName}}\",\r\n  \"mail\": \"\",\r\n  \"password\": \"1234@Test\",\r\n  \"accessProfile\": \"ADMIN\",\r\n  \"cpf\": \"{{CPF}}\",\r\n  \"confirmPassword\": \"1234@Test\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL_RonBugado}}/api/user/",
+									"host": [
+										"{{baseURL_RonBugado}}"
+									],
+									"path": [
+										"api",
+										"user",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Enviar Senha sem conter letras obrigatórios",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Função que gera um Nome aleatório\r",
+											"function gerarNome() {\r",
+											"    const nomes = [\r",
+											"    \"James\", \"John\", \"Robert\", \"Michael\", \"William\", \"David\", \"Richard\", \"Joseph\", \"Charles\", \"Thomas\",\r",
+											"    \"Christopher\", \"Daniel\", \"Matthew\", \"Anthony\", \"Mark\", \"Donald\", \"George\", \"Kenneth\", \"Steven\", \"Edward\",\r",
+											"    \"Brian\", \"Paul\", \"Andrew\", \"Joshua\", \"Kevin\", \"Gary\", \"Timothy\", \"Jose\", \"Ryan\", \"Nicholas\", \"Eric\",\r",
+											"    \"Stephen\", \"Jacob\", \"Larry\", \"Justin\", \"Scott\", \"Brandon\", \"Benjamin\", \"Samuel\", \"Gregory\", \"Frank\", \r",
+											"    \"Alexander\", \"Jack\", \"Dennis\", \"Jerry\", \"Tyler\", \"Aaron\", \"Henry\", \"Douglas\", \"Peter\", \"Adam\"\r",
+											"];\r",
+											"    const nomeAleatorio = nomes[Math.floor(Math.random() * nomes.length)];\r",
+											"    return nomeAleatorio;\r",
+											"}\r",
+											"// Armazena Nome\r",
+											"pm.environment.set(\"FirstName\", gerarNome());\r",
+											"\r",
+											"// Função que gera um Sobrenome aleatório\r",
+											"function gerarSobrenome() {\r",
+											"    const sobrenomes = [\r",
+											"    \"Muller\", \"Bernardi\", \"Romano\", \"Ferro\", \"Rossi\", \"Bianchi\", \"Conti\", \"Giordano\", \"Costa\", \"Lombardi\",\r",
+											"    \"Moretti\", \"Ricci\", \"Ferrari\", \"Esposito\", \"Giovanni\", \"Marino\", \"Vitali\", \"Galli\", \"Corsi\", \"DeLuca\",\r",
+											"    \"Sartori\", \"Benedetti\", \"Palermo\", \"Mancini\", \"Ruggiero\", \"Cappelli\", \"DeAngelis\", \"Vallini\", \"DellaCruz\",\r",
+											"    \"DiLuca\", \"Vittori\", \"Amato\", \"Giuliani\", \"Monti\", \"Barbieri\", \"Longo\", \"Santoro\", \"Fusco\", \"Valente\",\r",
+											"    \"Sorrentino\", \"Caputo\", \"Toscano\", \"Iacono\", \"Martino\", \"Saba\", \"Rinaldi\", \"DiPietro\", \"Castelli\", \"Zito\"\r",
+											"];\r",
+											"    const sobrenomeAleatorio = sobrenomes[Math.floor(Math.random() * sobrenomes.length)];\r",
+											"    return sobrenomeAleatorio;\r",
+											"}\r",
+											"// Armzena o Sobrenome\r",
+											"pm.environment.set(\"LastName\", gerarSobrenome());\r",
+											"\r",
+											"// Concatena e Armazena o Nome e Sobrenome gerado\r",
+											"pm.environment.set(\"FullName\", `${pm.environment.get(\"FirstName\")} ${pm.environment.get(\"LastName\")}`);\r",
+											"\r",
+											"\r",
+											"\r",
+											"// Função que gera um Email aleatório\r",
+											"function gerarEmail() {\r",
+											"    const valorAleatorio = Math.floor(Math.random() * 1000000); // Gera um número aleatório de até 6 dígitos\r",
+											"    return `testeRonBugado${valorAleatorio}@testeqa.com`;\r",
+											"}\r",
+											"// Armazenar o Email gerado\r",
+											"pm.environment.set(\"Email\", gerarEmail());\r",
+											"\r",
+											"\r",
+											"// função que gera um CPF aleatório\r",
+											"function gerarCPF() {\r",
+											"    let cpfAleatorio = '';\r",
+											"    // Gera uma sequência de 11 dígitos\r",
+											"    for (let i = 0; i < 11; i++) {\r",
+											"        cpfAleatorio += Math.floor(Math.random() * 10); \r",
+											"    }\r",
+											"    return cpfAleatorio;\r",
+											"}\r",
+											"// Armazenar o CPF gerado na variável de ambiente 'CPF'\r",
+											"pm.environment.set(\"CPF\", gerarCPF());\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test (\"Validar Status Code = 400\",() => {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Validar Mensagem de ERRO informando quais caracteres devem ser obrigatórios na senha\", () => {\r",
+											"    const expectedMessage = `Senha precisa ter: uma letra maiúscula, uma letra minúscula, um número, um caractere especial(@#$%) e tamanho entre 8-12.`;\r",
+											"    pm.expect(pm.response.json().error[0]).to.eql(expectedMessage);\r",
+											"});\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{tokenAdmin}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"fullName\": \"{{FullName}}\",\r\n  \"mail\": \"{{Email}}\",\r\n  \"password\": \"1234@123\",\r\n  \"accessProfile\": \"ADMIN\",\r\n  \"cpf\": \"{{CPF}}\",\r\n  \"confirmPassword\": \"1234@123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL_RonBugado}}/api/user/",
+									"host": [
+										"{{baseURL_RonBugado}}"
+									],
+									"path": [
+										"api",
+										"user",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Enviar CONFIRMAR SENHA Vazio",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Função que gera um Nome aleatório\r",
+											"function gerarNome() {\r",
+											"    const nomes = [\r",
+											"    \"James\", \"John\", \"Robert\", \"Michael\", \"William\", \"David\", \"Richard\", \"Joseph\", \"Charles\", \"Thomas\",\r",
+											"    \"Christopher\", \"Daniel\", \"Matthew\", \"Anthony\", \"Mark\", \"Donald\", \"George\", \"Kenneth\", \"Steven\", \"Edward\",\r",
+											"    \"Brian\", \"Paul\", \"Andrew\", \"Joshua\", \"Kevin\", \"Gary\", \"Timothy\", \"Jose\", \"Ryan\", \"Nicholas\", \"Eric\",\r",
+											"    \"Stephen\", \"Jacob\", \"Larry\", \"Justin\", \"Scott\", \"Brandon\", \"Benjamin\", \"Samuel\", \"Gregory\", \"Frank\", \r",
+											"    \"Alexander\", \"Jack\", \"Dennis\", \"Jerry\", \"Tyler\", \"Aaron\", \"Henry\", \"Douglas\", \"Peter\", \"Adam\"\r",
+											"];\r",
+											"    const nomeAleatorio = nomes[Math.floor(Math.random() * nomes.length)];\r",
+											"    return nomeAleatorio;\r",
+											"}\r",
+											"// Armazena Nome\r",
+											"pm.environment.set(\"FirstName\", gerarNome());\r",
+											"\r",
+											"// Função que gera um Sobrenome aleatório\r",
+											"function gerarSobrenome() {\r",
+											"    const sobrenomes = [\r",
+											"    \"Muller\", \"Bernardi\", \"Romano\", \"Ferro\", \"Rossi\", \"Bianchi\", \"Conti\", \"Giordano\", \"Costa\", \"Lombardi\",\r",
+											"    \"Moretti\", \"Ricci\", \"Ferrari\", \"Esposito\", \"Giovanni\", \"Marino\", \"Vitali\", \"Galli\", \"Corsi\", \"DeLuca\",\r",
+											"    \"Sartori\", \"Benedetti\", \"Palermo\", \"Mancini\", \"Ruggiero\", \"Cappelli\", \"DeAngelis\", \"Vallini\", \"DellaCruz\",\r",
+											"    \"DiLuca\", \"Vittori\", \"Amato\", \"Giuliani\", \"Monti\", \"Barbieri\", \"Longo\", \"Santoro\", \"Fusco\", \"Valente\",\r",
+											"    \"Sorrentino\", \"Caputo\", \"Toscano\", \"Iacono\", \"Martino\", \"Saba\", \"Rinaldi\", \"DiPietro\", \"Castelli\", \"Zito\"\r",
+											"];\r",
+											"    const sobrenomeAleatorio = sobrenomes[Math.floor(Math.random() * sobrenomes.length)];\r",
+											"    return sobrenomeAleatorio;\r",
+											"}\r",
+											"// Armzena o Sobrenome\r",
+											"pm.environment.set(\"LastName\", gerarSobrenome());\r",
+											"\r",
+											"// Concatena e Armazena o Nome e Sobrenome gerado\r",
+											"pm.environment.set(\"FullName\", `${pm.environment.get(\"FirstName\")} ${pm.environment.get(\"LastName\")}`);\r",
+											"\r",
+											"\r",
+											"\r",
+											"// Função que gera um Email aleatório\r",
+											"function gerarEmail() {\r",
+											"    const valorAleatorio = Math.floor(Math.random() * 1000000); // Gera um número aleatório de até 6 dígitos\r",
+											"    return `testeRonBugado${valorAleatorio}@testeqa.com`;\r",
+											"}\r",
+											"// Armazenar o Email gerado\r",
+											"pm.environment.set(\"Email\", gerarEmail());\r",
+											"\r",
+											"\r",
+											"// função que gera um CPF aleatório\r",
+											"function gerarCPF() {\r",
+											"    let cpfAleatorio = '';\r",
+											"    // Gera uma sequência de 11 dígitos\r",
+											"    for (let i = 0; i < 11; i++) {\r",
+											"        cpfAleatorio += Math.floor(Math.random() * 10); \r",
+											"    }\r",
+											"    return cpfAleatorio;\r",
+											"}\r",
+											"// Armazenar o CPF gerado na variável de ambiente 'CPF'\r",
+											"pm.environment.set(\"CPF\", gerarCPF());\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test (\"Validar Status Code = 400\",() => {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Validar Mensagem de ERRO informando que o CONFIRMAR SENHA é obrigatório\", () => {\r",
+											"    const expectedMessage = \"O campo de confirmação de senha é obrigatório.\";\r",
+											"    pm.expect(pm.response.json().error[1]).to.eql(expectedMessage);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{tokenAdmin}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"fullName\": \"{{FullName}}\",\r\n  \"mail\": \"{{Email}}\",\r\n  \"password\": \"1234@123\",\r\n  \"accessProfile\": \"ADMIN\",\r\n  \"cpf\": \"{{CPF}}\",\r\n  \"confirmPassword\": \"\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL_RonBugado}}/api/user/",
+									"host": [
+										"{{baseURL_RonBugado}}"
+									],
+									"path": [
+										"api",
+										"user",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Enviar Senha diferente de CONFIRMAR SENHA",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Função que gera um Nome aleatório\r",
+											"function gerarNome() {\r",
+											"    const nomes = [\r",
+											"    \"James\", \"John\", \"Robert\", \"Michael\", \"William\", \"David\", \"Richard\", \"Joseph\", \"Charles\", \"Thomas\",\r",
+											"    \"Christopher\", \"Daniel\", \"Matthew\", \"Anthony\", \"Mark\", \"Donald\", \"George\", \"Kenneth\", \"Steven\", \"Edward\",\r",
+											"    \"Brian\", \"Paul\", \"Andrew\", \"Joshua\", \"Kevin\", \"Gary\", \"Timothy\", \"Jose\", \"Ryan\", \"Nicholas\", \"Eric\",\r",
+											"    \"Stephen\", \"Jacob\", \"Larry\", \"Justin\", \"Scott\", \"Brandon\", \"Benjamin\", \"Samuel\", \"Gregory\", \"Frank\", \r",
+											"    \"Alexander\", \"Jack\", \"Dennis\", \"Jerry\", \"Tyler\", \"Aaron\", \"Henry\", \"Douglas\", \"Peter\", \"Adam\"\r",
+											"];\r",
+											"    const nomeAleatorio = nomes[Math.floor(Math.random() * nomes.length)];\r",
+											"    return nomeAleatorio;\r",
+											"}\r",
+											"// Armazena Nome\r",
+											"pm.environment.set(\"FirstName\", gerarNome());\r",
+											"\r",
+											"// Função que gera um Sobrenome aleatório\r",
+											"function gerarSobrenome() {\r",
+											"    const sobrenomes = [\r",
+											"    \"Muller\", \"Bernardi\", \"Romano\", \"Ferro\", \"Rossi\", \"Bianchi\", \"Conti\", \"Giordano\", \"Costa\", \"Lombardi\",\r",
+											"    \"Moretti\", \"Ricci\", \"Ferrari\", \"Esposito\", \"Giovanni\", \"Marino\", \"Vitali\", \"Galli\", \"Corsi\", \"DeLuca\",\r",
+											"    \"Sartori\", \"Benedetti\", \"Palermo\", \"Mancini\", \"Ruggiero\", \"Cappelli\", \"DeAngelis\", \"Vallini\", \"DellaCruz\",\r",
+											"    \"DiLuca\", \"Vittori\", \"Amato\", \"Giuliani\", \"Monti\", \"Barbieri\", \"Longo\", \"Santoro\", \"Fusco\", \"Valente\",\r",
+											"    \"Sorrentino\", \"Caputo\", \"Toscano\", \"Iacono\", \"Martino\", \"Saba\", \"Rinaldi\", \"DiPietro\", \"Castelli\", \"Zito\"\r",
+											"];\r",
+											"    const sobrenomeAleatorio = sobrenomes[Math.floor(Math.random() * sobrenomes.length)];\r",
+											"    return sobrenomeAleatorio;\r",
+											"}\r",
+											"// Armzena o Sobrenome\r",
+											"pm.environment.set(\"LastName\", gerarSobrenome());\r",
+											"\r",
+											"// Concatena e Armazena o Nome e Sobrenome gerado\r",
+											"pm.environment.set(\"FullName\", `${pm.environment.get(\"FirstName\")} ${pm.environment.get(\"LastName\")}`);\r",
+											"\r",
+											"\r",
+											"\r",
+											"// Função que gera um Email aleatório\r",
+											"function gerarEmail() {\r",
+											"    const valorAleatorio = Math.floor(Math.random() * 1000000); // Gera um número aleatório de até 6 dígitos\r",
+											"    return `testeRonBugado${valorAleatorio}@testeqa.com`;\r",
+											"}\r",
+											"// Armazenar o Email gerado\r",
+											"pm.environment.set(\"Email\", gerarEmail());\r",
+											"\r",
+											"\r",
+											"// função que gera um CPF aleatório\r",
+											"function gerarCPF() {\r",
+											"    let cpfAleatorio = '';\r",
+											"    // Gera uma sequência de 11 dígitos\r",
+											"    for (let i = 0; i < 11; i++) {\r",
+											"        cpfAleatorio += Math.floor(Math.random() * 10); \r",
+											"    }\r",
+											"    return cpfAleatorio;\r",
+											"}\r",
+											"// Armazenar o CPF gerado na variável de ambiente 'CPF'\r",
+											"pm.environment.set(\"CPF\", gerarCPF());\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test (\"Validar Status Code = 400\",() => {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Validar Mensagem de ERRO de SENHA e CONFIRMA SENHA são diferentes\", () => {\r",
+											"    const expectedMessage = `As senhas não conferem.`;\r",
+											"    pm.expect(pm.response.json().error[0]).to.eql(expectedMessage);\r",
+											"});\r",
+											"\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{tokenAdmin}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"fullName\": \"{{FullName}}\",\r\n  \"mail\": \"{{Email}}\",\r\n  \"password\": \"1234@Testdfg\",\r\n  \"accessProfile\": \"ADMIN\",\r\n  \"cpf\": \"{{CPF}}\",\r\n  \"confirmPassword\": \"1234@dsfsffTest\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL_RonBugado}}/api/user/",
+									"host": [
+										"{{baseURL_RonBugado}}"
+									],
+									"path": [
+										"api",
+										"user",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Tests - PBI - Editar Usuário",
+					"item": [
+						{
+							"name": "Atualizar Status Usuário",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test (\"Validar Status Code = 200\",() => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Validar Mensagem de Usuário Atualizado com Sucesso\", () => {\r",
+											"    const expectedMessage = `Status do usuario atualizado com sucesso para status true.`;\r",
+											"    pm.expect(pm.response.json().msg).to.eql(expectedMessage);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{tokenAdmin}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"status\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL_RonBugado}}/api/user/status/{{IDUser}}",
+									"host": [
+										"{{baseURL_RonBugado}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"status",
+										"{{IDUser}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Enviar campo Status Vazio - Usuário",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test (\"Validar Status Code = 400\",() => {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{tokenAdmin}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"status\": \n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL_RonBugado}}/api/user/status/{{IDUser}}",
+									"host": [
+										"{{baseURL_RonBugado}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"status",
+										"{{IDUser}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Atualizar Status Usuário c/ TOKEN ausente",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test (\"Validar Status Code = 403\",() => {\r",
+											"    pm.response.to.have.status(403);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Validar Mensagem de ERRO ao tentar atualizar o STATUS da Empresa s/ enviar TOKEN\", () => {\r",
+											"    const expectedMessage = \"No token provided.\";\r",
+											"    pm.expect(pm.response.json().errors[0]).to.eql(expectedMessage);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"status\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL_RonBugado}}/api/user/status/{{IDUser}}",
+									"host": [
+										"{{baseURL_RonBugado}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"status",
+										"{{IDUser}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Atualizar Senha",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{tokenAdmin}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"password\": \"1234@Tjjest\",\n  \"confirmPassword\": \"1234@Tjjest\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL_RonBugado}}/api/user/password/{{IDUser}}",
+									"host": [
+										"{{baseURL_RonBugado}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"password",
+										"{{IDUser}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Atualizar Dados",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"// Função que gera um Nome aleatório\r",
+											"function gerarNome() {\r",
+											"    const nomes = [\r",
+											"    \"James\", \"John\", \"Robert\", \"Michael\", \"William\", \"David\", \"Richard\", \"Joseph\", \"Charles\", \"Thomas\",\r",
+											"    \"Christopher\", \"Daniel\", \"Matthew\", \"Anthony\", \"Mark\", \"Donald\", \"George\", \"Kenneth\", \"Steven\", \"Edward\",\r",
+											"    \"Brian\", \"Paul\", \"Andrew\", \"Joshua\", \"Kevin\", \"Gary\", \"Timothy\", \"Jose\", \"Ryan\", \"Nicholas\", \"Eric\",\r",
+											"    \"Stephen\", \"Jacob\", \"Larry\", \"Justin\", \"Scott\", \"Brandon\", \"Benjamin\", \"Samuel\", \"Gregory\", \"Frank\", \r",
+											"    \"Alexander\", \"Jack\", \"Dennis\", \"Jerry\", \"Tyler\", \"Aaron\", \"Henry\", \"Douglas\", \"Peter\", \"Adam\"\r",
+											"];\r",
+											"    const nomeAleatorio = nomes[Math.floor(Math.random() * nomes.length)];\r",
+											"    return nomeAleatorio;\r",
+											"}\r",
+											"// Armazena Nome\r",
+											"pm.environment.set(\"FirstName\", gerarNome());\r",
+											"\r",
+											"// Função que gera um Sobrenome aleatório\r",
+											"function gerarSobrenome() {\r",
+											"    const sobrenomes = [\r",
+											"    \"Muller\", \"Bernardi\", \"Romano\", \"Ferro\", \"Rossi\", \"Bianchi\", \"Conti\", \"Giordano\", \"Costa\", \"Lombardi\",\r",
+											"    \"Moretti\", \"Ricci\", \"Ferrari\", \"Esposito\", \"Giovanni\", \"Marino\", \"Vitali\", \"Galli\", \"Corsi\", \"DeLuca\",\r",
+											"    \"Sartori\", \"Benedetti\", \"Palermo\", \"Mancini\", \"Ruggiero\", \"Cappelli\", \"DeAngelis\", \"Vallini\", \"DellaCruz\",\r",
+											"    \"DiLuca\", \"Vittori\", \"Amato\", \"Giuliani\", \"Monti\", \"Barbieri\", \"Longo\", \"Santoro\", \"Fusco\", \"Valente\",\r",
+											"    \"Sorrentino\", \"Caputo\", \"Toscano\", \"Iacono\", \"Martino\", \"Saba\", \"Rinaldi\", \"DiPietro\", \"Castelli\", \"Zito\"\r",
+											"];\r",
+											"    const sobrenomeAleatorio = sobrenomes[Math.floor(Math.random() * sobrenomes.length)];\r",
+											"    return sobrenomeAleatorio;\r",
+											"}\r",
+											"// Armzena o Sobrenome\r",
+											"pm.environment.set(\"LastName\", gerarSobrenome());\r",
+											"\r",
+											"// Concatena e Armazena o Nome e Sobrenome gerado\r",
+											"pm.environment.set(\"FullName\", `${pm.environment.get(\"FirstName\")} ${pm.environment.get(\"LastName\")}`);\r",
+											"\r",
+											"\r",
+											"\r",
+											"// Função que gera um Email aleatório\r",
+											"function gerarEmail() {\r",
+											"    const valorAleatorio = Math.floor(Math.random() * 1000000000); // Gera um número aleatório de até 6 dígitos\r",
+											"    return `testeRonBugado${valorAleatorio}@testeqa.com`;\r",
+											"}\r",
+											"// Armazenar o Email gerado\r",
+											"pm.environment.set(\"Email\", gerarEmail());"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{tokenAdmin}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"fullName\": \"{{FullName}}\",\n  \"mail\": \"{{Email}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL_RonBugado}}/api/user/{{IDUser}}",
+									"host": [
+										"{{baseURL_RonBugado}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"{{IDUser}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Tests - PBI - Lista Cadastro de Usuário",
+					"item": [
+						{
+							"name": "Listar Todas as Usuários da base",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test (\"Validar Status Code = 200\",() => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{tokenAdmin}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL_RonBugado}}/api/user/",
+									"host": [
+										"{{baseURL_RonBugado}}"
+									],
+									"path": [
+										"api",
+										"user",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Lista a Quantidade de Usuários na Base",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test (\"Validar Status Code = 200\",() => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{tokenAdmin}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL_RonBugado}}/api/user/count",
+									"host": [
+										"{{baseURL_RonBugado}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"count"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Usuário por ID (caminho feliz)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test (\"Validar Status Code = 200\",() => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{tokenAdmin}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL_RonBugado}}/api/user/{{IDUser}}",
+									"host": [
+										"{{baseURL_RonBugado}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"{{IDUser}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Buscar por ID inexistente/ inválido",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test (\"Validar Status Code = 500\",() => {\r",
+											"    pm.response.to.have.status(500);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{tokenAdmin}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL_RonBugado}}/api/user/hs5366b57fa308107b5b9hs6",
+									"host": [
+										"{{baseURL_RonBugado}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"hs5366b57fa308107b5b9hs6"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Tests - PBI - Deletar Usuário",
+					"item": [
+						{
+							"name": "Deletar Usuário (caminho feliz)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test (\"Validar Status Code = 200\",() => {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Validar Mensagem de Usuário Deletado com Sucesso\", () => {\r",
+											"    const expectedMessage = `Usuário deletado com sucesso!.`;\r",
+											"    pm.expect(pm.response.json().msg).to.eql(expectedMessage);\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{tokenAdmin}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL_RonBugado}}/api/user/{{IDUser}}",
+									"host": [
+										"{{baseURL_RonBugado}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"{{IDUser}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deletar o mesmo Usuário pela 2X",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test (\"Validar Status Code = 400\",() => {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Validar Mensagem de Erro ao tentar deletar o mesmo Usuário pela 2X\", () => {\r",
+											"    const expectedMessage = \"Esse usuário não existe em nossa base de dados.\";\r",
+											"    pm.expect(pm.response.json().alert[0]).to.eql(expectedMessage);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "{{tokenAdmin}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseURL_RonBugado}}/api/user/{{IDUser}}",
+									"host": [
+										"{{baseURL_RonBugado}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"{{IDUser}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"description": "Relaciona os endpoints referentes as empresa."
+		},
+		{
 			"name": "Company - Feature",
 			"item": [
 				{
@@ -4406,2086 +6486,6 @@
 										"api",
 										"company",
 										"{{IDCompany}}"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				}
-			],
-			"description": "Relaciona os endpoints referentes as empresa."
-		},
-		{
-			"name": "Users - Feature",
-			"item": [
-				{
-					"name": "CRUD",
-					"item": [
-						{
-							"name": "Criar Usuário",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"exec": [
-											"// Função que gera um Nome aleatório\r",
-											"function gerarNome() {\r",
-											"    const nomes = [\r",
-											"    \"James\", \"John\", \"Robert\", \"Michael\", \"William\", \"David\", \"Richard\", \"Joseph\", \"Charles\", \"Thomas\",\r",
-											"    \"Christopher\", \"Daniel\", \"Matthew\", \"Anthony\", \"Mark\", \"Donald\", \"George\", \"Kenneth\", \"Steven\", \"Edward\",\r",
-											"    \"Brian\", \"Paul\", \"Andrew\", \"Joshua\", \"Kevin\", \"Gary\", \"Timothy\", \"Jose\", \"Ryan\", \"Nicholas\", \"Eric\",\r",
-											"    \"Stephen\", \"Jacob\", \"Larry\", \"Justin\", \"Scott\", \"Brandon\", \"Benjamin\", \"Samuel\", \"Gregory\", \"Frank\", \r",
-											"    \"Alexander\", \"Jack\", \"Dennis\", \"Jerry\", \"Tyler\", \"Aaron\", \"Henry\", \"Douglas\", \"Peter\", \"Adam\"\r",
-											"];\r",
-											"    const nomeAleatorio = nomes[Math.floor(Math.random() * nomes.length)];\r",
-											"    return nomeAleatorio;\r",
-											"}\r",
-											"// Armazena Nome\r",
-											"pm.environment.set(\"FirstName\", gerarNome());\r",
-											"\r",
-											"// Função que gera um Sobrenome aleatório\r",
-											"function gerarSobrenome() {\r",
-											"    const sobrenomes = [\r",
-											"    \"Muller\", \"Bernardi\", \"Romano\", \"Ferro\", \"Rossi\", \"Bianchi\", \"Conti\", \"Giordano\", \"Costa\", \"Lombardi\",\r",
-											"    \"Moretti\", \"Ricci\", \"Ferrari\", \"Esposito\", \"Giovanni\", \"Marino\", \"Vitali\", \"Galli\", \"Corsi\", \"DeLuca\",\r",
-											"    \"Sartori\", \"Benedetti\", \"Palermo\", \"Mancini\", \"Ruggiero\", \"Cappelli\", \"DeAngelis\", \"Vallini\", \"DellaCruz\",\r",
-											"    \"DiLuca\", \"Vittori\", \"Amato\", \"Giuliani\", \"Monti\", \"Barbieri\", \"Longo\", \"Santoro\", \"Fusco\", \"Valente\",\r",
-											"    \"Sorrentino\", \"Caputo\", \"Toscano\", \"Iacono\", \"Martino\", \"Saba\", \"Rinaldi\", \"DiPietro\", \"Castelli\", \"Zito\"\r",
-											"];\r",
-											"    const sobrenomeAleatorio = sobrenomes[Math.floor(Math.random() * sobrenomes.length)];\r",
-											"    return sobrenomeAleatorio;\r",
-											"}\r",
-											"// Armzena o Sobrenome\r",
-											"pm.environment.set(\"LastName\", gerarSobrenome());\r",
-											"\r",
-											"// Concatena e Armazena o Nome e Sobrenome gerado\r",
-											"pm.environment.set(\"FullName\", `${pm.environment.get(\"FirstName\")} ${pm.environment.get(\"LastName\")}`);\r",
-											"\r",
-											"\r",
-											"\r",
-											"// Função que gera um Email aleatório\r",
-											"function gerarEmail() {\r",
-											"    const valorAleatorio = Math.floor(Math.random() * 1000000); // Gera um número aleatório de até 6 dígitos\r",
-											"    return `testeRonBugado${valorAleatorio}@testeqa.com`;\r",
-											"}\r",
-											"// Armazenar o Email gerado\r",
-											"pm.environment.set(\"Email\", gerarEmail());\r",
-											"\r",
-											"\r",
-											"// função que gera um CPF aleatório\r",
-											"function gerarCPF() {\r",
-											"    let cpfAleatorio = '';\r",
-											"    // Gera uma sequência de 11 dígitos\r",
-											"    for (let i = 0; i < 11; i++) {\r",
-											"        cpfAleatorio += Math.floor(Math.random() * 10); \r",
-											"    }\r",
-											"    return cpfAleatorio;\r",
-											"}\r",
-											"// Armazenar o CPF gerado na variável de ambiente 'CPF'\r",
-											"pm.environment.set(\"CPF\", gerarCPF());\r",
-											"\r",
-											"\r",
-											""
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								},
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test (\"Validar Status Code = 201\",() => {\r",
-											"    pm.response.to.have.status(201);\r",
-											"});\r",
-											"\r",
-											"pm.test(\"Validar Mensagem de Cadastro de Usuário com Sucesso\", () => {\r",
-											"    const expectedMessage = `Olá ${pm.environment.get(\"FullName\")}, cadastro realizado com sucesso.`;\r",
-											"    pm.expect(pm.response.json().msg).to.eql(expectedMessage);\r",
-											"});\r",
-											"\r",
-											"pm.test(\"Armazenar ID do usuário\", function () {\r",
-											"    // Parse o corpo da resposta como JSON\r",
-											"    let response = pm.response.json();\r",
-											"    \r",
-											"    // Extraia o valor de \"_id\" do usuário\r",
-											"    let userId = response.user._id;\r",
-											"    \r",
-											"    // Armazene o ID extraído na variável \"IDUser\"\r",
-											"    pm.environment.set(\"IDUser\", userId);\r",
-											"});\r",
-											""
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{tokenAdmin}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n  \"fullName\": \"{{FullName}}\",\r\n  \"mail\": \"{{Email}}\",\r\n  \"password\": \"1234@Test\",\r\n  \"accessProfile\": \"ADMIN\",\r\n  \"cpf\": \"{{CPF}}\",\r\n  \"confirmPassword\": \"1234@Test\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseURL_RonBugado}}/api/user/",
-									"host": [
-										"{{baseURL_RonBugado}}"
-									],
-									"path": [
-										"api",
-										"user",
-										""
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Todas os Usuários",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test (\"Validar Status Code = 200\",() => {\r",
-											"    pm.response.to.have.status(200);\r",
-											"});"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "accept",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{tokenAdmin}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseURL_RonBugado}}/api/user/",
-									"host": [
-										"{{baseURL_RonBugado}}"
-									],
-									"path": [
-										"api",
-										"user",
-										""
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Usuário por ID",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test (\"Validar Status Code = 200\",() => {\r",
-											"    pm.response.to.have.status(200);\r",
-											"});"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "accept",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{tokenAdmin}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseURL_RonBugado}}/api/user/{{IDUser}}",
-									"host": [
-										"{{baseURL_RonBugado}}"
-									],
-									"path": [
-										"api",
-										"user",
-										"{{IDUser}}"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Contagem de Usuários",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test (\"Validar Status Code = 200\",() => {\r",
-											"    pm.response.to.have.status(200);\r",
-											"});"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "accept",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{tokenAdmin}}"
-									}
-								],
-								"url": {
-									"raw": "{{baseURL_RonBugado}}/api/user/count",
-									"host": [
-										"{{baseURL_RonBugado}}"
-									],
-									"path": [
-										"api",
-										"user",
-										"count"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Atualizar Dados",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"exec": [
-											"// Função que gera um Nome aleatório\r",
-											"function gerarNome() {\r",
-											"    const nomes = [\r",
-											"    \"James\", \"John\", \"Robert\", \"Michael\", \"William\", \"David\", \"Richard\", \"Joseph\", \"Charles\", \"Thomas\",\r",
-											"    \"Christopher\", \"Daniel\", \"Matthew\", \"Anthony\", \"Mark\", \"Donald\", \"George\", \"Kenneth\", \"Steven\", \"Edward\",\r",
-											"    \"Brian\", \"Paul\", \"Andrew\", \"Joshua\", \"Kevin\", \"Gary\", \"Timothy\", \"Jose\", \"Ryan\", \"Nicholas\", \"Eric\",\r",
-											"    \"Stephen\", \"Jacob\", \"Larry\", \"Justin\", \"Scott\", \"Brandon\", \"Benjamin\", \"Samuel\", \"Gregory\", \"Frank\", \r",
-											"    \"Alexander\", \"Jack\", \"Dennis\", \"Jerry\", \"Tyler\", \"Aaron\", \"Henry\", \"Douglas\", \"Peter\", \"Adam\"\r",
-											"];\r",
-											"    const nomeAleatorio = nomes[Math.floor(Math.random() * nomes.length)];\r",
-											"    return nomeAleatorio;\r",
-											"}\r",
-											"// Armazena Nome\r",
-											"pm.environment.set(\"FirstName\", gerarNome());\r",
-											"\r",
-											"// Função que gera um Sobrenome aleatório\r",
-											"function gerarSobrenome() {\r",
-											"    const sobrenomes = [\r",
-											"    \"Muller\", \"Bernardi\", \"Romano\", \"Ferro\", \"Rossi\", \"Bianchi\", \"Conti\", \"Giordano\", \"Costa\", \"Lombardi\",\r",
-											"    \"Moretti\", \"Ricci\", \"Ferrari\", \"Esposito\", \"Giovanni\", \"Marino\", \"Vitali\", \"Galli\", \"Corsi\", \"DeLuca\",\r",
-											"    \"Sartori\", \"Benedetti\", \"Palermo\", \"Mancini\", \"Ruggiero\", \"Cappelli\", \"DeAngelis\", \"Vallini\", \"DellaCruz\",\r",
-											"    \"DiLuca\", \"Vittori\", \"Amato\", \"Giuliani\", \"Monti\", \"Barbieri\", \"Longo\", \"Santoro\", \"Fusco\", \"Valente\",\r",
-											"    \"Sorrentino\", \"Caputo\", \"Toscano\", \"Iacono\", \"Martino\", \"Saba\", \"Rinaldi\", \"DiPietro\", \"Castelli\", \"Zito\"\r",
-											"];\r",
-											"    const sobrenomeAleatorio = sobrenomes[Math.floor(Math.random() * sobrenomes.length)];\r",
-											"    return sobrenomeAleatorio;\r",
-											"}\r",
-											"// Armzena o Sobrenome\r",
-											"pm.environment.set(\"LastName\", gerarSobrenome());\r",
-											"\r",
-											"// Concatena e Armazena o Nome e Sobrenome gerado\r",
-											"pm.environment.set(\"FullName\", `${pm.environment.get(\"FirstName\")} ${pm.environment.get(\"LastName\")}`);\r",
-											"\r",
-											"\r",
-											"\r",
-											"// Função que gera um Email aleatório\r",
-											"function gerarEmail() {\r",
-											"    const valorAleatorio = Math.floor(Math.random() * 1000000000); // Gera um número aleatório de até 6 dígitos\r",
-											"    return `testeRonBugado${valorAleatorio}@testeqa.com`;\r",
-											"}\r",
-											"// Armazenar o Email gerado\r",
-											"pm.environment.set(\"Email\", gerarEmail());"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"method": "PUT",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "accept",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{tokenAdmin}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"fullName\": \"{{FullName}}\",\n  \"mail\": \"{{Email}}\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseURL_RonBugado}}/api/user/{{IDUser}}",
-									"host": [
-										"{{baseURL_RonBugado}}"
-									],
-									"path": [
-										"api",
-										"user",
-										"{{IDUser}}"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Atualizar Senha",
-							"request": {
-								"method": "PUT",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "accept",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{tokenAdmin}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"password\": \"1234@Tjjest\",\n  \"confirmPassword\": \"1234@Tjjest\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseURL_RonBugado}}/api/user/password/{{IDUser}}",
-									"host": [
-										"{{baseURL_RonBugado}}"
-									],
-									"path": [
-										"api",
-										"user",
-										"password",
-										"{{IDUser}}"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Atualizar Status Usuário",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test (\"Validar Status Code = 200\",() => {\r",
-											"    pm.response.to.have.status(200);\r",
-											"});\r",
-											"\r",
-											"\r",
-											"pm.test(\"Validar Mensagem de Usuário Atualizado com Sucesso\", () => {\r",
-											"    const expectedMessage = `Status do usuario atualizado com sucesso para status true.`;\r",
-											"    pm.expect(pm.response.json().msg).to.eql(expectedMessage);\r",
-											"});"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"method": "PUT",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "accept",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{tokenAdmin}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"status\": true\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseURL_RonBugado}}/api/user/status/{{IDUser}}",
-									"host": [
-										"{{baseURL_RonBugado}}"
-									],
-									"path": [
-										"api",
-										"user",
-										"status",
-										"{{IDUser}}"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Deletar Usuário",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test (\"Validar Status Code = 200\",() => {\r",
-											"    pm.response.to.have.status(200);\r",
-											"});\r",
-											"\r",
-											"\r",
-											"pm.test(\"Validar Mensagem de Usuário Deletado com Sucesso\", () => {\r",
-											"    const expectedMessage = `Usuário deletado com sucesso!.`;\r",
-											"    pm.expect(pm.response.json().msg).to.eql(expectedMessage);\r",
-											"});"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "accept",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{tokenAdmin}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseURL_RonBugado}}/api/user/{{IDUser}}",
-									"host": [
-										"{{baseURL_RonBugado}}"
-									],
-									"path": [
-										"api",
-										"user",
-										"{{IDUser}}"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "Tests - PBI - Novo Cadastro de Usuário",
-					"item": [
-						{
-							"name": "Criar Novo Usuário (caminho feliz)",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"exec": [
-											"// Função que gera um Nome aleatório\r",
-											"function gerarNome() {\r",
-											"    const nomes = [\r",
-											"    \"James\", \"John\", \"Robert\", \"Michael\", \"William\", \"David\", \"Richard\", \"Joseph\", \"Charles\", \"Thomas\",\r",
-											"    \"Christopher\", \"Daniel\", \"Matthew\", \"Anthony\", \"Mark\", \"Donald\", \"George\", \"Kenneth\", \"Steven\", \"Edward\",\r",
-											"    \"Brian\", \"Paul\", \"Andrew\", \"Joshua\", \"Kevin\", \"Gary\", \"Timothy\", \"Jose\", \"Ryan\", \"Nicholas\", \"Eric\",\r",
-											"    \"Stephen\", \"Jacob\", \"Larry\", \"Justin\", \"Scott\", \"Brandon\", \"Benjamin\", \"Samuel\", \"Gregory\", \"Frank\", \r",
-											"    \"Alexander\", \"Jack\", \"Dennis\", \"Jerry\", \"Tyler\", \"Aaron\", \"Henry\", \"Douglas\", \"Peter\", \"Adam\"\r",
-											"];\r",
-											"    const nomeAleatorio = nomes[Math.floor(Math.random() * nomes.length)];\r",
-											"    return nomeAleatorio;\r",
-											"}\r",
-											"// Armazena Nome\r",
-											"pm.environment.set(\"FirstName\", gerarNome());\r",
-											"\r",
-											"// Função que gera um Sobrenome aleatório\r",
-											"function gerarSobrenome() {\r",
-											"    const sobrenomes = [\r",
-											"    \"Muller\", \"Bernardi\", \"Romano\", \"Ferro\", \"Rossi\", \"Bianchi\", \"Conti\", \"Giordano\", \"Costa\", \"Lombardi\",\r",
-											"    \"Moretti\", \"Ricci\", \"Ferrari\", \"Esposito\", \"Giovanni\", \"Marino\", \"Vitali\", \"Galli\", \"Corsi\", \"DeLuca\",\r",
-											"    \"Sartori\", \"Benedetti\", \"Palermo\", \"Mancini\", \"Ruggiero\", \"Cappelli\", \"DeAngelis\", \"Vallini\", \"DellaCruz\",\r",
-											"    \"DiLuca\", \"Vittori\", \"Amato\", \"Giuliani\", \"Monti\", \"Barbieri\", \"Longo\", \"Santoro\", \"Fusco\", \"Valente\",\r",
-											"    \"Sorrentino\", \"Caputo\", \"Toscano\", \"Iacono\", \"Martino\", \"Saba\", \"Rinaldi\", \"DiPietro\", \"Castelli\", \"Zito\"\r",
-											"];\r",
-											"    const sobrenomeAleatorio = sobrenomes[Math.floor(Math.random() * sobrenomes.length)];\r",
-											"    return sobrenomeAleatorio;\r",
-											"}\r",
-											"// Armzena o Sobrenome\r",
-											"pm.environment.set(\"LastName\", gerarSobrenome());\r",
-											"\r",
-											"// Concatena e Armazena o Nome e Sobrenome gerado\r",
-											"pm.environment.set(\"FullName\", `${pm.environment.get(\"FirstName\")} ${pm.environment.get(\"LastName\")}`);\r",
-											"\r",
-											"\r",
-											"\r",
-											"// Função que gera um Email aleatório\r",
-											"function gerarEmail() {\r",
-											"    const valorAleatorio = Math.floor(Math.random() * 1000000); // Gera um número aleatório de até 6 dígitos\r",
-											"    return `testeRonBugado${valorAleatorio}@testeqa.com`;\r",
-											"}\r",
-											"// Armazenar o Email gerado\r",
-											"pm.environment.set(\"Email\", gerarEmail());\r",
-											"\r",
-											"\r",
-											"// função que gera um CPF aleatório\r",
-											"function gerarCPF() {\r",
-											"    let cpfAleatorio = '';\r",
-											"    // Gera uma sequência de 11 dígitos\r",
-											"    for (let i = 0; i < 11; i++) {\r",
-											"        cpfAleatorio += Math.floor(Math.random() * 10); \r",
-											"    }\r",
-											"    return cpfAleatorio;\r",
-											"}\r",
-											"// Armazenar o CPF gerado na variável de ambiente 'CPF'\r",
-											"pm.environment.set(\"CPF\", gerarCPF());\r",
-											"\r",
-											"\r",
-											""
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								},
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test (\"Validar Status Code = 201\",() => {\r",
-											"    pm.response.to.have.status(201);\r",
-											"});\r",
-											"\r",
-											"pm.test(\"Validar Mensagem de Cadastro de Usuário com Sucesso\", () => {\r",
-											"    const expectedMessage = `Olá ${pm.environment.get(\"FullName\")}, cadastro realizado com sucesso.`;\r",
-											"    pm.expect(pm.response.json().msg).to.eql(expectedMessage);\r",
-											"});\r",
-											"\r",
-											"pm.test(\"Armazenar ID do usuário\", function () {\r",
-											"    // Parse o corpo da resposta como JSON\r",
-											"    let response = pm.response.json();\r",
-											"    \r",
-											"    // Extraia o valor de \"_id\" do usuário\r",
-											"    let userId = response.user._id;\r",
-											"    \r",
-											"    // Armazene o ID extraído na variável \"IDUser\"\r",
-											"    pm.environment.set(\"IDUser\", userId);\r",
-											"});\r",
-											""
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{tokenAdmin}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n  \"fullName\": \"{{FullName}}\",\r\n  \"mail\": \"{{Email}}\",\r\n  \"password\": \"1234@Test\",\r\n  \"accessProfile\": \"ADMIN\",\r\n  \"cpf\": \"{{CPF}}\",\r\n  \"confirmPassword\": \"1234@Test\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseURL_RonBugado}}/api/user/",
-									"host": [
-										"{{baseURL_RonBugado}}"
-									],
-									"path": [
-										"api",
-										"user",
-										""
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Enviar NOME com 101 caracteres",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"exec": [
-											"// Função que gera um Nome aleatório\r",
-											"function gerarNome() {\r",
-											"    const nomes = [\r",
-											"    \"James\", \"John\", \"Robert\", \"Michael\", \"William\", \"David\", \"Richard\", \"Joseph\", \"Charles\", \"Thomas\",\r",
-											"    \"Christopher\", \"Daniel\", \"Matthew\", \"Anthony\", \"Mark\", \"Donald\", \"George\", \"Kenneth\", \"Steven\", \"Edward\",\r",
-											"    \"Brian\", \"Paul\", \"Andrew\", \"Joshua\", \"Kevin\", \"Gary\", \"Timothy\", \"Jose\", \"Ryan\", \"Nicholas\", \"Eric\",\r",
-											"    \"Stephen\", \"Jacob\", \"Larry\", \"Justin\", \"Scott\", \"Brandon\", \"Benjamin\", \"Samuel\", \"Gregory\", \"Frank\", \r",
-											"    \"Alexander\", \"Jack\", \"Dennis\", \"Jerry\", \"Tyler\", \"Aaron\", \"Henry\", \"Douglas\", \"Peter\", \"Adam\"\r",
-											"];\r",
-											"    const nomeAleatorio = nomes[Math.floor(Math.random() * nomes.length)];\r",
-											"    return nomeAleatorio;\r",
-											"}\r",
-											"// Armazena Nome\r",
-											"pm.environment.set(\"FirstName\", gerarNome());\r",
-											"\r",
-											"// Função que gera um Sobrenome aleatório\r",
-											"function gerarSobrenome() {\r",
-											"    const sobrenomes = [\r",
-											"    \"Muller\", \"Bernardi\", \"Romano\", \"Ferro\", \"Rossi\", \"Bianchi\", \"Conti\", \"Giordano\", \"Costa\", \"Lombardi\",\r",
-											"    \"Moretti\", \"Ricci\", \"Ferrari\", \"Esposito\", \"Giovanni\", \"Marino\", \"Vitali\", \"Galli\", \"Corsi\", \"DeLuca\",\r",
-											"    \"Sartori\", \"Benedetti\", \"Palermo\", \"Mancini\", \"Ruggiero\", \"Cappelli\", \"DeAngelis\", \"Vallini\", \"DellaCruz\",\r",
-											"    \"DiLuca\", \"Vittori\", \"Amato\", \"Giuliani\", \"Monti\", \"Barbieri\", \"Longo\", \"Santoro\", \"Fusco\", \"Valente\",\r",
-											"    \"Sorrentino\", \"Caputo\", \"Toscano\", \"Iacono\", \"Martino\", \"Saba\", \"Rinaldi\", \"DiPietro\", \"Castelli\", \"Zito\"\r",
-											"];\r",
-											"    const sobrenomeAleatorio = sobrenomes[Math.floor(Math.random() * sobrenomes.length)];\r",
-											"    return sobrenomeAleatorio;\r",
-											"}\r",
-											"// Armzena o Sobrenome\r",
-											"pm.environment.set(\"LastName\", gerarSobrenome());\r",
-											"\r",
-											"// Concatena e Armazena o Nome e Sobrenome gerado\r",
-											"pm.environment.set(\"FullName\", `${pm.environment.get(\"FirstName\")} ${pm.environment.get(\"LastName\")}`);\r",
-											"\r",
-											"\r",
-											"\r",
-											"// Função que gera um Email aleatório\r",
-											"function gerarEmail() {\r",
-											"    const valorAleatorio = Math.floor(Math.random() * 1000000); // Gera um número aleatório de até 6 dígitos\r",
-											"    return `testeRonBugado${valorAleatorio}@testeqa.com`;\r",
-											"}\r",
-											"// Armazenar o Email gerado\r",
-											"pm.environment.set(\"Email\", gerarEmail());\r",
-											"\r",
-											"\r",
-											"// função que gera um CPF aleatório\r",
-											"function gerarCPF() {\r",
-											"    let cpfAleatorio = '';\r",
-											"    // Gera uma sequência de 11 dígitos\r",
-											"    for (let i = 0; i < 11; i++) {\r",
-											"        cpfAleatorio += Math.floor(Math.random() * 10); \r",
-											"    }\r",
-											"    return cpfAleatorio;\r",
-											"}\r",
-											"// Armazenar o CPF gerado na variável de ambiente 'CPF'\r",
-											"pm.environment.set(\"CPF\", gerarCPF());\r",
-											"\r",
-											"\r",
-											""
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								},
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test (\"Validar Status Code = 400\",() => {\r",
-											"    pm.response.to.have.status(400);\r",
-											"});\r",
-											"\r",
-											"pm.test(\"Validar Mensagem de ERRO ao inserir mais de 100 caarcteres campo NOME\", () => {\r",
-											"    const expectedMessage = `O nome completo deve ter no máximo 100 caracteres.`;\r",
-											"    pm.expect(pm.response.json().error[0]).to.eql(expectedMessage);\r",
-											"});\r",
-											"\r",
-											""
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{tokenAdmin}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n  \"fullName\": \"Abcdefghij AbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijA\",\r\n  \"mail\": \"{{Email}}\",\r\n  \"password\": \"1234@Test\",\r\n  \"accessProfile\": \"ADMIN\",\r\n  \"cpf\": \"{{CPF}}\",\r\n  \"confirmPassword\": \"1234@Test\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseURL_RonBugado}}/api/user/",
-									"host": [
-										"{{baseURL_RonBugado}}"
-									],
-									"path": [
-										"api",
-										"user",
-										""
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Enviar NOME contendo NÚMEROS",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"exec": [
-											"// Função que gera um Nome aleatório\r",
-											"function gerarNome() {\r",
-											"    const nomes = [\r",
-											"    \"James\", \"John\", \"Robert\", \"Michael\", \"William\", \"David\", \"Richard\", \"Joseph\", \"Charles\", \"Thomas\",\r",
-											"    \"Christopher\", \"Daniel\", \"Matthew\", \"Anthony\", \"Mark\", \"Donald\", \"George\", \"Kenneth\", \"Steven\", \"Edward\",\r",
-											"    \"Brian\", \"Paul\", \"Andrew\", \"Joshua\", \"Kevin\", \"Gary\", \"Timothy\", \"Jose\", \"Ryan\", \"Nicholas\", \"Eric\",\r",
-											"    \"Stephen\", \"Jacob\", \"Larry\", \"Justin\", \"Scott\", \"Brandon\", \"Benjamin\", \"Samuel\", \"Gregory\", \"Frank\", \r",
-											"    \"Alexander\", \"Jack\", \"Dennis\", \"Jerry\", \"Tyler\", \"Aaron\", \"Henry\", \"Douglas\", \"Peter\", \"Adam\"\r",
-											"];\r",
-											"    const nomeAleatorio = nomes[Math.floor(Math.random() * nomes.length)];\r",
-											"    return nomeAleatorio;\r",
-											"}\r",
-											"// Armazena Nome\r",
-											"pm.environment.set(\"FirstName\", gerarNome());\r",
-											"\r",
-											"// Função que gera um Sobrenome aleatório\r",
-											"function gerarSobrenome() {\r",
-											"    const sobrenomes = [\r",
-											"    \"Muller\", \"Bernardi\", \"Romano\", \"Ferro\", \"Rossi\", \"Bianchi\", \"Conti\", \"Giordano\", \"Costa\", \"Lombardi\",\r",
-											"    \"Moretti\", \"Ricci\", \"Ferrari\", \"Esposito\", \"Giovanni\", \"Marino\", \"Vitali\", \"Galli\", \"Corsi\", \"DeLuca\",\r",
-											"    \"Sartori\", \"Benedetti\", \"Palermo\", \"Mancini\", \"Ruggiero\", \"Cappelli\", \"DeAngelis\", \"Vallini\", \"DellaCruz\",\r",
-											"    \"DiLuca\", \"Vittori\", \"Amato\", \"Giuliani\", \"Monti\", \"Barbieri\", \"Longo\", \"Santoro\", \"Fusco\", \"Valente\",\r",
-											"    \"Sorrentino\", \"Caputo\", \"Toscano\", \"Iacono\", \"Martino\", \"Saba\", \"Rinaldi\", \"DiPietro\", \"Castelli\", \"Zito\"\r",
-											"];\r",
-											"    const sobrenomeAleatorio = sobrenomes[Math.floor(Math.random() * sobrenomes.length)];\r",
-											"    return sobrenomeAleatorio;\r",
-											"}\r",
-											"// Armzena o Sobrenome\r",
-											"pm.environment.set(\"LastName\", gerarSobrenome());\r",
-											"\r",
-											"// Concatena e Armazena o Nome e Sobrenome gerado\r",
-											"pm.environment.set(\"FullName\", `${pm.environment.get(\"FirstName\")} ${pm.environment.get(\"LastName\")}`);\r",
-											"\r",
-											"\r",
-											"\r",
-											"// Função que gera um Email aleatório\r",
-											"function gerarEmail() {\r",
-											"    const valorAleatorio = Math.floor(Math.random() * 1000000); // Gera um número aleatório de até 6 dígitos\r",
-											"    return `testeRonBugado${valorAleatorio}@testeqa.com`;\r",
-											"}\r",
-											"// Armazenar o Email gerado\r",
-											"pm.environment.set(\"Email\", gerarEmail());\r",
-											"\r",
-											"\r",
-											"// função que gera um CPF aleatório\r",
-											"function gerarCPF() {\r",
-											"    let cpfAleatorio = '';\r",
-											"    // Gera uma sequência de 11 dígitos\r",
-											"    for (let i = 0; i < 11; i++) {\r",
-											"        cpfAleatorio += Math.floor(Math.random() * 10); \r",
-											"    }\r",
-											"    return cpfAleatorio;\r",
-											"}\r",
-											"// Armazenar o CPF gerado na variável de ambiente 'CPF'\r",
-											"pm.environment.set(\"CPF\", gerarCPF());\r",
-											"\r",
-											"\r",
-											""
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								},
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test (\"Validar Status Code = 400\",() => {\r",
-											"    pm.response.to.have.status(400);\r",
-											"});\r",
-											"\r",
-											"pm.test(\"Validar Mensagem de ERRO ao inserir numeros no campo NOME\", () => {\r",
-											"    const expectedMessage = `O campo nome completo não deve conter números`;\r",
-											"    pm.expect(pm.response.json().error[0]).to.eql(expectedMessage);\r",
-											"});\r",
-											"\r",
-											""
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{tokenAdmin}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n  \"fullName\": \"151542 52424\",\r\n  \"mail\": \"{{Email}}\",\r\n  \"password\": \"1234@Test\",\r\n  \"accessProfile\": \"ADMIN\",\r\n  \"cpf\": \"{{CPF}}\",\r\n  \"confirmPassword\": \"1234@Test\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseURL_RonBugado}}/api/user/",
-									"host": [
-										"{{baseURL_RonBugado}}"
-									],
-									"path": [
-										"api",
-										"user",
-										""
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Enviar EMAIL vazio",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"exec": [
-											"// Função que gera um Nome aleatório\r",
-											"function gerarNome() {\r",
-											"    const nomes = [\r",
-											"    \"James\", \"John\", \"Robert\", \"Michael\", \"William\", \"David\", \"Richard\", \"Joseph\", \"Charles\", \"Thomas\",\r",
-											"    \"Christopher\", \"Daniel\", \"Matthew\", \"Anthony\", \"Mark\", \"Donald\", \"George\", \"Kenneth\", \"Steven\", \"Edward\",\r",
-											"    \"Brian\", \"Paul\", \"Andrew\", \"Joshua\", \"Kevin\", \"Gary\", \"Timothy\", \"Jose\", \"Ryan\", \"Nicholas\", \"Eric\",\r",
-											"    \"Stephen\", \"Jacob\", \"Larry\", \"Justin\", \"Scott\", \"Brandon\", \"Benjamin\", \"Samuel\", \"Gregory\", \"Frank\", \r",
-											"    \"Alexander\", \"Jack\", \"Dennis\", \"Jerry\", \"Tyler\", \"Aaron\", \"Henry\", \"Douglas\", \"Peter\", \"Adam\"\r",
-											"];\r",
-											"    const nomeAleatorio = nomes[Math.floor(Math.random() * nomes.length)];\r",
-											"    return nomeAleatorio;\r",
-											"}\r",
-											"// Armazena Nome\r",
-											"pm.environment.set(\"FirstName\", gerarNome());\r",
-											"\r",
-											"// Função que gera um Sobrenome aleatório\r",
-											"function gerarSobrenome() {\r",
-											"    const sobrenomes = [\r",
-											"    \"Muller\", \"Bernardi\", \"Romano\", \"Ferro\", \"Rossi\", \"Bianchi\", \"Conti\", \"Giordano\", \"Costa\", \"Lombardi\",\r",
-											"    \"Moretti\", \"Ricci\", \"Ferrari\", \"Esposito\", \"Giovanni\", \"Marino\", \"Vitali\", \"Galli\", \"Corsi\", \"DeLuca\",\r",
-											"    \"Sartori\", \"Benedetti\", \"Palermo\", \"Mancini\", \"Ruggiero\", \"Cappelli\", \"DeAngelis\", \"Vallini\", \"DellaCruz\",\r",
-											"    \"DiLuca\", \"Vittori\", \"Amato\", \"Giuliani\", \"Monti\", \"Barbieri\", \"Longo\", \"Santoro\", \"Fusco\", \"Valente\",\r",
-											"    \"Sorrentino\", \"Caputo\", \"Toscano\", \"Iacono\", \"Martino\", \"Saba\", \"Rinaldi\", \"DiPietro\", \"Castelli\", \"Zito\"\r",
-											"];\r",
-											"    const sobrenomeAleatorio = sobrenomes[Math.floor(Math.random() * sobrenomes.length)];\r",
-											"    return sobrenomeAleatorio;\r",
-											"}\r",
-											"// Armzena o Sobrenome\r",
-											"pm.environment.set(\"LastName\", gerarSobrenome());\r",
-											"\r",
-											"// Concatena e Armazena o Nome e Sobrenome gerado\r",
-											"pm.environment.set(\"FullName\", `${pm.environment.get(\"FirstName\")} ${pm.environment.get(\"LastName\")}`);\r",
-											"\r",
-											"\r",
-											"\r",
-											"// Função que gera um Email aleatório\r",
-											"function gerarEmail() {\r",
-											"    const valorAleatorio = Math.floor(Math.random() * 1000000); // Gera um número aleatório de até 6 dígitos\r",
-											"    return `testeRonBugado${valorAleatorio}@testeqa.com`;\r",
-											"}\r",
-											"// Armazenar o Email gerado\r",
-											"pm.environment.set(\"Email\", gerarEmail());\r",
-											"\r",
-											"\r",
-											"// função que gera um CPF aleatório\r",
-											"function gerarCPF() {\r",
-											"    let cpfAleatorio = '';\r",
-											"    // Gera uma sequência de 11 dígitos\r",
-											"    for (let i = 0; i < 11; i++) {\r",
-											"        cpfAleatorio += Math.floor(Math.random() * 10); \r",
-											"    }\r",
-											"    return cpfAleatorio;\r",
-											"}\r",
-											"// Armazenar o CPF gerado na variável de ambiente 'CPF'\r",
-											"pm.environment.set(\"CPF\", gerarCPF());\r",
-											"\r",
-											"\r",
-											""
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								},
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test (\"Validar Status Code = 400\",() => {\r",
-											"    pm.response.to.have.status(400);\r",
-											"});\r",
-											"\r",
-											"pm.test(\"Validar Mensagem de ERRO de EMAIL obrigatório\", () => {\r",
-											"    const expectedMessage = `O campo e-mail é obrigatório.`;\r",
-											"    pm.expect(pm.response.json().error[0]).to.eql(expectedMessage);\r",
-											"});\r",
-											"\r",
-											"\r",
-											""
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{tokenAdmin}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n  \"fullName\": \"{{FullName}}\",\r\n  \"mail\": \"\",\r\n  \"password\": \"1234@Test\",\r\n  \"accessProfile\": \"ADMIN\",\r\n  \"cpf\": \"{{CPF}}\",\r\n  \"confirmPassword\": \"1234@Test\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseURL_RonBugado}}/api/user/",
-									"host": [
-										"{{baseURL_RonBugado}}"
-									],
-									"path": [
-										"api",
-										"user",
-										""
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Enviar Senha sem conter letras obrigatórios",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"exec": [
-											"// Função que gera um Nome aleatório\r",
-											"function gerarNome() {\r",
-											"    const nomes = [\r",
-											"    \"James\", \"John\", \"Robert\", \"Michael\", \"William\", \"David\", \"Richard\", \"Joseph\", \"Charles\", \"Thomas\",\r",
-											"    \"Christopher\", \"Daniel\", \"Matthew\", \"Anthony\", \"Mark\", \"Donald\", \"George\", \"Kenneth\", \"Steven\", \"Edward\",\r",
-											"    \"Brian\", \"Paul\", \"Andrew\", \"Joshua\", \"Kevin\", \"Gary\", \"Timothy\", \"Jose\", \"Ryan\", \"Nicholas\", \"Eric\",\r",
-											"    \"Stephen\", \"Jacob\", \"Larry\", \"Justin\", \"Scott\", \"Brandon\", \"Benjamin\", \"Samuel\", \"Gregory\", \"Frank\", \r",
-											"    \"Alexander\", \"Jack\", \"Dennis\", \"Jerry\", \"Tyler\", \"Aaron\", \"Henry\", \"Douglas\", \"Peter\", \"Adam\"\r",
-											"];\r",
-											"    const nomeAleatorio = nomes[Math.floor(Math.random() * nomes.length)];\r",
-											"    return nomeAleatorio;\r",
-											"}\r",
-											"// Armazena Nome\r",
-											"pm.environment.set(\"FirstName\", gerarNome());\r",
-											"\r",
-											"// Função que gera um Sobrenome aleatório\r",
-											"function gerarSobrenome() {\r",
-											"    const sobrenomes = [\r",
-											"    \"Muller\", \"Bernardi\", \"Romano\", \"Ferro\", \"Rossi\", \"Bianchi\", \"Conti\", \"Giordano\", \"Costa\", \"Lombardi\",\r",
-											"    \"Moretti\", \"Ricci\", \"Ferrari\", \"Esposito\", \"Giovanni\", \"Marino\", \"Vitali\", \"Galli\", \"Corsi\", \"DeLuca\",\r",
-											"    \"Sartori\", \"Benedetti\", \"Palermo\", \"Mancini\", \"Ruggiero\", \"Cappelli\", \"DeAngelis\", \"Vallini\", \"DellaCruz\",\r",
-											"    \"DiLuca\", \"Vittori\", \"Amato\", \"Giuliani\", \"Monti\", \"Barbieri\", \"Longo\", \"Santoro\", \"Fusco\", \"Valente\",\r",
-											"    \"Sorrentino\", \"Caputo\", \"Toscano\", \"Iacono\", \"Martino\", \"Saba\", \"Rinaldi\", \"DiPietro\", \"Castelli\", \"Zito\"\r",
-											"];\r",
-											"    const sobrenomeAleatorio = sobrenomes[Math.floor(Math.random() * sobrenomes.length)];\r",
-											"    return sobrenomeAleatorio;\r",
-											"}\r",
-											"// Armzena o Sobrenome\r",
-											"pm.environment.set(\"LastName\", gerarSobrenome());\r",
-											"\r",
-											"// Concatena e Armazena o Nome e Sobrenome gerado\r",
-											"pm.environment.set(\"FullName\", `${pm.environment.get(\"FirstName\")} ${pm.environment.get(\"LastName\")}`);\r",
-											"\r",
-											"\r",
-											"\r",
-											"// Função que gera um Email aleatório\r",
-											"function gerarEmail() {\r",
-											"    const valorAleatorio = Math.floor(Math.random() * 1000000); // Gera um número aleatório de até 6 dígitos\r",
-											"    return `testeRonBugado${valorAleatorio}@testeqa.com`;\r",
-											"}\r",
-											"// Armazenar o Email gerado\r",
-											"pm.environment.set(\"Email\", gerarEmail());\r",
-											"\r",
-											"\r",
-											"// função que gera um CPF aleatório\r",
-											"function gerarCPF() {\r",
-											"    let cpfAleatorio = '';\r",
-											"    // Gera uma sequência de 11 dígitos\r",
-											"    for (let i = 0; i < 11; i++) {\r",
-											"        cpfAleatorio += Math.floor(Math.random() * 10); \r",
-											"    }\r",
-											"    return cpfAleatorio;\r",
-											"}\r",
-											"// Armazenar o CPF gerado na variável de ambiente 'CPF'\r",
-											"pm.environment.set(\"CPF\", gerarCPF());\r",
-											"\r",
-											"\r",
-											""
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								},
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test (\"Validar Status Code = 400\",() => {\r",
-											"    pm.response.to.have.status(400);\r",
-											"});\r",
-											"\r",
-											"pm.test(\"Validar Mensagem de ERRO informando quais caracteres devem ser obrigatórios na senha\", () => {\r",
-											"    const expectedMessage = `Senha precisa ter: uma letra maiúscula, uma letra minúscula, um número, um caractere especial(@#$%) e tamanho entre 8-12.`;\r",
-											"    pm.expect(pm.response.json().error[0]).to.eql(expectedMessage);\r",
-											"});\r",
-											"\r",
-											"\r",
-											""
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{tokenAdmin}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n  \"fullName\": \"{{FullName}}\",\r\n  \"mail\": \"{{Email}}\",\r\n  \"password\": \"1234@123\",\r\n  \"accessProfile\": \"ADMIN\",\r\n  \"cpf\": \"{{CPF}}\",\r\n  \"confirmPassword\": \"1234@123\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseURL_RonBugado}}/api/user/",
-									"host": [
-										"{{baseURL_RonBugado}}"
-									],
-									"path": [
-										"api",
-										"user",
-										""
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Enviar CONFIRMAR SENHA Vazio",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"exec": [
-											"// Função que gera um Nome aleatório\r",
-											"function gerarNome() {\r",
-											"    const nomes = [\r",
-											"    \"James\", \"John\", \"Robert\", \"Michael\", \"William\", \"David\", \"Richard\", \"Joseph\", \"Charles\", \"Thomas\",\r",
-											"    \"Christopher\", \"Daniel\", \"Matthew\", \"Anthony\", \"Mark\", \"Donald\", \"George\", \"Kenneth\", \"Steven\", \"Edward\",\r",
-											"    \"Brian\", \"Paul\", \"Andrew\", \"Joshua\", \"Kevin\", \"Gary\", \"Timothy\", \"Jose\", \"Ryan\", \"Nicholas\", \"Eric\",\r",
-											"    \"Stephen\", \"Jacob\", \"Larry\", \"Justin\", \"Scott\", \"Brandon\", \"Benjamin\", \"Samuel\", \"Gregory\", \"Frank\", \r",
-											"    \"Alexander\", \"Jack\", \"Dennis\", \"Jerry\", \"Tyler\", \"Aaron\", \"Henry\", \"Douglas\", \"Peter\", \"Adam\"\r",
-											"];\r",
-											"    const nomeAleatorio = nomes[Math.floor(Math.random() * nomes.length)];\r",
-											"    return nomeAleatorio;\r",
-											"}\r",
-											"// Armazena Nome\r",
-											"pm.environment.set(\"FirstName\", gerarNome());\r",
-											"\r",
-											"// Função que gera um Sobrenome aleatório\r",
-											"function gerarSobrenome() {\r",
-											"    const sobrenomes = [\r",
-											"    \"Muller\", \"Bernardi\", \"Romano\", \"Ferro\", \"Rossi\", \"Bianchi\", \"Conti\", \"Giordano\", \"Costa\", \"Lombardi\",\r",
-											"    \"Moretti\", \"Ricci\", \"Ferrari\", \"Esposito\", \"Giovanni\", \"Marino\", \"Vitali\", \"Galli\", \"Corsi\", \"DeLuca\",\r",
-											"    \"Sartori\", \"Benedetti\", \"Palermo\", \"Mancini\", \"Ruggiero\", \"Cappelli\", \"DeAngelis\", \"Vallini\", \"DellaCruz\",\r",
-											"    \"DiLuca\", \"Vittori\", \"Amato\", \"Giuliani\", \"Monti\", \"Barbieri\", \"Longo\", \"Santoro\", \"Fusco\", \"Valente\",\r",
-											"    \"Sorrentino\", \"Caputo\", \"Toscano\", \"Iacono\", \"Martino\", \"Saba\", \"Rinaldi\", \"DiPietro\", \"Castelli\", \"Zito\"\r",
-											"];\r",
-											"    const sobrenomeAleatorio = sobrenomes[Math.floor(Math.random() * sobrenomes.length)];\r",
-											"    return sobrenomeAleatorio;\r",
-											"}\r",
-											"// Armzena o Sobrenome\r",
-											"pm.environment.set(\"LastName\", gerarSobrenome());\r",
-											"\r",
-											"// Concatena e Armazena o Nome e Sobrenome gerado\r",
-											"pm.environment.set(\"FullName\", `${pm.environment.get(\"FirstName\")} ${pm.environment.get(\"LastName\")}`);\r",
-											"\r",
-											"\r",
-											"\r",
-											"// Função que gera um Email aleatório\r",
-											"function gerarEmail() {\r",
-											"    const valorAleatorio = Math.floor(Math.random() * 1000000); // Gera um número aleatório de até 6 dígitos\r",
-											"    return `testeRonBugado${valorAleatorio}@testeqa.com`;\r",
-											"}\r",
-											"// Armazenar o Email gerado\r",
-											"pm.environment.set(\"Email\", gerarEmail());\r",
-											"\r",
-											"\r",
-											"// função que gera um CPF aleatório\r",
-											"function gerarCPF() {\r",
-											"    let cpfAleatorio = '';\r",
-											"    // Gera uma sequência de 11 dígitos\r",
-											"    for (let i = 0; i < 11; i++) {\r",
-											"        cpfAleatorio += Math.floor(Math.random() * 10); \r",
-											"    }\r",
-											"    return cpfAleatorio;\r",
-											"}\r",
-											"// Armazenar o CPF gerado na variável de ambiente 'CPF'\r",
-											"pm.environment.set(\"CPF\", gerarCPF());\r",
-											"\r",
-											"\r",
-											""
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								},
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test (\"Validar Status Code = 400\",() => {\r",
-											"    pm.response.to.have.status(400);\r",
-											"});\r",
-											"\r",
-											"pm.test(\"Validar Mensagem de ERRO informando que o CONFIRMAR SENHA é obrigatório\", () => {\r",
-											"    const expectedMessage = \"O campo de confirmação de senha é obrigatório.\";\r",
-											"    pm.expect(pm.response.json().error[1]).to.eql(expectedMessage);\r",
-											"});\r",
-											"\r",
-											"\r",
-											"\r",
-											""
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{tokenAdmin}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n  \"fullName\": \"{{FullName}}\",\r\n  \"mail\": \"{{Email}}\",\r\n  \"password\": \"1234@123\",\r\n  \"accessProfile\": \"ADMIN\",\r\n  \"cpf\": \"{{CPF}}\",\r\n  \"confirmPassword\": \"\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseURL_RonBugado}}/api/user/",
-									"host": [
-										"{{baseURL_RonBugado}}"
-									],
-									"path": [
-										"api",
-										"user",
-										""
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Enviar Senha diferente de CONFIRMAR SENHA",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"exec": [
-											"// Função que gera um Nome aleatório\r",
-											"function gerarNome() {\r",
-											"    const nomes = [\r",
-											"    \"James\", \"John\", \"Robert\", \"Michael\", \"William\", \"David\", \"Richard\", \"Joseph\", \"Charles\", \"Thomas\",\r",
-											"    \"Christopher\", \"Daniel\", \"Matthew\", \"Anthony\", \"Mark\", \"Donald\", \"George\", \"Kenneth\", \"Steven\", \"Edward\",\r",
-											"    \"Brian\", \"Paul\", \"Andrew\", \"Joshua\", \"Kevin\", \"Gary\", \"Timothy\", \"Jose\", \"Ryan\", \"Nicholas\", \"Eric\",\r",
-											"    \"Stephen\", \"Jacob\", \"Larry\", \"Justin\", \"Scott\", \"Brandon\", \"Benjamin\", \"Samuel\", \"Gregory\", \"Frank\", \r",
-											"    \"Alexander\", \"Jack\", \"Dennis\", \"Jerry\", \"Tyler\", \"Aaron\", \"Henry\", \"Douglas\", \"Peter\", \"Adam\"\r",
-											"];\r",
-											"    const nomeAleatorio = nomes[Math.floor(Math.random() * nomes.length)];\r",
-											"    return nomeAleatorio;\r",
-											"}\r",
-											"// Armazena Nome\r",
-											"pm.environment.set(\"FirstName\", gerarNome());\r",
-											"\r",
-											"// Função que gera um Sobrenome aleatório\r",
-											"function gerarSobrenome() {\r",
-											"    const sobrenomes = [\r",
-											"    \"Muller\", \"Bernardi\", \"Romano\", \"Ferro\", \"Rossi\", \"Bianchi\", \"Conti\", \"Giordano\", \"Costa\", \"Lombardi\",\r",
-											"    \"Moretti\", \"Ricci\", \"Ferrari\", \"Esposito\", \"Giovanni\", \"Marino\", \"Vitali\", \"Galli\", \"Corsi\", \"DeLuca\",\r",
-											"    \"Sartori\", \"Benedetti\", \"Palermo\", \"Mancini\", \"Ruggiero\", \"Cappelli\", \"DeAngelis\", \"Vallini\", \"DellaCruz\",\r",
-											"    \"DiLuca\", \"Vittori\", \"Amato\", \"Giuliani\", \"Monti\", \"Barbieri\", \"Longo\", \"Santoro\", \"Fusco\", \"Valente\",\r",
-											"    \"Sorrentino\", \"Caputo\", \"Toscano\", \"Iacono\", \"Martino\", \"Saba\", \"Rinaldi\", \"DiPietro\", \"Castelli\", \"Zito\"\r",
-											"];\r",
-											"    const sobrenomeAleatorio = sobrenomes[Math.floor(Math.random() * sobrenomes.length)];\r",
-											"    return sobrenomeAleatorio;\r",
-											"}\r",
-											"// Armzena o Sobrenome\r",
-											"pm.environment.set(\"LastName\", gerarSobrenome());\r",
-											"\r",
-											"// Concatena e Armazena o Nome e Sobrenome gerado\r",
-											"pm.environment.set(\"FullName\", `${pm.environment.get(\"FirstName\")} ${pm.environment.get(\"LastName\")}`);\r",
-											"\r",
-											"\r",
-											"\r",
-											"// Função que gera um Email aleatório\r",
-											"function gerarEmail() {\r",
-											"    const valorAleatorio = Math.floor(Math.random() * 1000000); // Gera um número aleatório de até 6 dígitos\r",
-											"    return `testeRonBugado${valorAleatorio}@testeqa.com`;\r",
-											"}\r",
-											"// Armazenar o Email gerado\r",
-											"pm.environment.set(\"Email\", gerarEmail());\r",
-											"\r",
-											"\r",
-											"// função que gera um CPF aleatório\r",
-											"function gerarCPF() {\r",
-											"    let cpfAleatorio = '';\r",
-											"    // Gera uma sequência de 11 dígitos\r",
-											"    for (let i = 0; i < 11; i++) {\r",
-											"        cpfAleatorio += Math.floor(Math.random() * 10); \r",
-											"    }\r",
-											"    return cpfAleatorio;\r",
-											"}\r",
-											"// Armazenar o CPF gerado na variável de ambiente 'CPF'\r",
-											"pm.environment.set(\"CPF\", gerarCPF());\r",
-											"\r",
-											"\r",
-											""
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								},
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test (\"Validar Status Code = 400\",() => {\r",
-											"    pm.response.to.have.status(400);\r",
-											"});\r",
-											"\r",
-											"pm.test(\"Validar Mensagem de ERRO de SENHA e CONFIRMA SENHA são diferentes\", () => {\r",
-											"    const expectedMessage = `As senhas não conferem.`;\r",
-											"    pm.expect(pm.response.json().error[0]).to.eql(expectedMessage);\r",
-											"});\r",
-											"\r",
-											"\r",
-											""
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{tokenAdmin}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n  \"fullName\": \"{{FullName}}\",\r\n  \"mail\": \"{{Email}}\",\r\n  \"password\": \"1234@Testdfg\",\r\n  \"accessProfile\": \"ADMIN\",\r\n  \"cpf\": \"{{CPF}}\",\r\n  \"confirmPassword\": \"1234@dsfsffTest\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseURL_RonBugado}}/api/user/",
-									"host": [
-										"{{baseURL_RonBugado}}"
-									],
-									"path": [
-										"api",
-										"user",
-										""
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "Tests - PBI - Editar Usuário",
-					"item": [
-						{
-							"name": "Atualizar Status Usuário",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test (\"Validar Status Code = 200\",() => {\r",
-											"    pm.response.to.have.status(200);\r",
-											"});\r",
-											"\r",
-											"\r",
-											"pm.test(\"Validar Mensagem de Usuário Atualizado com Sucesso\", () => {\r",
-											"    const expectedMessage = `Status do usuario atualizado com sucesso para status true.`;\r",
-											"    pm.expect(pm.response.json().msg).to.eql(expectedMessage);\r",
-											"});"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"method": "PUT",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "accept",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{tokenAdmin}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"status\": true\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseURL_RonBugado}}/api/user/status/{{IDUser}}",
-									"host": [
-										"{{baseURL_RonBugado}}"
-									],
-									"path": [
-										"api",
-										"user",
-										"status",
-										"{{IDUser}}"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Enviar campo Status Vazio - Usuário",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test (\"Validar Status Code = 400\",() => {\r",
-											"    pm.response.to.have.status(400);\r",
-											"});"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"method": "PUT",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "accept",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{tokenAdmin}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"status\": \n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseURL_RonBugado}}/api/user/status/{{IDUser}}",
-									"host": [
-										"{{baseURL_RonBugado}}"
-									],
-									"path": [
-										"api",
-										"user",
-										"status",
-										"{{IDUser}}"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Atualizar Status Usuário c/ TOKEN ausente",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test (\"Validar Status Code = 403\",() => {\r",
-											"    pm.response.to.have.status(403);\r",
-											"});\r",
-											"\r",
-											"\r",
-											"pm.test(\"Validar Mensagem de ERRO ao tentar atualizar o STATUS da Empresa s/ enviar TOKEN\", () => {\r",
-											"    const expectedMessage = \"No token provided.\";\r",
-											"    pm.expect(pm.response.json().errors[0]).to.eql(expectedMessage);\r",
-											"});"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"method": "PUT",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "accept",
-										"value": "application/json"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"status\": true\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseURL_RonBugado}}/api/user/status/{{IDUser}}",
-									"host": [
-										"{{baseURL_RonBugado}}"
-									],
-									"path": [
-										"api",
-										"user",
-										"status",
-										"{{IDUser}}"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Atualizar Senha",
-							"request": {
-								"method": "PUT",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "accept",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{tokenAdmin}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"password\": \"1234@Tjjest\",\n  \"confirmPassword\": \"1234@Tjjest\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseURL_RonBugado}}/api/user/password/{{IDUser}}",
-									"host": [
-										"{{baseURL_RonBugado}}"
-									],
-									"path": [
-										"api",
-										"user",
-										"password",
-										"{{IDUser}}"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Atualizar Dados",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"exec": [
-											"// Função que gera um Nome aleatório\r",
-											"function gerarNome() {\r",
-											"    const nomes = [\r",
-											"    \"James\", \"John\", \"Robert\", \"Michael\", \"William\", \"David\", \"Richard\", \"Joseph\", \"Charles\", \"Thomas\",\r",
-											"    \"Christopher\", \"Daniel\", \"Matthew\", \"Anthony\", \"Mark\", \"Donald\", \"George\", \"Kenneth\", \"Steven\", \"Edward\",\r",
-											"    \"Brian\", \"Paul\", \"Andrew\", \"Joshua\", \"Kevin\", \"Gary\", \"Timothy\", \"Jose\", \"Ryan\", \"Nicholas\", \"Eric\",\r",
-											"    \"Stephen\", \"Jacob\", \"Larry\", \"Justin\", \"Scott\", \"Brandon\", \"Benjamin\", \"Samuel\", \"Gregory\", \"Frank\", \r",
-											"    \"Alexander\", \"Jack\", \"Dennis\", \"Jerry\", \"Tyler\", \"Aaron\", \"Henry\", \"Douglas\", \"Peter\", \"Adam\"\r",
-											"];\r",
-											"    const nomeAleatorio = nomes[Math.floor(Math.random() * nomes.length)];\r",
-											"    return nomeAleatorio;\r",
-											"}\r",
-											"// Armazena Nome\r",
-											"pm.environment.set(\"FirstName\", gerarNome());\r",
-											"\r",
-											"// Função que gera um Sobrenome aleatório\r",
-											"function gerarSobrenome() {\r",
-											"    const sobrenomes = [\r",
-											"    \"Muller\", \"Bernardi\", \"Romano\", \"Ferro\", \"Rossi\", \"Bianchi\", \"Conti\", \"Giordano\", \"Costa\", \"Lombardi\",\r",
-											"    \"Moretti\", \"Ricci\", \"Ferrari\", \"Esposito\", \"Giovanni\", \"Marino\", \"Vitali\", \"Galli\", \"Corsi\", \"DeLuca\",\r",
-											"    \"Sartori\", \"Benedetti\", \"Palermo\", \"Mancini\", \"Ruggiero\", \"Cappelli\", \"DeAngelis\", \"Vallini\", \"DellaCruz\",\r",
-											"    \"DiLuca\", \"Vittori\", \"Amato\", \"Giuliani\", \"Monti\", \"Barbieri\", \"Longo\", \"Santoro\", \"Fusco\", \"Valente\",\r",
-											"    \"Sorrentino\", \"Caputo\", \"Toscano\", \"Iacono\", \"Martino\", \"Saba\", \"Rinaldi\", \"DiPietro\", \"Castelli\", \"Zito\"\r",
-											"];\r",
-											"    const sobrenomeAleatorio = sobrenomes[Math.floor(Math.random() * sobrenomes.length)];\r",
-											"    return sobrenomeAleatorio;\r",
-											"}\r",
-											"// Armzena o Sobrenome\r",
-											"pm.environment.set(\"LastName\", gerarSobrenome());\r",
-											"\r",
-											"// Concatena e Armazena o Nome e Sobrenome gerado\r",
-											"pm.environment.set(\"FullName\", `${pm.environment.get(\"FirstName\")} ${pm.environment.get(\"LastName\")}`);\r",
-											"\r",
-											"\r",
-											"\r",
-											"// Função que gera um Email aleatório\r",
-											"function gerarEmail() {\r",
-											"    const valorAleatorio = Math.floor(Math.random() * 1000000000); // Gera um número aleatório de até 6 dígitos\r",
-											"    return `testeRonBugado${valorAleatorio}@testeqa.com`;\r",
-											"}\r",
-											"// Armazenar o Email gerado\r",
-											"pm.environment.set(\"Email\", gerarEmail());"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"method": "PUT",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "accept",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{tokenAdmin}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"fullName\": \"{{FullName}}\",\n  \"mail\": \"{{Email}}\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseURL_RonBugado}}/api/user/{{IDUser}}",
-									"host": [
-										"{{baseURL_RonBugado}}"
-									],
-									"path": [
-										"api",
-										"user",
-										"{{IDUser}}"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "Tests - PBI - Lista Cadastro de Usuário",
-					"item": [
-						{
-							"name": "Listar Todas as Usuários da base",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test (\"Validar Status Code = 200\",() => {\r",
-											"    pm.response.to.have.status(200);\r",
-											"});"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "accept",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{tokenAdmin}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseURL_RonBugado}}/api/user/",
-									"host": [
-										"{{baseURL_RonBugado}}"
-									],
-									"path": [
-										"api",
-										"user",
-										""
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Lista a Quantidade de Usuários na Base",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test (\"Validar Status Code = 200\",() => {\r",
-											"    pm.response.to.have.status(200);\r",
-											"});"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "accept",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{tokenAdmin}}"
-									}
-								],
-								"url": {
-									"raw": "{{baseURL_RonBugado}}/api/user/count",
-									"host": [
-										"{{baseURL_RonBugado}}"
-									],
-									"path": [
-										"api",
-										"user",
-										"count"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Usuário por ID (caminho feliz)",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test (\"Validar Status Code = 200\",() => {\r",
-											"    pm.response.to.have.status(200);\r",
-											"});"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "accept",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{tokenAdmin}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseURL_RonBugado}}/api/user/{{IDUser}}",
-									"host": [
-										"{{baseURL_RonBugado}}"
-									],
-									"path": [
-										"api",
-										"user",
-										"{{IDUser}}"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Buscar por ID inexistente/ inválido",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test (\"Validar Status Code = 500\",() => {\r",
-											"    pm.response.to.have.status(500);\r",
-											"});"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "accept",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{tokenAdmin}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseURL_RonBugado}}/api/user/hs5366b57fa308107b5b9hs6",
-									"host": [
-										"{{baseURL_RonBugado}}"
-									],
-									"path": [
-										"api",
-										"user",
-										"hs5366b57fa308107b5b9hs6"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "Tests - PBI - Deletar Usuário",
-					"item": [
-						{
-							"name": "Deletar Usuário (caminho feliz)",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test (\"Validar Status Code = 200\",() => {\r",
-											"    pm.response.to.have.status(200);\r",
-											"});\r",
-											"\r",
-											"\r",
-											"pm.test(\"Validar Mensagem de Usuário Deletado com Sucesso\", () => {\r",
-											"    const expectedMessage = `Usuário deletado com sucesso!.`;\r",
-											"    pm.expect(pm.response.json().msg).to.eql(expectedMessage);\r",
-											"});"
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "accept",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{tokenAdmin}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseURL_RonBugado}}/api/user/{{IDUser}}",
-									"host": [
-										"{{baseURL_RonBugado}}"
-									],
-									"path": [
-										"api",
-										"user",
-										"{{IDUser}}"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Deletar o mesmo Usuário pela 2X",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test (\"Validar Status Code = 400\",() => {\r",
-											"    pm.response.to.have.status(400);\r",
-											"});\r",
-											"\r",
-											"\r",
-											"pm.test(\"Validar Mensagem de Erro ao tentar deletar o mesmo Usuário pela 2X\", () => {\r",
-											"    const expectedMessage = \"Esse usuário não existe em nossa base de dados.\";\r",
-											"    pm.expect(pm.response.json().alert[0]).to.eql(expectedMessage);\r",
-											"});\r",
-											""
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "accept",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "{{tokenAdmin}}"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{baseURL_RonBugado}}/api/user/{{IDUser}}",
-									"host": [
-										"{{baseURL_RonBugado}}"
-									],
-									"path": [
-										"api",
-										"user",
-										"{{IDUser}}"
 									]
 								}
 							},
