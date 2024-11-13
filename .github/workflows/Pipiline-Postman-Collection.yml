@@ -1,47 +1,84 @@
-name: Pipeline-Postman-API
+# This is a basic workflow to help you get started with Actions
 
-# Define quando a ação será executada
+name: Postman Tests
+
+# Controls when the workflow will run
 on:
-  # Dispara a execução do workflow nos eventos de push ou pull request apenas para o branch principal
+  # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches:
-      - main  # Corrigido o erro de indentação na lista 'branches'
+    branches: [ "main" ]
   pull_request:
-    branches:
-      - main  # Corrigido o erro de indentação na lista 'branches'
+    branches: [ "main" ]
 
-  # Permite executar o workflow manualmente a partir da aba Actions
+  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-  
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # Job para rodar os testes do Postman com Newman
-  postman_tests:
+
+  # This workflow contains a single job called "build"
+  test:
     name: Postman Tests - Pipiline
+    # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Faz o checkout do repositório
-      - name: Checkout do Repositório
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Copiando os arquivos para maquina virtual
         uses: actions/checkout@v4
 
-      # Verifica as versões do Newman e Node
-      - name: Verificar versão do Newman e Node
+      # Runs a set of commands using the runners shell
+      - name: Etapa 01 - Verificação versão do Node e Newman
         run: |
-          newman --version
-          node --version
-          
-      # Instala o Newman Reporter HTMLEXTRA
-      - name: Instalar o Newman-Reporter-HTMLEXTRA
-        run: sudo npm install -g newman-reporter-htmlextra
-        
-      # Executa a coleção Postman utilizando o Newman e gera o relatório
-      - name: Executando os Testes
+          newman --version && node --version && ls
+              
+      # Runs a single command using the runners shell
+      - name: Etapa 02 - Html Extra Reporter
+        run: |
+          npm fund
+          npm install -g newman
+          sudo npm install -g newman-reporter-htmlextra        
+
+      # Runs a set of command using the runners shell
+      - name: Etapa 03 - Rodando as Collections de Testes
         run: |
           newman run ./ronbugado-collecition-ci.json -e ./ronbugado-environments-ci.json --reporters cli,htmlextra --reporter-htmlextra-export ./results/Report.html
-     
-      # Arquiva os relatórios dos testes executados
-      - name: Report dos Testes Executados
-        uses: actions/upload-artifact@v3  # Atualizado para v3
+      # Runs a set of command using the runners shell
+      - name: Etapa 04 - Salvando o Resultado dos Testes
+        uses: actions/upload-artifact@v4
+        if: always()
         with:
-          name: postman-report
-          path: ./results/Report.html
+          name: report
+          path: ./result/
+             
+  deploy:
+    name: Deploy GitHub Pages 🌐
+    runs-on: ubuntu-latest
+    if: always()
+    needs: 
+      - test
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: https://jvluzc.github.io/RonBugado-academy12.2-api-postman/Report.html
+    steps:
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with: 
+          name: report
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./
+
+      - name: Deploy to Github Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
