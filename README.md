@@ -12,7 +12,7 @@ Este projeto consiste em uma **coleção de testes de API** desenvolvidos utiliz
 - **Ferramenta utilizada**: O **Postman** é utilizado para a execução dos testes.
 - **Linguagem de teste**: Os testes são escritos em **JavaScript**, utilizando a sintaxe do Postman.
 - **Integração contínua (CI/CD)**: Os testes são executados em uma pipeline de CI/CD utilizando **GitHub Actions**.
-- **Relatórios**: Os resultados dos testes são disponibilizados no **GitHub Pages**, a cada execução, através do link: https://jvluzc.github.io/ronbugado-academy12.2-api-postman/report.html 📊
+- **Relatórios**: Os resultados das execuções dos testes são disponibilizados no **GitHub Pages**, através do link: https://jvluzc.github.io/ronbugado-academy12.2-api-postman/report.html 📊
 
 ## 🔧 Pré-requisitos
 
