@@ -54,4 +54,4 @@ Antes de executar os testes, certifique-se de que você tem os seguintes requisi
 - Sonia Izabel
 - Loisy
 - João Vitor
-- Vanerson
+- Vanderson Oliveira
