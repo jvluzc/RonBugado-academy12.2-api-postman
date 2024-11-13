@@ -1,4 +1,4 @@
-name: Pipeline-PostmanAPI-RonBugado
+name: Pipeline-Postman-API
 
 # Define quando a ação será executada
 on:
