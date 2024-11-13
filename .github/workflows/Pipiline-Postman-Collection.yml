@@ -16,7 +16,7 @@ on:
 # Uma execução de fluxo de trabalho é composta por um ou mais jobs que podem ser executados sequencialmente ou em paralelo
 jobs:
   # Este fluxo de trabalho contém um único job chamado "build"
-  test_postman_pipiline:
+  API-Tests-Postman-Collection:
     # O tipo de runner em que o job será executado
     runs-on: ubuntu-latest
     
