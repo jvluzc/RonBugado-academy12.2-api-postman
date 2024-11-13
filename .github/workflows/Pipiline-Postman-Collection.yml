@@ -33,7 +33,7 @@ jobs:
     # As etapas representam uma sequência de tarefas que serão executadas como parte do job
     steps:
       # Faz o checkout do repositório no Git Hub, para que o job possa acessá-lo
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       
       - name: Etapa 1 - Verificar versão do Newman e do Node
@@ -51,7 +51,7 @@ jobs:
    
       # Executa um conjunto de comandos usando o shell do runner
       - name: Etapa 4 - Arquivar Resultado da Execução dos Testes
-        uses: actions/upload-artifact@v3  # Atualizado para a versão v3
+        uses: actions/upload-artifact@v4  # Atualizado para a versão v3
         with:
           name: report
           path: ./results/report.html
