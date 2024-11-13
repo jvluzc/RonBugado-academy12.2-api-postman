@@ -20,6 +20,15 @@ jobs:
     # O tipo de runner em que o job será executado
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: https://jvluzc.github.io/ronbugado-academy12.2-api-postman/report.html
+
     # As etapas representam uma sequência de tarefas que serão executadas como parte do job
     steps:
       # Faz o checkout do seu repositório em $GITHUB_WORKSPACE, para que seu job possa acessá-lo
@@ -43,19 +52,17 @@ jobs:
       - name: Etapa 4 Arquivar artefatos de produção
         uses: actions/upload-artifact@v3  # Atualizado para a versão v3
         with:
-            name: report
-            path: ./results/Report.html
+          name: report
+          path: ./results/Report.html
 
       # Publicar o relatório no GitHub Pages
       - name: Setup Pages
         uses: actions/configure-pages@v5
- 
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: results/
- 
           
       - name: Deploy to Github Pages
         id: deployment
