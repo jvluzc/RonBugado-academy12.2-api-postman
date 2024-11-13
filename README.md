@@ -37,7 +37,7 @@ Antes de executar os testes, certifique-se de que você tem os seguintes requisi
 5. Selecione a variável de ambiente importada na barra lateral do Postman.
 6. Execute a coleção de testes:
 - Clique no botão "Runner" no canto superior esquerdo do Postman.
-- Selecione a coleção "QA.Coders Backend Tests".
+- Selecione a coleção "ronbugado-collecition-ci".
 - Clique em "Start Run" e aguarde a execução dos testes.
 7. Visualize os resultados dos testes na aba "Test Results" do Postman.
 
