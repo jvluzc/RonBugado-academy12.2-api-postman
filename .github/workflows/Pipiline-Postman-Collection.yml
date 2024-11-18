@@ -33,7 +33,7 @@ jobs:
     # As etapas representam uma sequência de tarefas que serão executadas como parte do job
     steps:
       - name: Etapa 1 - Clonar Repositório do Projeto para a Máquina Virtual do GitHub Actions
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       
       - name: Etapa 2 - Verificar versão do Newman e do Node
@@ -51,7 +51,7 @@ jobs:
    
       # Executa um conjunto de comandos usando o shell do runner
       - name: Etapa 5 - Salvar Relatórios dos Testes Executados
-        uses: actions/upload-artifact@v4  # Atualizado para a versão v3
+        uses: actions/upload-artifact@v4  # Atualizado para a versão v4
         if: always()
         with:
           name: report
