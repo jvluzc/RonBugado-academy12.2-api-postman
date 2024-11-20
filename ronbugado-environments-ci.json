@@ -3,6 +3,12 @@
 	"name": "RonBugado",
 	"values": [
 		{
+			"key": "url",
+			"value": "https://ron-bugado.qacoders-academy.com.br",
+			"type": "default",
+			"enabled": true
+		},
+		{
 			"key": "mailAdmin",
 			"value": "sysadmin@qacoders.com",
 			"type": "secret",
@@ -256,7 +262,7 @@
 		},
 		{
 			"key": "urlBase\t",
-			"value": "https://ron-bugado.qacoders.dev.br/api/",
+			"value": "https://ron-bugado.qacoders-academy.com.br",
 			"type": "default",
 			"enabled": true
 		},
@@ -286,6 +292,6 @@
 		}
 	],
 	"_postman_variable_scope": "environment",
-	"_postman_exported_at": "2024-11-20T03:17:42.553Z",
+	"_postman_exported_at": "2024-11-20T14:00:19.727Z",
 	"_postman_exported_using": "Postman/11.20.0"
 }

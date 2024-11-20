@@ -529,7 +529,7 @@
 										"exec": [
 											"// Buscando o token\r",
 											"pm.sendRequest({\r",
-											"    url: 'https://ron-bugado.qacoders.dev.br/api/login/', \r",
+											"    url: 'https://ron-bugado.qacoders-academy.com.br/api/login/', \r",
 											"    method: 'POST',\r",
 											"    header: {\r",
 											"        'Content-Type': 'application/json'\r",
@@ -700,13 +700,9 @@
 									}
 								},
 								"url": {
-									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
-									"protocol": "https",
+									"raw": "{{url}}/api/user/",
 									"host": [
-										"ron-bugado",
-										"qacoders-academy",
-										"com",
-										"br"
+										"{{url}}"
 									],
 									"path": [
 										"api",
@@ -746,7 +742,7 @@
 										"exec": [
 											"// Buscando o token\r",
 											"pm.sendRequest({\r",
-											"    url: 'https://ron-bugado.qacoders.dev.br/api/login/', \r",
+											"    url: 'https://ron-bugado.qacoders-academy.com.br/api/login/', \r",
 											"    method: 'POST',\r",
 											"    header: {\r",
 											"        'Content-Type': 'application/json'\r",
@@ -867,13 +863,9 @@
 									}
 								},
 								"url": {
-									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
-									"protocol": "https",
+									"raw": "{{url}}/api/user/",
 									"host": [
-										"ron-bugado",
-										"qacoders-academy",
-										"com",
-										"br"
+										"{{url}}"
 									],
 									"path": [
 										"api",
@@ -909,7 +901,7 @@
 										"exec": [
 											"// Buscando o token\r",
 											"pm.sendRequest({\r",
-											"    url: 'https://ron-bugado.qacoders.dev.br/api/login/', \r",
+											"    url: 'https://ron-bugado.qacoders-academy.com.br/api/login/', \r",
 											"    method: 'POST',\r",
 											"    header: {\r",
 											"        'Content-Type': 'application/json'\r",
@@ -1018,13 +1010,9 @@
 									}
 								},
 								"url": {
-									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
-									"protocol": "https",
+									"raw": "{{url}}/api/user/",
 									"host": [
-										"ron-bugado",
-										"qacoders-academy",
-										"com",
-										"br"
+										"{{url}}"
 									],
 									"path": [
 										"api",
@@ -1060,7 +1048,7 @@
 										"exec": [
 											"// Buscando o token\r",
 											"pm.sendRequest({\r",
-											"    url: 'https://ron-bugado.qacoders.dev.br/api/login/', \r",
+											"    url: 'https://ron-bugado.qacoders-academy.com.br/api/login/', \r",
 											"    method: 'POST',\r",
 											"    header: {\r",
 											"        'Content-Type': 'application/json'\r",
@@ -1169,13 +1157,9 @@
 									}
 								},
 								"url": {
-									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
-									"protocol": "https",
+									"raw": "{{url}}/api/user/",
 									"host": [
-										"ron-bugado",
-										"qacoders-academy",
-										"com",
-										"br"
+										"{{url}}"
 									],
 									"path": [
 										"api",
@@ -1211,7 +1195,7 @@
 										"exec": [
 											"// Buscando o token\r",
 											"pm.sendRequest({\r",
-											"    url: 'https://ron-bugado.qacoders.dev.br/api/login/', \r",
+											"    url: 'https://ron-bugado.qacoders-academy.com.br/api/login/', \r",
 											"    method: 'POST',\r",
 											"    header: {\r",
 											"        'Content-Type': 'application/json'\r",
@@ -1320,13 +1304,9 @@
 									}
 								},
 								"url": {
-									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
-									"protocol": "https",
+									"raw": "{{url}}/api/user/",
 									"host": [
-										"ron-bugado",
-										"qacoders-academy",
-										"com",
-										"br"
+										"{{url}}"
 									],
 									"path": [
 										"api",
@@ -1373,7 +1353,7 @@
 										"exec": [
 											"// Buscando o token\r",
 											"pm.sendRequest({\r",
-											"    url: 'https://ron-bugado.qacoders.dev.br/api/login/', \r",
+											"    url: 'https://ron-bugado.qacoders-academy.com.br/api/login/', \r",
 											"    method: 'POST',\r",
 											"    header: {\r",
 											"        'Content-Type': 'application/json'\r",
@@ -1488,13 +1468,9 @@
 									}
 								},
 								"url": {
-									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
-									"protocol": "https",
+									"raw": "{{url}}/api/user/",
 									"host": [
-										"ron-bugado",
-										"qacoders-academy",
-										"com",
-										"br"
+										"{{url}}"
 									],
 									"path": [
 										"api",
@@ -1531,7 +1507,7 @@
 										"exec": [
 											"// Buscando o token\r",
 											"pm.sendRequest({\r",
-											"    url: 'https://ron-bugado.qacoders.dev.br/api/login/', \r",
+											"    url: 'https://ron-bugado.qacoders-academy.com.br/api/login/', \r",
 											"    method: 'POST',\r",
 											"    header: {\r",
 											"        'Content-Type': 'application/json'\r",
@@ -1640,13 +1616,9 @@
 									}
 								},
 								"url": {
-									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
-									"protocol": "https",
+									"raw": "{{url}}/api/user/",
 									"host": [
-										"ron-bugado",
-										"qacoders-academy",
-										"com",
-										"br"
+										"{{url}}"
 									],
 									"path": [
 										"api",
@@ -1683,7 +1655,7 @@
 										"exec": [
 											"// Buscando o token\r",
 											"pm.sendRequest({\r",
-											"    url: 'https://ron-bugado.qacoders.dev.br/api/login/', \r",
+											"    url: 'https://ron-bugado.qacoders-academy.com.br/api/login/', \r",
 											"    method: 'POST',\r",
 											"    header: {\r",
 											"        'Content-Type': 'application/json'\r",
@@ -1792,13 +1764,9 @@
 									}
 								},
 								"url": {
-									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
-									"protocol": "https",
+									"raw": "{{url}}/api/user/",
 									"host": [
-										"ron-bugado",
-										"qacoders-academy",
-										"com",
-										"br"
+										"{{url}}"
 									],
 									"path": [
 										"api",
@@ -1835,7 +1803,7 @@
 										"exec": [
 											"// Buscando o token\r",
 											"pm.sendRequest({\r",
-											"    url: 'https://ron-bugado.qacoders.dev.br/api/login/', \r",
+											"    url: 'https://ron-bugado.qacoders-academy.com.br/api/login/', \r",
 											"    method: 'POST',\r",
 											"    header: {\r",
 											"        'Content-Type': 'application/json'\r",
@@ -1944,13 +1912,9 @@
 									}
 								},
 								"url": {
-									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
-									"protocol": "https",
+									"raw": "{{url}}/api/user/",
 									"host": [
-										"ron-bugado",
-										"qacoders-academy",
-										"com",
-										"br"
+										"{{url}}"
 									],
 									"path": [
 										"api",
@@ -1987,7 +1951,7 @@
 										"exec": [
 											"// Buscando o token\r",
 											"pm.sendRequest({\r",
-											"    url: 'https://ron-bugado.qacoders.dev.br/api/login/', \r",
+											"    url: 'https://ron-bugado.qacoders-academy.com.br/api/login/', \r",
 											"    method: 'POST',\r",
 											"    header: {\r",
 											"        'Content-Type': 'application/json'\r",
@@ -2096,13 +2060,9 @@
 									}
 								},
 								"url": {
-									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
-									"protocol": "https",
+									"raw": "{{url}}/api/user/",
 									"host": [
-										"ron-bugado",
-										"qacoders-academy",
-										"com",
-										"br"
+										"{{url}}"
 									],
 									"path": [
 										"api",
@@ -2139,7 +2099,7 @@
 										"exec": [
 											"// Buscando o token\r",
 											"pm.sendRequest({\r",
-											"    url: 'https://ron-bugado.qacoders.dev.br/api/login/', \r",
+											"    url: 'https://ron-bugado.qacoders-academy.com.br/api/login/', \r",
 											"    method: 'POST',\r",
 											"    header: {\r",
 											"        'Content-Type': 'application/json'\r",
@@ -2248,13 +2208,9 @@
 									}
 								},
 								"url": {
-									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
-									"protocol": "https",
+									"raw": "{{url}}/api/user/",
 									"host": [
-										"ron-bugado",
-										"qacoders-academy",
-										"com",
-										"br"
+										"{{url}}"
 									],
 									"path": [
 										"api",
@@ -2291,7 +2247,7 @@
 										"exec": [
 											"// Buscando o token\r",
 											"pm.sendRequest({\r",
-											"    url: 'https://ron-bugado.qacoders.dev.br/api/login/', \r",
+											"    url: 'https://ron-bugado.qacoders-academy.com.br/api/login/', \r",
 											"    method: 'POST',\r",
 											"    header: {\r",
 											"        'Content-Type': 'application/json'\r",
@@ -2400,13 +2356,9 @@
 									}
 								},
 								"url": {
-									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
-									"protocol": "https",
+									"raw": "{{url}}/api/user/",
 									"host": [
-										"ron-bugado",
-										"qacoders-academy",
-										"com",
-										"br"
+										"{{url}}"
 									],
 									"path": [
 										"api",
@@ -2443,7 +2395,7 @@
 										"exec": [
 											"// Buscando o token\r",
 											"pm.sendRequest({\r",
-											"    url: 'https://ron-bugado.qacoders.dev.br/api/login/', \r",
+											"    url: 'https://ron-bugado.qacoders-academy.com.br/api/login/', \r",
 											"    method: 'POST',\r",
 											"    header: {\r",
 											"        'Content-Type': 'application/json'\r",
@@ -2552,13 +2504,9 @@
 									}
 								},
 								"url": {
-									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
-									"protocol": "https",
+									"raw": "{{url}}/api/user/",
 									"host": [
-										"ron-bugado",
-										"qacoders-academy",
-										"com",
-										"br"
+										"{{url}}"
 									],
 									"path": [
 										"api",
@@ -2595,7 +2543,7 @@
 										"exec": [
 											"// Buscando o token\r",
 											"pm.sendRequest({\r",
-											"    url: 'https://ron-bugado.qacoders.dev.br/api/login/', \r",
+											"    url: 'https://ron-bugado.qacoders-academy.com.br/api/login/', \r",
 											"    method: 'POST',\r",
 											"    header: {\r",
 											"        'Content-Type': 'application/json'\r",
@@ -2704,13 +2652,9 @@
 									}
 								},
 								"url": {
-									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
-									"protocol": "https",
+									"raw": "{{url}}/api/user/",
 									"host": [
-										"ron-bugado",
-										"qacoders-academy",
-										"com",
-										"br"
+										"{{url}}"
 									],
 									"path": [
 										"api",
@@ -2748,7 +2692,7 @@
 										"exec": [
 											"// Buscando o token\r",
 											"pm.sendRequest({\r",
-											"    url: 'https://ron-bugado.qacoders.dev.br/api/login/', \r",
+											"    url: 'https://ron-bugado.qacoders-academy.com.br/api/login/', \r",
 											"    method: 'POST',\r",
 											"    header: {\r",
 											"        'Content-Type': 'application/json'\r",
@@ -2857,13 +2801,9 @@
 									}
 								},
 								"url": {
-									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
-									"protocol": "https",
+									"raw": "{{url}}/api/user/",
 									"host": [
-										"ron-bugado",
-										"qacoders-academy",
-										"com",
-										"br"
+										"{{url}}"
 									],
 									"path": [
 										"api",
@@ -2900,7 +2840,7 @@
 										"exec": [
 											"// Buscando o token\r",
 											"pm.sendRequest({\r",
-											"    url: 'https://ron-bugado.qacoders.dev.br/api/login/', \r",
+											"    url: 'https://ron-bugado.qacoders-academy.com.br/api/login/', \r",
 											"    method: 'POST',\r",
 											"    header: {\r",
 											"        'Content-Type': 'application/json'\r",
@@ -3009,13 +2949,9 @@
 									}
 								},
 								"url": {
-									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
-									"protocol": "https",
+									"raw": "{{url}}/api/user/",
 									"host": [
-										"ron-bugado",
-										"qacoders-academy",
-										"com",
-										"br"
+										"{{url}}"
 									],
 									"path": [
 										"api",
@@ -3052,7 +2988,7 @@
 										"exec": [
 											"// Buscando o token\r",
 											"pm.sendRequest({\r",
-											"    url: 'https://ron-bugado.qacoders.dev.br/api/login/', \r",
+											"    url: 'https://ron-bugado.qacoders-academy.com.br/api/login/', \r",
 											"    method: 'POST',\r",
 											"    header: {\r",
 											"        'Content-Type': 'application/json'\r",
@@ -3161,13 +3097,9 @@
 									}
 								},
 								"url": {
-									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
-									"protocol": "https",
+									"raw": "{{url}}/api/user/",
 									"host": [
-										"ron-bugado",
-										"qacoders-academy",
-										"com",
-										"br"
+										"{{url}}"
 									],
 									"path": [
 										"api",
@@ -3204,7 +3136,7 @@
 										"exec": [
 											"// Buscando o token\r",
 											"pm.sendRequest({\r",
-											"    url: 'https://ron-bugado.qacoders.dev.br/api/login/', \r",
+											"    url: 'https://ron-bugado.qacoders-academy.com.br/api/login/', \r",
 											"    method: 'POST',\r",
 											"    header: {\r",
 											"        'Content-Type': 'application/json'\r",
@@ -3313,13 +3245,9 @@
 									}
 								},
 								"url": {
-									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
-									"protocol": "https",
+									"raw": "{{url}}/api/user/",
 									"host": [
-										"ron-bugado",
-										"qacoders-academy",
-										"com",
-										"br"
+										"{{url}}"
 									],
 									"path": [
 										"api",
@@ -3365,7 +3293,7 @@
 										"exec": [
 											"// Buscando o token\r",
 											"pm.sendRequest({\r",
-											"    url: 'https://ron-bugado.qacoders.dev.br/api/login/', \r",
+											"    url: 'https://ron-bugado.qacoders-academy.com.br/api/login/', \r",
 											"    method: 'POST',\r",
 											"    header: {\r",
 											"        'Content-Type': 'application/json'\r",
@@ -3396,7 +3324,7 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "\"adminToken\"",
+										"value": "{{adminToken}}",
 										"type": "text"
 									}
 								],
@@ -3410,13 +3338,9 @@
 									}
 								},
 								"url": {
-									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
-									"protocol": "https",
+									"raw": "{{url}}/api/user/",
 									"host": [
-										"ron-bugado",
-										"qacoders-academy",
-										"com",
-										"br"
+										"{{url}}"
 									],
 									"path": [
 										"api",
@@ -3481,13 +3405,9 @@
 									}
 								},
 								"url": {
-									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
-									"protocol": "https",
+									"raw": "{{url}}/api/user/",
 									"host": [
-										"ron-bugado",
-										"qacoders-academy",
-										"com",
-										"br"
+										"{{url}}"
 									],
 									"path": [
 										"api",
@@ -3512,7 +3432,7 @@
 										"exec": [
 											"//Capturar token\r",
 											"pm.sendRequest({\r",
-											"    url: 'https://ron-bugado.qacoders.dev.br/api/login/', \r",
+											"    url: 'https://ron-bugado.qacoders-academy.com.br/api/login/', \r",
 											"    method: 'POST',\r",
 											"    header: {\r",
 											"        'Content-Type': 'application/json'\r",
@@ -3581,13 +3501,9 @@
 									}
 								],
 								"url": {
-									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/count",
-									"protocol": "https",
+									"raw": "{{url}}/api/user/count",
 									"host": [
-										"ron-bugado",
-										"qacoders-academy",
-										"com",
-										"br"
+										"{{url}}"
 									],
 									"path": [
 										"api",
@@ -3687,7 +3603,7 @@
 										"exec": [
 											"//Capturar o token\r",
 											"pm.sendRequest({\r",
-											"    url: 'https://ron-bugado.qacoders.dev.br/api/login/', \r",
+											"    url: 'https://ron-bugado.qacoders-academy.com.br/api/login/', \r",
 											"    method: 'POST',\r",
 											"    header: {\r",
 											"        'Content-Type': 'application/json'\r",
@@ -3809,13 +3725,9 @@
 									}
 								],
 								"url": {
-									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
-									"protocol": "https",
+									"raw": "{{url}}/api/user/",
 									"host": [
-										"ron-bugado",
-										"qacoders-academy",
-										"com",
-										"br"
+										"{{url}}"
 									],
 									"path": [
 										"api",
@@ -3835,7 +3747,7 @@
 										"exec": [
 											"// Buscando o token\r",
 											"pm.sendRequest({\r",
-											"    url: 'https://ron-bugado.qacoders.dev.br/api/login/', \r",
+											"    url: 'https://ron-bugado.qacoders-academy.com.br/api/login/', \r",
 											"    method: 'POST',\r",
 											"    header: {\r",
 											"        'Content-Type': 'application/json'\r",
@@ -4013,13 +3925,9 @@
 									}
 								},
 								"url": {
-									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/{{idListaUser}}",
-									"protocol": "https",
+									"raw": "{{url}}/api/user/{{idListaUser}}",
 									"host": [
-										"ron-bugado",
-										"qacoders-academy",
-										"com",
-										"br"
+										"{{url}}"
 									],
 									"path": [
 										"api",
@@ -4039,7 +3947,7 @@
 										"exec": [
 											"// Buscando o token\r",
 											"pm.sendRequest({\r",
-											"    url: 'https://ron-bugado.qacoders.dev.br/api/login/', \r",
+											"    url: 'https://ron-bugado.qacoders-academy.com.br/api/login/', \r",
 											"    method: 'POST',\r",
 											"    header: { \r",
 											"        'Content-Type': 'application/json'\r",
@@ -4213,13 +4121,9 @@
 									}
 								],
 								"url": {
-									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/{{idListaUser}}",
-									"protocol": "https",
+									"raw": "{{url}}/api/user/{{idListaUser}}",
 									"host": [
-										"ron-bugado",
-										"qacoders-academy",
-										"com",
-										"br"
+										"{{url}}"
 									],
 									"path": [
 										"api",
@@ -4264,7 +4168,7 @@
 										"exec": [
 											"// Buscando o token\r",
 											"pm.sendRequest({\r",
-											"    url: 'https://ron-bugado.qacoders.dev.br/api/login/', \r",
+											"    url: 'https://ron-bugado.qacoders-academy.com.br/api/login/', \r",
 											"    method: 'POST',\r",
 											"    header: {\r",
 											"        'Content-Type': 'application/json'\r",
@@ -4385,13 +4289,9 @@
 									}
 								},
 								"url": {
-									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
-									"protocol": "https",
+									"raw": "{{url}}/api/user/",
 									"host": [
-										"ron-bugado",
-										"qacoders-academy",
-										"com",
-										"br"
+										"{{url}}"
 									],
 									"path": [
 										"api",
@@ -4411,7 +4311,7 @@
 										"exec": [
 											"// Buscando o token\r",
 											"pm.sendRequest({\r",
-											"    url: 'https://ron-bugado.qacoders.dev.br/api/login/', \r",
+											"    url: 'https://ron-bugado.qacoders-academy.com.br/api/login/', \r",
 											"    method: 'POST',\r",
 											"    header: {\r",
 											"        'Content-Type': 'application/json'\r",
@@ -4490,13 +4390,9 @@
 									}
 								],
 								"url": {
-									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/{{idListarUser}}",
-									"protocol": "https",
+									"raw": "{{url}}/api/user/{{idListarUser}}",
 									"host": [
-										"ron-bugado",
-										"qacoders-academy",
-										"com",
-										"br"
+										"{{url}}"
 									],
 									"path": [
 										"api",
@@ -4523,7 +4419,7 @@
 								"exec": [
 									"// Buscando o token\r",
 									"pm.sendRequest({\r",
-									"    url: '{{url}}/api/login/', // O endpoint onde a requisição será enviada\r",
+									"    url: 'https://ron-bugado.qacoders-academy.com.br/api/login/', // O endpoint onde a requisição será enviada\r",
 									"    method: 'POST', // O método HTTP utilizado, que neste caso é POST\r",
 									"    header: {\r",
 									"        'Content-Type': 'application/json' // O cabeçalho da requisição, especificando que o corpo (body) está no formato JSON\r",
@@ -4644,13 +4540,9 @@
 							}
 						},
 						"url": {
-							"raw": "https://ron-bugado.qacoders-academy.com.br/api/company/",
-							"protocol": "https",
+							"raw": "{{url}}/api/company/",
 							"host": [
-								"ron-bugado",
-								"qacoders-academy",
-								"com",
-								"br"
+								"{{url}}"
 							],
 							"path": [
 								"api",
@@ -4670,7 +4562,7 @@
 								"exec": [
 									"// Buscando o token\r",
 									"pm.sendRequest({\r",
-									"    url: 'https://ron-bugado.qacoders.dev.br/api/login/', \r",
+									"    url: 'https://ron-bugado.qacoders-academy.com.br/api/login/', \r",
 									"    method: 'POST',\r",
 									"    header: {\r",
 									"        'Content-Type': 'application/json'\r",
@@ -4731,13 +4623,9 @@
 							}
 						},
 						"url": {
-							"raw": "https://ron-bugado.qacoders-academy.com.br/api/company/{{idCompany}}",
-							"protocol": "https",
+							"raw": "{{url}}/api/company/{{idCompany}}",
 							"host": [
-								"ron-bugado",
-								"qacoders-academy",
-								"com",
-								"br"
+								"{{url}}"
 							],
 							"path": [
 								"api",
@@ -4757,7 +4645,7 @@
 								"exec": [
 									"// Buscando o token\r",
 									"pm.sendRequest({\r",
-									"    url: '{{url}}/api/login/', \r",
+									"    url: 'https://ron-bugado.qacoders-academy.com.br/api/login/', \r",
 									"    method: 'POST',\r",
 									"    header: {\r",
 									"        'Content-Type': 'application/json'\r",
@@ -4869,13 +4757,9 @@
 							}
 						},
 						"url": {
-							"raw": "https://ron-bugado.qacoders-academy.com.br/api/company/{{idCompany}}",
-							"protocol": "https",
+							"raw": "{{url}}/api/company/{{idCompany}}",
 							"host": [
-								"ron-bugado",
-								"qacoders-academy",
-								"com",
-								"br"
+								"{{url}}"
 							],
 							"path": [
 								"api",
@@ -4895,7 +4779,7 @@
 								"exec": [
 									"// Buscando o token\r",
 									"pm.sendRequest({\r",
-									"    url: '{{url}}/api/login/', \r",
+									"    url: 'https://ron-bugado.qacoders-academy.com.br/api/login/', \r",
 									"    method: 'POST',\r",
 									"    header: {\r",
 									"        'Content-Type': 'application/json'\r",
@@ -4957,13 +4841,9 @@
 							}
 						},
 						"url": {
-							"raw": "https://ron-bugado.qacoders-academy.com.br/api/company/{{idCompany}}",
-							"protocol": "https",
+							"raw": "{{url}}/api/company/{{idCompany}}",
 							"host": [
-								"ron-bugado",
-								"qacoders-academy",
-								"com",
-								"br"
+								"{{url}}"
 							],
 							"path": [
 								"api",
