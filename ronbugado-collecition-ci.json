@@ -700,9 +700,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/api/user/",
+									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
+									"protocol": "https",
 									"host": [
-										"{{url}}"
+										"ron-bugado",
+										"qacoders-academy",
+										"com",
+										"br"
 									],
 									"path": [
 										"api",
@@ -863,9 +867,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/api/user/",
+									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
+									"protocol": "https",
 									"host": [
-										"{{url}}"
+										"ron-bugado",
+										"qacoders-academy",
+										"com",
+										"br"
 									],
 									"path": [
 										"api",
@@ -1010,9 +1018,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/api/user/",
+									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
+									"protocol": "https",
 									"host": [
-										"{{url}}"
+										"ron-bugado",
+										"qacoders-academy",
+										"com",
+										"br"
 									],
 									"path": [
 										"api",
@@ -1157,9 +1169,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/api/user/",
+									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
+									"protocol": "https",
 									"host": [
-										"{{url}}"
+										"ron-bugado",
+										"qacoders-academy",
+										"com",
+										"br"
 									],
 									"path": [
 										"api",
@@ -1304,9 +1320,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/api/user/",
+									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
+									"protocol": "https",
 									"host": [
-										"{{url}}"
+										"ron-bugado",
+										"qacoders-academy",
+										"com",
+										"br"
 									],
 									"path": [
 										"api",
@@ -1468,9 +1488,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/api/user/",
+									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
+									"protocol": "https",
 									"host": [
-										"{{url}}"
+										"ron-bugado",
+										"qacoders-academy",
+										"com",
+										"br"
 									],
 									"path": [
 										"api",
@@ -1616,9 +1640,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/api/user/",
+									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
+									"protocol": "https",
 									"host": [
-										"{{url}}"
+										"ron-bugado",
+										"qacoders-academy",
+										"com",
+										"br"
 									],
 									"path": [
 										"api",
@@ -1764,9 +1792,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/api/user/",
+									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
+									"protocol": "https",
 									"host": [
-										"{{url}}"
+										"ron-bugado",
+										"qacoders-academy",
+										"com",
+										"br"
 									],
 									"path": [
 										"api",
@@ -1912,9 +1944,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/api/user/",
+									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
+									"protocol": "https",
 									"host": [
-										"{{url}}"
+										"ron-bugado",
+										"qacoders-academy",
+										"com",
+										"br"
 									],
 									"path": [
 										"api",
@@ -2060,9 +2096,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/api/user/",
+									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
+									"protocol": "https",
 									"host": [
-										"{{url}}"
+										"ron-bugado",
+										"qacoders-academy",
+										"com",
+										"br"
 									],
 									"path": [
 										"api",
@@ -2208,9 +2248,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/api/user/",
+									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
+									"protocol": "https",
 									"host": [
-										"{{url}}"
+										"ron-bugado",
+										"qacoders-academy",
+										"com",
+										"br"
 									],
 									"path": [
 										"api",
@@ -2356,9 +2400,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/api/user/",
+									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
+									"protocol": "https",
 									"host": [
-										"{{url}}"
+										"ron-bugado",
+										"qacoders-academy",
+										"com",
+										"br"
 									],
 									"path": [
 										"api",
@@ -2504,9 +2552,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/api/user/",
+									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
+									"protocol": "https",
 									"host": [
-										"{{url}}"
+										"ron-bugado",
+										"qacoders-academy",
+										"com",
+										"br"
 									],
 									"path": [
 										"api",
@@ -2652,9 +2704,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/api/user/",
+									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
+									"protocol": "https",
 									"host": [
-										"{{url}}"
+										"ron-bugado",
+										"qacoders-academy",
+										"com",
+										"br"
 									],
 									"path": [
 										"api",
@@ -2801,9 +2857,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/api/user/",
+									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
+									"protocol": "https",
 									"host": [
-										"{{url}}"
+										"ron-bugado",
+										"qacoders-academy",
+										"com",
+										"br"
 									],
 									"path": [
 										"api",
@@ -2949,9 +3009,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/api/user/",
+									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
+									"protocol": "https",
 									"host": [
-										"{{url}}"
+										"ron-bugado",
+										"qacoders-academy",
+										"com",
+										"br"
 									],
 									"path": [
 										"api",
@@ -3097,9 +3161,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/api/user/",
+									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
+									"protocol": "https",
 									"host": [
-										"{{url}}"
+										"ron-bugado",
+										"qacoders-academy",
+										"com",
+										"br"
 									],
 									"path": [
 										"api",
@@ -3245,9 +3313,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/api/user/",
+									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
+									"protocol": "https",
 									"host": [
-										"{{url}}"
+										"ron-bugado",
+										"qacoders-academy",
+										"com",
+										"br"
 									],
 									"path": [
 										"api",
@@ -3338,19 +3410,18 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/api/user?token={{adminToken}}",
+									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
+									"protocol": "https",
 									"host": [
-										"{{url}}"
+										"ron-bugado",
+										"qacoders-academy",
+										"com",
+										"br"
 									],
 									"path": [
 										"api",
-										"user"
-									],
-									"query": [
-										{
-											"key": "token",
-											"value": "{{adminToken}}"
-										}
+										"user",
+										""
 									]
 								}
 							},
@@ -3410,13 +3481,18 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/api/user",
+									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
+									"protocol": "https",
 									"host": [
-										"{{url}}"
+										"ron-bugado",
+										"qacoders-academy",
+										"com",
+										"br"
 									],
 									"path": [
 										"api",
-										"user"
+										"user",
+										""
 									]
 								}
 							},
@@ -3505,9 +3581,13 @@
 									}
 								],
 								"url": {
-									"raw": "{{url}}/api/user/count",
+									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/count",
+									"protocol": "https",
 									"host": [
-										"{{url}}"
+										"ron-bugado",
+										"qacoders-academy",
+										"com",
+										"br"
 									],
 									"path": [
 										"api",
@@ -3729,9 +3809,13 @@
 									}
 								],
 								"url": {
-									"raw": "{{url}}/api/user/",
+									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
+									"protocol": "https",
 									"host": [
-										"{{url}}"
+										"ron-bugado",
+										"qacoders-academy",
+										"com",
+										"br"
 									],
 									"path": [
 										"api",
@@ -3929,9 +4013,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/api/user/{{idListaUser}}",
+									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/{{idListaUser}}",
+									"protocol": "https",
 									"host": [
-										"{{url}}"
+										"ron-bugado",
+										"qacoders-academy",
+										"com",
+										"br"
 									],
 									"path": [
 										"api",
@@ -4125,9 +4213,13 @@
 									}
 								],
 								"url": {
-									"raw": "{{url}}/api/user/{{idListaUser}}",
+									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/{{idListaUser}}",
+									"protocol": "https",
 									"host": [
-										"{{url}}"
+										"ron-bugado",
+										"qacoders-academy",
+										"com",
+										"br"
 									],
 									"path": [
 										"api",
@@ -4293,9 +4385,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/api/user/",
+									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/",
+									"protocol": "https",
 									"host": [
-										"{{url}}"
+										"ron-bugado",
+										"qacoders-academy",
+										"com",
+										"br"
 									],
 									"path": [
 										"api",
@@ -4394,9 +4490,13 @@
 									}
 								],
 								"url": {
-									"raw": "{{url}}/api/user/{{idListarUser}}",
+									"raw": "https://ron-bugado.qacoders-academy.com.br/api/user/{{idListarUser}}",
+									"protocol": "https",
 									"host": [
-										"{{url}}"
+										"ron-bugado",
+										"qacoders-academy",
+										"com",
+										"br"
 									],
 									"path": [
 										"api",
@@ -4544,9 +4644,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/company/",
+							"raw": "https://ron-bugado.qacoders-academy.com.br/api/company/",
+							"protocol": "https",
 							"host": [
-								"{{url}}"
+								"ron-bugado",
+								"qacoders-academy",
+								"com",
+								"br"
 							],
 							"path": [
 								"api",
@@ -4627,9 +4731,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/company/{{idCompany}}",
+							"raw": "https://ron-bugado.qacoders-academy.com.br/api/company/{{idCompany}}",
+							"protocol": "https",
 							"host": [
-								"{{url}}"
+								"ron-bugado",
+								"qacoders-academy",
+								"com",
+								"br"
 							],
 							"path": [
 								"api",
@@ -4761,9 +4869,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/company/{{idCompany}}",
+							"raw": "https://ron-bugado.qacoders-academy.com.br/api/company/{{idCompany}}",
+							"protocol": "https",
 							"host": [
-								"{{url}}"
+								"ron-bugado",
+								"qacoders-academy",
+								"com",
+								"br"
 							],
 							"path": [
 								"api",
@@ -4845,9 +4957,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/company/{{idCompany}}",
+							"raw": "https://ron-bugado.qacoders-academy.com.br/api/company/{{idCompany}}",
+							"protocol": "https",
 							"host": [
-								"{{url}}"
+								"ron-bugado",
+								"qacoders-academy",
+								"com",
+								"br"
 							],
 							"path": [
 								"api",
