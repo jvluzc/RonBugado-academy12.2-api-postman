@@ -54,7 +54,7 @@ jobs:
         uses: actions/upload-artifact@v4  # Atualizado para a versão v4
         if: always()
         with:
-          name: report-pasta
+          name: arquivos-report
           path: ./results/report.html
 
           
@@ -66,6 +66,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         if: always()
         with:
+          name: github-pages-report 
           path: results/
           
       - name: Etapa 8 - Publicar Relatórios de Testes no GitHub Pages
