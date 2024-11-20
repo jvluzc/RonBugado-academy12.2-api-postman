@@ -63,12 +63,11 @@ jobs:
         uses: actions/configure-pages@v5
 
       - name: Etapa 7 - Fazer Upload dos Relatórios Gerados
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         if: always()
         with:
           path: results/
           
       - name: Etapa 8 - Publicar Relatórios de Testes no GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4 
-        
+        uses: actions/deploy-pages@v4
