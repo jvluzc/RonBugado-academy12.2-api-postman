@@ -728,8 +728,10 @@
 											"    pm.expect(pm.response.json().msg).to.be.eql(`Olá ${pm.environment.get('fullName')}, cadastro realizado com sucesso.`)\r",
 											"})\r",
 											"\r",
-											"pm.test(\"User id\", () => {\r",
-											"    pm.environment.set(\"idListaUser\", pm.response.json().user._id)\r",
+											"pm.test(\"Armazenar o ID do usuário\", () => {\r",
+											"    const userId = pm.response.json().user._id;\r",
+											"    pm.expect(userId).to.exist; // Valida se o ID existe na resposta\r",
+											"    pm.environment.set(\"idListaUser\", userId); // Armazena o ID como variável de ambiente\r",
 											"});"
 										],
 										"type": "text/javascript",
