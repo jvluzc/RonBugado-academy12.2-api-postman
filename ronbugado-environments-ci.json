@@ -3,12 +3,6 @@
 	"name": "RonBugado",
 	"values": [
 		{
-			"key": "url",
-			"value": "https://ron-bugado.qacoders-academy.com.br",
-			"type": "default",
-			"enabled": true
-		},
-		{
 			"key": "mailAdmin",
 			"value": "sysadmin@qacoders.com",
 			"type": "secret",
