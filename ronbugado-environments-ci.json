@@ -1,105 +1,297 @@
 {
-	"id": "c1c483d8-a13f-4156-ae6f-b633a7cc0173",
-	"name": "RonBugado (Environment)",
+	"id": "3a79ad5c-3b71-4659-b59a-2f2be7fb706a",
+	"name": "RonBugado",
 	"values": [
 		{
-			"key": "baseURL_RonBugado",
+			"key": "url",
 			"value": "https://ron-bugado.qacoders-academy.com.br",
 			"type": "default",
 			"enabled": true
 		},
 		{
-			"key": "email_Admin",
+			"key": "mailAdmin",
 			"value": "sysadmin@qacoders.com",
 			"type": "secret",
 			"enabled": true
 		},
 		{
-			"key": "senha_Admin",
+			"key": "passAdmin",
 			"value": "1234@Test",
 			"type": "secret",
 			"enabled": true
 		},
 		{
-			"key": "msgAdmin",
-			"value": "Olá Qa-Coders-SYSADMIN, autenticação autorizada com sucesso!",
-			"type": "default",
-			"enabled": true
-		},
-		{
-			"key": "IDAdmin",
-			"value": "65330b54da9861995d4eb302",
-			"type": "default",
-			"enabled": true
-		},
-		{
-			"key": "FirstName",
+			"key": "bolinha",
 			"value": "",
-			"type": "default",
+			"type": "any",
 			"enabled": true
 		},
 		{
-			"key": "LastName",
+			"key": "secondName",
 			"value": "",
-			"type": "default",
+			"type": "any",
 			"enabled": true
 		},
 		{
-			"key": "FullName",
+			"key": "fullName",
 			"value": "",
-			"type": "default",
+			"type": "any",
 			"enabled": true
 		},
 		{
 			"key": "CPF",
 			"value": "",
-			"type": "default",
+			"type": "any",
 			"enabled": true
 		},
 		{
-			"key": "Password",
+			"key": "NewPassword",
 			"value": "",
-			"type": "default",
+			"type": "any",
 			"enabled": true
 		},
 		{
 			"key": "Email",
 			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "adminToken",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "idListaUser",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "numberEmail",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "msgAdmin",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "idAdmin",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "fullNameNome",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "passwordCT19",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "schemaUserCount",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "idListarUser",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "userToken",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "fullNameModified",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "EmailModified",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "userIdDel",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "firstName",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "quadrado",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "nomeCompleto",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "CNPJ",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "emailCompany",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "matriz",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "contact",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "idCadastroCNPJ",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "schemaCadastroCia",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "idCompany",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "razaoAlt01",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "schemaCia",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "cadastroCia",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "batatinha123",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "schemaCiaId",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "triangulo",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "idCiaDelete",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "idCiaDelete02",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "tokenAdmin\t",
+			"value": "\"\"\t",
 			"type": "default",
 			"enabled": true
 		},
 		{
-			"key": "IDUser",
+			"key": "schema\t",
+			"value": "\"\"\t",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "adminToken\t",
+			"value": "\"\"\t",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "urlBase\t",
+			"value": "https://ron-bugado.qacoders.dev.br/api/",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "idListaUser\t",
+			"value": "\"\"\t",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "schemaGetAllUsers",
+			"value": "\"\"\t",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "tokenAdmin",
 			"value": "",
 			"type": "default",
 			"enabled": true
 		},
 		{
-			"key": "IDCompany",
-			"value": "",
-			"type": "default",
-			"enabled": true
-		},
-		{
-			"key": "companyName",
-			"value": "",
-			"type": "default",
-			"enabled": true
-		},
-		{
-			"key": "companyCNPJ",
-			"value": "",
-			"type": "default",
-			"enabled": true
-		},
-		{
-			"key": "razaoSocial",
+			"key": "schemaGetAllUsers",
 			"value": "",
 			"type": "default",
 			"enabled": true
 		}
 	],
 	"_postman_variable_scope": "environment",
-	"_postman_exported_at": "2024-11-13T02:41:21.115Z",
-	"_postman_exported_using": "Postman/11.19.0"
+	"_postman_exported_at": "2024-11-20T02:45:08.749Z",
+	"_postman_exported_using": "Postman/11.20.0"
 }
