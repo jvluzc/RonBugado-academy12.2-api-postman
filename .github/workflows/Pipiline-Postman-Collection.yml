@@ -63,7 +63,7 @@ jobs:
         uses: actions/configure-pages@v5
 
       - name: Etapa 7 - Fazer Upload dos Relatórios Gerados
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v3
         if: always()
         with:
           path: results/
